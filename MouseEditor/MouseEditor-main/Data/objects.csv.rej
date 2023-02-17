@@ -1,0 +1,5 @@
+diff a/Data/objects.csv b/Data/objects.csv	(rejected hunks)
+@@ -1,3 +1,2 @@
+ Object Name,Group Name,Sprite Name,ID
+-Block,ENVIROMENT,single,Block
+ Tube 2 Way,ENVIROMENT,tube_two_way,Tube2

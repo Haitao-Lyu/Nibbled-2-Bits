@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nibbled-2-Bits", "Nibbled-2-Bits.vcxproj", "{794C2E05-97AE-4B55-ACA8-97CABD23C88F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MouseEditor", "..\MouseEditor\MouseEditor-main\MouseGame.vcxproj", "{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{794C2E05-97AE-4B55-ACA8-97CABD23C88F}.Release|x64.Build.0 = Release|x64
 		{794C2E05-97AE-4B55-ACA8-97CABD23C88F}.Release|x86.ActiveCfg = Release|Win32
 		{794C2E05-97AE-4B55-ACA8-97CABD23C88F}.Release|x86.Build.0 = Release|Win32
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Debug|x64.ActiveCfg = Debug|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Debug|x64.Build.0 = Debug|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Debug|x86.ActiveCfg = Debug|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Debug|x86.Build.0 = Debug|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Release|x64.ActiveCfg = Release|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Release|x64.Build.0 = Release|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Release|x86.ActiveCfg = Release|x64
+		{A05EB2D5-1764-5AC3-8591-9463B6D0FDE0}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

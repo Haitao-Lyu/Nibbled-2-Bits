@@ -1,0 +1,38 @@
+Object Name,Group Name,Sprite Name,ID
+Mice In,CONFIGURATION,plus,MiceIn
+Mice Out,CONFIGURATION,minus,MiceOut
+Mice Rate,CONFIGURATION,timer,Rate
+Theme,CONFIGURATION,pen,Theme
+Single,ENVIRONMENT,single,single 
+Tube,ENVIRONMENT,tube,tube 
+Tube One Way,ENVIRONMENT,tube_one_way,tube_one_way 
+Tube Two Way,ENVIRONMENT,tube_two_way,tube_two_way 
+Tube Three Way,ENVIRONMENT,tube_three_way,tube_three_way 
+Tube Cross,ENVIRONMENT,tube_cross,tube_cross 
+Tube End,ENVIRONMENT,tube_end,tube_end 
+Corner Cross,ENVIRONMENT,corner_cross,corner_cross 
+Bridge,ENVIRONMENT,bridge,bridge 
+Leaf,ENVIRONMENT,leaf,leaf 
+Pen,ENVIRONMENT,pen,pen 
+Timer,ENVIRONMENT,timer,timer 
+Tick,ENVIRONMENT,tick,tick 
+Plus,ENVIRONMENT,plus,plus 
+Minus,ENVIRONMENT,minus,minus 
+Trap One Notset,HAZARD,trap_01_notset,trap_01_notset 
+Trap One Set,HAZARD,trap_01_set,trap_01_set 
+Trap Two Notset,HAZARD,trap_02_notset,trap_02_notset 
+Trap Two Set,HAZARD,trap_02_set,trap_02_set 
+Hamsterball,PROTECTIVE,hamsterball,hamsterball 
+Heart,PROTECTIVE,heart,heart 
+Brie,REWARD,brie,brie 
+Edam,REWARD,edam,edam 
+Emmental,REWARD,emmental,emmental 
+Parmesan,REWARD,parmesan,parmesan 
+Swiss,REWARD,swiss,swiss 
+Carrot,REWARD,carrot,carrot 
+Cherry,REWARD,cherry,cherry 
+Grape,REWARD,grape,grape 
+Raspberry,REWARD,raspberry,raspberry 
+Strawberry,REWARD,strawberry,strawberry 
+Cornkernel,REWARD,cornkernel,cornkernel 
+Sunflowerseed,REWARD,sunflowerseed,sunflowerseed 
