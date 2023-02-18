@@ -95,8 +95,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameObject\Mouse.h" />
+    <ClInclude Include="GameObject\Obstacle.h" />
     <ClInclude Include="Level\Floor.h" />
     <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="UI\Panel.h" />
     <ClInclude Include="Particle\ParticleCullingMask.h" />
     <ClInclude Include="Particle\FactoryInterface.h" />
@@ -119,8 +121,10 @@
   <ItemGroup>
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
+    <ClCompile Include="GameObject\Obstacle.cpp" />
     <ClCompile Include="Level\Floor.cpp" />
     <ClCompile Include="Level\Level.cpp" />
+    <ClCompile Include="ResourceMgr.cpp" />
     <ClCompile Include="UI\Panel.cpp" />
     <ClCompile Include="Particle\ParticleCullingMask.cpp" />
     <ClCompile Include="UI\EventCenter.cpp" />
