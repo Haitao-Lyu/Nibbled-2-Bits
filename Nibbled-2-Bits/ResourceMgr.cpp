@@ -42,10 +42,10 @@ void ResoureMgr::DrawBackground(E_BKCOLOR COLOR, E_BKMODE MODE)
 	{
 	case E_BKMODE::FILL:
 	{
-		Play::Matrix2D scaleMt = Play::Matrix2D(
+		const Play::Matrix2D scaleMt = Play::Matrix2D(
 			{ static_cast<float>(DISPLAY_HEIGHT) / static_cast<float>(Play::GetSpriteHeight(spriteName)) + 0.1f ,0.0f,0.0f },
 			{ 0.0f,static_cast<float>(DISPLAY_WIDTH) / static_cast<float>(Play::GetSpriteWidth(spriteName)) ,0.0f },
-			{ static_cast<float>(DISPLAY_WIDTH / 2),static_cast<float>(DISPLAY_HEIGHT / 2),0.0f });
+			{ static_cast<float>(DISPLAY_WIDTH / 2),DISPLAY_HEIGHT - static_cast<float>(DISPLAY_HEIGHT / 2),0.0f });
 		Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt, 0);
 		break;
 	}

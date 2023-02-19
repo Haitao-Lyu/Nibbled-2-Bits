@@ -1,6 +1,6 @@
 #include "Panel.h"
 
-Panel::Panel(Play::Point2D pos, float height, float width) : UIElement(pos, height, width)
+Panel::Panel(Play::Point2D pos, short height, short width) : UIElement(pos, height, width)
 {
 }
 

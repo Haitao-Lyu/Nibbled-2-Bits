@@ -68,6 +68,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DisableSpecificWarnings>4100</DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -94,7 +96,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject\ConsumableObj.h" />
     <ClInclude Include="GameObject\Mouse.h" />
+    <ClInclude Include="GameObject\MouseState.h" />
     <ClInclude Include="GameObject\Obstacle.h" />
     <ClInclude Include="Level\Floor.h" />
     <ClInclude Include="Level\Level.h" />
@@ -119,8 +123,10 @@
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject\ComsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
+    <ClCompile Include="GameObject\MouseState.cpp" />
     <ClCompile Include="GameObject\Obstacle.cpp" />
     <ClCompile Include="Level\Floor.cpp" />
     <ClCompile Include="Level\Level.cpp" />
