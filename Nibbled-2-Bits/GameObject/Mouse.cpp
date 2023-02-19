@@ -1,7 +1,7 @@
 #include "Mouse.h"
 #include "../GameTool/DebugTool.h"
 
-Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR) :GameObject(pos)
+Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR) :GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
 	switch (COLOR)
 	{
@@ -25,7 +25,7 @@ Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR) :GameObject(pos)
 	m_state = idleState;
 }
 
-Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y)
+Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE::E_MOUSE)
 {
 	switch (COLOR)
 	{

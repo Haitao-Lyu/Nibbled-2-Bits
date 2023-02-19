@@ -3,11 +3,13 @@
 #include "GameTool/Timer.h"
 #include "ResourceMgr.h"
 #include "GameObject/Mouse.h"
+#include "GameObject/Tile.h"
 //#include "GameObject/Mouse.h"
 
 Mouse mice_darkgrey{100 ,100};
 Mouse mice_white{ 200 ,200 ,E_MOUSE_COLOR::WHITE};
 Mouse mice_grey{ 300 ,300 ,E_MOUSE_COLOR::GREY };
+Tile tile{ Play::Point2D{400,400 } };
 // The entry point for a PlayBuffer program
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
@@ -35,6 +37,7 @@ bool MainGameUpdate( float elapsedTime )
 	mice_darkgrey.Update();
 	mice_white.Update();
 	mice_grey.Update();
+	tile.Update();
 
 
 	Play::PresentDrawingBuffer();

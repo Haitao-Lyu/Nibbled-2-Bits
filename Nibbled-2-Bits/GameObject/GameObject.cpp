@@ -1,6 +1,35 @@
 #include "GameObject.h"
 #include "../GameTool/DebugTool.h"
+#include "GameObjectMgr.h"
 int GameObject::m_id = 0;
+
+
+GameObject::GameObject(Play::Point2D pos, E_OBJTYPE type)
+{
+	m_pos = pos;
+	m_type = type;
+	m_id++;
+	GameObjectMgr::AddNewGameObject(*this);
+}
+
+GameObject::GameObject(float x, float y, E_OBJTYPE type)
+{
+	m_pos.x = x;
+	m_pos.y = y;
+	m_type = type;
+	m_id++;
+	GameObjectMgr::AddNewGameObject(*this);
+}
+
+void GameObject::operator=(GameObject&)
+{
+
+}
+
+GameObject::~GameObject()
+{
+}
+
 
 int GameObject::GetID()
 {
@@ -39,30 +68,9 @@ void GameObject::DrawBoundingBox()
 	Play::DrawRect(tl, br, Play::cRed);
 }
 
-GameObject::GameObject(Play::Point2D pos)
-{
-	m_pos = pos;
-	m_id++;
-}
-
-GameObject::GameObject(float x, float y)
-{
-	m_pos.x = x;
-	m_pos.y = y;
-	m_id++;
-}
-
-void GameObject::operator=(GameObject&)
-{
-	
-}
-
 void GameObject::Render()
 {
 	if(std::strcmp(spriteName,"") == 1)//if has name
 	Play::DrawSprite(spriteName,m_pos,0);
 }
 
-GameObject::~GameObject()
-{
-}

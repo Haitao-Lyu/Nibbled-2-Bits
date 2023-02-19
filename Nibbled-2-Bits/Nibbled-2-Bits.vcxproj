@@ -97,10 +97,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameObject\ConsumableObj.h" />
+    <ClInclude Include="GameObject\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
     <ClInclude Include="GameObject\MouseState.h" />
     <ClInclude Include="GameObject\Obstacle.h" />
-    <ClInclude Include="Level\Floor.h" />
+    <ClInclude Include="GameObject\Tile.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="UI\Panel.h" />
@@ -125,10 +126,11 @@
   <ItemGroup>
     <ClCompile Include="GameObject\ComsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\GameObjectMgr.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
     <ClCompile Include="GameObject\MouseState.cpp" />
     <ClCompile Include="GameObject\Obstacle.cpp" />
-    <ClCompile Include="Level\Floor.cpp" />
+    <ClCompile Include="GameObject\Tile.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
     <ClCompile Include="UI\Panel.cpp" />

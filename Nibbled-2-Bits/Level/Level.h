@@ -14,12 +14,17 @@ enum class E_BACKGROUND
 class Level
 {
 private:
-	std::vector<int> m_map;
+	//Gameobject id for loading
+	std::vector<std::vector<int>> m_mapinfo;
 public:
 	Level();
 	~Level();
 
 	void render();
+
+	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);
+
+	void CheckAjacentTiles();
 
 };
 

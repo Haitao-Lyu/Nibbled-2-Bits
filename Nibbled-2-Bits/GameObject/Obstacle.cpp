@@ -1,8 +1,8 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(Play::Point2D pos, E_TILE_COLOR color) :GameObject(pos)
+Obstacle::Obstacle(Play::Point2D pos, E_OBJTYPE type):GameObject(pos, type)
 {
-	m_color = color;
+	
 }
 
 
@@ -12,5 +12,5 @@ Obstacle::~Obstacle()
 
 void Obstacle::Update()
 {
-
+	Render();
 }

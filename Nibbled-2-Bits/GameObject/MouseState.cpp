@@ -26,7 +26,7 @@ void MouseState::Render()
 		{ m_mice->m_scale,0.0f,0.0f },
 		{ 0.0f,m_mice->m_scale ,0.0f },
 		{ m_mice->GetPosition().x,DISPLAY_HEIGHT - m_mice->GetPosition().y,0.0f});
-	m_mice->SetSpriteName(spritePrefix.c_str());
+	m_mice->SetSpriteName(spritePrefix.c_str());//not working maybe because const char
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spritePrefix.c_str()), scaleMt,0);
 	spritePrefix = spriteNameWithOutSuffix;
 }
