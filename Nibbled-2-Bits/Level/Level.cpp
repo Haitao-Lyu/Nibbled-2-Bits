@@ -5,23 +5,25 @@
 #include "../GameObject/Mouse.h"
 #include "../ResourceMgr.h"
 #include "../MainGame.h"
-int GAME_AREA_WIDTH{ 870 };
-int GAME_AREA_HEIGHT{ 720 };
-int GRID_SIZE{ 50 };
-int BOARDER_PIXELS{ 35 };
-
+static const int GAME_AREA_WIDTH{ 870 };
+static const int GAME_AREA_HEIGHT{ 720 };
+static const int GRID_SIZE{ 50 };
+static const int BOARDER_PIXELS{ 35 };
+static const int GRID_ROW = 16;
+static const int GRID_COL = 13;
 Level::Level()
 {
-    m_mapinfo.resize(16);
+    m_mapinfo.resize(GRID_ROW);
 	for (std::vector<int>& row : m_mapinfo)
 	{
-		row.resize(13);
+		row.resize(GRID_COL);
 	}
    
 }
 
 Level::~Level()
 {
+
 }
 
 void Level::render()
