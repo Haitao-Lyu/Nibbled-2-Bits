@@ -1,4 +1,5 @@
 #pragma once
+//Calculate Collision but won't block
 class CosumableObj
 {
 

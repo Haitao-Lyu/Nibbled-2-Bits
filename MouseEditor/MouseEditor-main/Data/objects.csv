@@ -3,6 +3,7 @@ Mice In,CONFIGURATION,plus,MiceIn
 Mice Out,CONFIGURATION,minus,MiceOut
 Mice Rate,CONFIGURATION,timer,Rate
 Theme,CONFIGURATION,pen,Theme
+Mouse,ENVIRONMENT,Mouse,Mouse
 Single,ENVIRONMENT,single,single 
 Tube,ENVIRONMENT,tube,tube 
 Tube One Way,ENVIRONMENT,tube_one_way,tube_one_way 

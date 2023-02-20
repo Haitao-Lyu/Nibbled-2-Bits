@@ -4,6 +4,12 @@
 #include "../MainGame.h"
 #include "Mouse.h"
 
+
+static const Play::Matrix2D dir_left = Play::MatrixRotation(Play::DegToRad(90.0f));
+static const Play::Matrix2D dir_down = Play::MatrixRotation(Play::DegToRad(180.0f));
+static const Play::Matrix2D dir_right = Play::MatrixRotation(Play::DegToRad(270.0f));
+static const Play::Matrix2D dir_up = Play::MatrixIdentity();
+
 MouseState::MouseState(Mouse* mice)
 {
 	m_mice = mice;
@@ -27,8 +33,28 @@ void MouseState::Render()
 		{ m_mice->m_scale,0.0f,0.0f },
 		{ 0.0f,m_mice->m_scale ,0.0f },
 		{ m_mice->GetPosition().x,DISPLAY_HEIGHT - m_mice->GetPosition().y,0.0f});
+
+	Play::Matrix2D rtMt;
+	switch (m_mice->m_dir)
+	{
+	case E_MOUSE_DIR::UP:
+		rtMt = dir_up;
+		break;
+	case E_MOUSE_DIR::LEFT:
+		rtMt = dir_left;
+		break;
+	case E_MOUSE_DIR::DOWN:
+		rtMt = dir_down;
+		break;
+	case E_MOUSE_DIR::RIGHT:
+		rtMt = dir_right;
+		break;
+	default:
+		break;
+	}
+
 	m_mice->SetSpriteName(spritePrefix.c_str());//not working maybe because const char
-	Play::DrawSpriteTransformed(Play::GetSpriteId(spritePrefix.c_str()), scaleMt,0);
+	Play::DrawSpriteTransformed(Play::GetSpriteId(spritePrefix.c_str()), scaleMt * rtMt,0);
 	spritePrefix = spriteNameWithOutSuffix;
 }
 

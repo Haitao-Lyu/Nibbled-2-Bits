@@ -101,10 +101,40 @@ void Mouse::DrawBoundingBox()
 	Play::DrawRect(tl, br, Play::cRed);
 }
 
+void Mouse::MouseControl()
+{
+	if (Play::KeyDown(VK_UP))
+	{
+		m_pos.y -= m_speed;
+		m_dir = E_MOUSE_DIR::UP;
+		SetMouseState(E_MOUSE_STATE::walkState);
+	}
+	else if (Play::KeyDown(VK_DOWN))
+	{
+		m_pos.y += m_speed;
+		m_dir = E_MOUSE_DIR::DOWN;
+		SetMouseState(E_MOUSE_STATE::walkState);
+	}
+	else if (Play::KeyDown(VK_RIGHT))
+	{
+		m_pos.x += m_speed;
+		m_dir = E_MOUSE_DIR::RIGHT;
+		SetMouseState(E_MOUSE_STATE::walkState);
+	}
+	else if (Play::KeyDown(VK_LEFT))
+	{
+		m_pos.x -= m_speed;
+		m_dir = E_MOUSE_DIR::LEFT;
+		SetMouseState(E_MOUSE_STATE::walkState);
+	}
+}
+
 void Mouse::Update()
 {
 	if (!m_state)
 		return;
+	SetMouseState(E_MOUSE_STATE::idleState);
+	MouseControl();
 	m_state->Update();
 	DrawBoundingBox();
 }

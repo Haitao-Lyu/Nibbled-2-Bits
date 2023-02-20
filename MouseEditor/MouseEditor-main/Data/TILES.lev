@@ -46,6 +46,7 @@ single ,8,0,0,0
 single ,8,1,0,0
 single ,8,2,0,0
 single ,8,3,0,0
+Mouse,8,7,0,0
 single ,8,9,0,0
 single ,8,10,0,0
 single ,8,11,0,0
@@ -87,6 +88,7 @@ MiceIn,0
 MiceOut,0
 Rate,0
 Theme,0
+Mouse,0
 single ,0
 tube ,0
 tube_one_way ,0

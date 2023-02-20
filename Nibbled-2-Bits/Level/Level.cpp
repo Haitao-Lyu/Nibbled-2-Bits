@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "../GameObject/GameObjectMgr.h"
 #include "../GameObject/Tile.h"
+#include "../GameObject/Mouse.h"
 #include "../ResourceMgr.h"
 #include "../MainGame.h"
 int GAME_AREA_WIDTH{ 870 };
@@ -96,7 +97,9 @@ void Level::InitializeByName(std::string levelName)
 				break;
 				case E_OBJTYPE::E_MOUSE:
 				{
-
+                    Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+                    Mouse* mice = new Mouse(GameToWorld(pos));
+                    GameObjectMgr::AddNewGameObject(*mice);
 				}
 				break;
 				default:

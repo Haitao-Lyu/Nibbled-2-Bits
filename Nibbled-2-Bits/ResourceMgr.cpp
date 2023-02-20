@@ -120,10 +120,15 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 		}
 
 		GameAreaObject* tmpObject = new GameAreaObject();
+		//check game object type
 		std::string s_type = tokens[0];
-		if (std::strcmp(s_type.c_str(), "single"))
+		if (std::strcmp(s_type.c_str(), "single ") == 0)
 		{
 			tmpObject->m_type = E_OBJTYPE::E_TILE;
+		}
+		else if (std::strcmp(s_type.c_str(), "Mouse") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
 		}
 		tmpObject->posx = stoi(tokens[1]);
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);

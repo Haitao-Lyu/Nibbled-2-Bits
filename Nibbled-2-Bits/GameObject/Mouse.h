@@ -20,6 +20,14 @@ enum class E_MOUSE_COLOR
 	WHITE,
 };
 
+enum class E_MOUSE_DIR
+{
+	UP,
+	LEFT,
+	DOWN,
+	RIGHT
+};
+
 class Mouse:public GameObject
 {
 	friend class MouseState		;
@@ -35,7 +43,9 @@ private:
 	const char* c_grey = "_grey_";
 	const char* c_white = "_white_";
 	const char* m_Color;
-	float m_scale = 0.2f;
+	float m_speed { 1.0f };
+	E_MOUSE_DIR m_dir = E_MOUSE_DIR::UP;
+	float m_scale{ 0.1f };
 	MouseState* m_state;
 	MouseRunState*	   runState		;
 	MouseDieState*	   dieState		;
@@ -59,6 +69,6 @@ public:
 
 	void DrawBoundingBox() override;
 
-
+	void MouseControl();
 };
 

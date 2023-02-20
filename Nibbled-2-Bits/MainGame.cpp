@@ -10,9 +10,9 @@
 #include "GameObject/GameObjectMgr.h"
 //#include "GameObject/Mouse.h"
 
-Mouse mice_darkgrey{100 ,100};
-Mouse mice_white{ 200 ,200 ,E_MOUSE_COLOR::WHITE};
-Mouse mice_grey{ 300 ,300 ,E_MOUSE_COLOR::GREY };
+//Mouse mice_darkgrey{100 ,100};
+//Mouse mice_white{ 200 ,200 ,E_MOUSE_COLOR::WHITE};
+//Mouse mice_grey{ 300 ,300 ,E_MOUSE_COLOR::GREY };
 Level level1;
 // The entry point for a PlayBuffer program
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
@@ -41,7 +41,7 @@ bool MainGameUpdate( float elapsedTime )
 	//mice_grey.Update();
 
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
-	
+	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSE);
 
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );
