@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
+#include <string>
 enum class E_BACKGROUND
 {
 	E_BLUE,
@@ -14,7 +15,7 @@ enum class E_BACKGROUND
 class Level
 {
 private:
-	//Gameobject id for loading
+	//Game object id for loading
 	std::vector<std::vector<int>> m_mapinfo;
 public:
 	Level();
@@ -25,6 +26,8 @@ public:
 	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);
 
 	void CheckAjacentTiles();
+
+	void InitializeByName(std::string levelName);
 
 };
 

@@ -1,7 +1,22 @@
+#include "pch.h"
 #include "Level.h"
 #include "../GameObject/GameObjectMgr.h"
+#include "../GameObject/Tile.h"
+#include "../ResourceMgr.h"
+#include "../MainGame.h"
+int GAME_AREA_WIDTH{ 870 };
+int GAME_AREA_HEIGHT{ 720 };
+int GRID_SIZE{ 50 };
+int BOARDER_PIXELS{ 35 };
+
 Level::Level()
 {
+    m_mapinfo.resize(16);
+	for (std::vector<int>& row : m_mapinfo)
+	{
+		row.resize(13);
+	}
+   
 }
 
 Level::~Level()
@@ -52,4 +67,41 @@ void Level::CheckAjacentTiles()
             }
         }
     }
+}
+
+//from mouse editor
+Play::Point2D GameToWorld(Play::Point2D pos) {
+	Play::Point2D botLeftGrid{ DISPLAY_WIDTH - GAME_AREA_WIDTH + 25, DISPLAY_HEIGHT - GAME_AREA_HEIGHT };
+	return pos + botLeftGrid;
+}
+
+
+void Level::InitializeByName(std::string levelName)
+{
+	std::vector<std::vector<GameAreaObject*>>& level = ResoureMgr::LoadLevel(levelName);
+
+	for (std::vector<GameAreaObject*>& row : level)
+	{
+		for (GameAreaObject* item : row)
+		{
+			if (item)
+				switch (item->m_type)
+				{
+				case E_OBJTYPE::E_TILE:
+				{
+                    Play::Point2D pos { item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Tile* tile = new Tile(GameToWorld(pos));
+					GameObjectMgr::AddNewGameObject(*tile);
+				}
+				break;
+				case E_OBJTYPE::E_MOUSE:
+				{
+
+				}
+				break;
+				default:
+					break;
+				}
+		}
+	}
 }

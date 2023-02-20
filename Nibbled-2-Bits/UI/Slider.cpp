@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Slider.h"
 #include "../GameTool/DebugTool.h"
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "EventCenter.h"
 #include "../GameTool/DebugTool.h"
 

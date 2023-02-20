@@ -1,8 +1,9 @@
+#include "pch.h"
 #include "MouseState.h"
-#include "../PlayCustom.h"
 #include "../GameTool/DebugTool.h"
 #include "../MainGame.h"
 #include "Mouse.h"
+
 MouseState::MouseState(Mouse* mice)
 {
 	m_mice = mice;

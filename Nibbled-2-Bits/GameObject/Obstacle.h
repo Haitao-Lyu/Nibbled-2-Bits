@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "../PlayCustom.h"
+
 
 
 class Obstacle:public GameObject

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ParticleEmitter.h"
 #include "Particle.h"
 #include "../GameTool/Timer.h"

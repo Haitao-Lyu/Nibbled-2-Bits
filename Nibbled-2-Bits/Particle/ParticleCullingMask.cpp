@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ParticleCullingMask.h"
 
 DiamondMask::DiamondMask(float _sidelength) : sidelength(_sidelength)

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RectFill.h"
 RectFill::RectFill():UIElement({ 0,0 }, 0, 0)
 {

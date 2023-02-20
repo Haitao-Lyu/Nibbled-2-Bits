@@ -8,6 +8,10 @@ namespace GameObjectMgr
 
 	void RemoveGameObject(GameObject& obj);
 
+	void UpdateGameObjectsByType(E_OBJTYPE TYPE);
+
 	GameObject* GetGameObjectByid(int id);
+
+	std::vector<GameObject*>& GetGameObjectsByType(E_OBJTYPE type);
 }
 

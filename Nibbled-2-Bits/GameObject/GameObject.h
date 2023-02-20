@@ -1,5 +1,4 @@
 #pragma once
-#include "../PlayCustom.h"
 
 enum class E_OBJTYPE
 {

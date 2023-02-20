@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DebugTool.h"
 
 //debug offset
@@ -32,4 +33,22 @@ void DebugValue(Play::Vector2D text,  const char* prefix, int yoffset, Play::Col
 
 	Play::DrawDebugText({ DebugPrefixOffset,80 + yoffset }, prefix, Play::cRed, true);
 	Play::DrawDebugText({ DebugX_Offset,80 + yoffset }, std::to_string(text.y).c_str(), color, true);
+}
+
+void logDebugInfo(const std::string& message, const std::string& filename) {
+	// open the file in append mode
+	std::ofstream file;
+	file.open(filename, std::ios_base::app);
+
+	if (file.is_open()) {
+		// write the message to the file
+		file << message << std::endl;
+
+		// close the file
+		file.close();
+	}
+	else {
+		// if the file can't be opened, print an error message to the console
+		std::cerr << "Error: Could not open file " << filename << " for writing." << std::endl;
+	}
 }

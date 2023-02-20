@@ -1,6 +1,6 @@
 #pragma once
-#include "../PlayCustom.h"
-
+#include <vector>
+#include "../ResourceMgr.h"
 float GetRandomFloat(float a, float b);
 
 //// Converts radians to degrees
@@ -25,3 +25,4 @@ Play::Colour interpolate(Play::Colour c_start, Play::Colour c_end, float startTi
 
 float interpolate(float startValue, float endValue, float startTime, float endTime, float currentTime);
 
+void rotateClockwise(std::vector<std::vector<GameAreaObject*>>& arr);

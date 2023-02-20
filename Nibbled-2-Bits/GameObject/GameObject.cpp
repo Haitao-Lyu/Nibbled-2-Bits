@@ -1,8 +1,9 @@
+#include "pch.h"
 #include "GameObject.h"
 #include "../GameTool/DebugTool.h"
 #include "GameObjectMgr.h"
-int GameObject::m_id = 0;
 
+int GameObject::m_id = 0;
 
 GameObject::GameObject(Play::Point2D pos, E_OBJTYPE type)
 {

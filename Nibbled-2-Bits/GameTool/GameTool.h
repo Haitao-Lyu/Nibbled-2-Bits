@@ -1,5 +1,5 @@
 #pragma once
-#include "../PlayCustom.h"
+#include "../pch.h"
 //多文件编写的默认参数只需要出现在声明不需要出现在定义的当中
 namespace GameTool
 {

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "InputBox.h"
 #include "../GameTool/DebugTool.h"
 #include <sstream>

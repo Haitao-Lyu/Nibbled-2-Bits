@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Obstacle.h"
 
 Obstacle::Obstacle(Play::Point2D pos, E_OBJTYPE type):GameObject(pos, type)
