@@ -1,8 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-
-
+//not all penguien need to be a bird
 class Obstacle:public GameObject
 {
 private:

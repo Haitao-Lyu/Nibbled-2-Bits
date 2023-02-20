@@ -45,7 +45,7 @@ private:
 	const char* m_Color;
 	float m_speed { 1.0f };
 	E_MOUSE_DIR m_dir = E_MOUSE_DIR::UP;
-	float m_scale{ 0.1f };
+	float m_scale{ 1.0f };
 	MouseState* m_state;
 	MouseRunState*	   runState		;
 	MouseDieState*	   dieState		;
