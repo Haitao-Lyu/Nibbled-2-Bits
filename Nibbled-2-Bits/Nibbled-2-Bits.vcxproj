@@ -98,7 +98,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject\Boundary.h" />
     <ClInclude Include="GameObject\Component\Collider.h" />
+    <ClInclude Include="GameObject\Component\CollisionSystem.h" />
     <ClInclude Include="GameObject\ConsumableObj.h" />
     <ClInclude Include="GameObject\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
@@ -128,7 +130,9 @@
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject\Boundary.cpp" />
     <ClCompile Include="GameObject\Component\Collider.cpp" />
+    <ClCompile Include="GameObject\Component\CollisionSystem.cpp" />
     <ClCompile Include="GameObject\ComsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\GameObjectMgr.cpp" />

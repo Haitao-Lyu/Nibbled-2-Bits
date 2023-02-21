@@ -8,6 +8,8 @@ namespace GameObjectMgr
 
 	void RemoveGameObject(GameObject& obj);
 
+	void RemoveGameObjectByid(int id);
+
 	void UpdateGameObjectsByType(E_OBJTYPE TYPE);
 
 	GameObject* GetGameObjectByid(int id);

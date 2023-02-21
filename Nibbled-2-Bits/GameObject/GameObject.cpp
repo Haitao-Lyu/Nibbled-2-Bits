@@ -3,13 +3,15 @@
 #include "../GameTool/DebugTool.h"
 #include "GameObjectMgr.h"
 
-int GameObject::m_id = 0;
+int GameObject::total_id = 0;
 
 GameObject::GameObject(Play::Point2D pos, E_OBJTYPE type)
 {
 	m_pos = pos;
 	m_type = type;
-	m_id++;
+	m_id = total_id;
+	total_id++;
+
 	GameObjectMgr::AddNewGameObject(*this);
 }
 
@@ -18,7 +20,8 @@ GameObject::GameObject(float x, float y, E_OBJTYPE type)
 	m_pos.x = x;
 	m_pos.y = y;
 	m_type = type;
-	m_id++;
+	m_id = total_id;
+	total_id++;
 	GameObjectMgr::AddNewGameObject(*this);
 }
 
@@ -60,13 +63,6 @@ const char* GameObject::GetSpriteName()
 void GameObject::SetSpriteName(const char* name)
 {
 	spriteName = name;
-}
-
-void GameObject::DrawBoundingBox()
-{
-	Play::Point2D tl{ m_pos.x - Play::GetSpriteWidth(spriteName) / 2,m_pos.y - Play::GetSpriteHeight(spriteName) / 2 };
-	Play::Point2D br{ m_pos.x + Play::GetSpriteWidth(spriteName) / 2,m_pos.y + Play::GetSpriteHeight(spriteName) / 2 };
-	Play::DrawRect(tl, br, Play::cRed);
 }
 
 void GameObject::Render()

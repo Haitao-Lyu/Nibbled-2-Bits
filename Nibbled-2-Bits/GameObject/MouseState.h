@@ -11,7 +11,7 @@ protected:
 	std::string spritePrefix = "Mouse_";
 	std::string spriteNameWithOutSuffix;
 	int frame = 0;
-	Timer timer{ 0.1f };
+	Timer timer{ 0.05f };
 public:
 	virtual void Update() = 0;
 	virtual void Render();

@@ -3,6 +3,7 @@
 #include "../GameObject/GameObjectMgr.h"
 #include "../GameObject/Tile.h"
 #include "../GameObject/Mouse.h"
+#include "../GameObject/Boundary.h"
 #include "../ResourceMgr.h"
 #include "../MainGame.h"
 static const int GAME_AREA_WIDTH{ 870 };
@@ -71,42 +72,95 @@ void Level::CheckAjacentTiles()
         }
     }
 }
-
 //from mouse editor
 Play::Point2D GameToWorld(Play::Point2D pos) {
 	Play::Point2D botLeftGrid{ DISPLAY_WIDTH - GAME_AREA_WIDTH + 25, DISPLAY_HEIGHT - GAME_AREA_HEIGHT };
 	return pos + botLeftGrid;
 }
-
-
+//when load level add a boundary outside
 void Level::InitializeByName(std::string levelName)
 {
 	std::vector<std::vector<GameAreaObject*>>& level = ResoureMgr::LoadLevel(levelName);
 
-	for (std::vector<GameAreaObject*>& row : level)
+	int Boundary_row = GRID_ROW + 1;
+	int Boundary_col = GRID_COL + 2;
+	//add left column
+	for (int j = 1; j < Boundary_col; j++)
 	{
-		for (GameAreaObject* item : row)
+		
+		Play::Point2D pos{ 0 * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, j * GRID_SIZE + GRID_SIZE / 2 };
+		Boundary* boundary = new Boundary(GameToWorld(pos));
+		boundary->SetDirection(E_DIR_BOUNDARY::LEFT);
+		//set corner
+		if (j == Boundary_col - 1)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	// Add btm column (excluding top and bottom elements)
+	for (int i = 0; i < Boundary_row ; i++)
+	{
+		Play::Point2D pos{ i * GRID_SIZE + GRID_SIZE / 2, (Boundary_col - 1) * GRID_SIZE + GRID_SIZE / 2 };
+		Boundary* boundary = new Boundary(GameToWorld(pos));
+		boundary->SetDirection(E_DIR_BOUNDARY::DOWN);
+		//set corner
+		if (i == Boundary_row - 1)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	// Add right row
+	for (int j = Boundary_col - 2; j >= 0; j--)
+	{
+		Play::Point2D pos{ (Boundary_row - 1)  * GRID_SIZE + GRID_SIZE / 2, j * GRID_SIZE + GRID_SIZE / 2 };
+		Boundary* boundary = new Boundary(GameToWorld(pos));
+		boundary->SetDirection(E_DIR_BOUNDARY::RIGHT);
+		//set corner
+		if (j == 0)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	// Add top column (excluding top and bottom elements)
+	for (int i = Boundary_row - 2; i >  -2; i--)
+	{
+		Play::Point2D pos{ i * GRID_SIZE + GRID_SIZE / 2, 0 * GRID_SIZE + GRID_SIZE / 2 };
+		Boundary* boundary = new Boundary(GameToWorld(pos));
+		//set corner
+		if (i == -1)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+	for (int i = 0; i < level.size(); i++)
+	{
+		for (int j = 0; j < level[i].size(); j++)
 		{
-			if (item)
+            GameAreaObject* item = level[i][j];
+            if (item)
+            {
+				//add level
 				switch (item->m_type)
 				{
 				case E_OBJTYPE::E_TILE:
 				{
-                    Play::Point2D pos { item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
 					Tile* tile = new Tile(GameToWorld(pos));
 					GameObjectMgr::AddNewGameObject(*tile);
 				}
 				break;
 				case E_OBJTYPE::E_MOUSE:
 				{
-                    Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-                    Mouse* mice = new Mouse(GameToWorld(pos));
-                    GameObjectMgr::AddNewGameObject(*mice);
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Mouse* mice = new Mouse(GameToWorld(pos));
+					GameObjectMgr::AddNewGameObject(*mice);
 				}
 				break;
 				default:
 					break;
 				}
+			}
+
+		
 		}
 	}
 }

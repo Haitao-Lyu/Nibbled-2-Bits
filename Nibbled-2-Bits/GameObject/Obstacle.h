@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 //not all penguien need to be a bird
+//which way is better perpare base class ahead or create it when shared feature show up
 class Obstacle:public GameObject
 {
 private:

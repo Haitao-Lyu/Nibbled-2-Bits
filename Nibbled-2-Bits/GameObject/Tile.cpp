@@ -1,22 +1,35 @@
 #include "pch.h"
 #include "Tile.h"
 #include "../MainGame.h"
+#include "GameObjectMgr.h"
+#include "../GameTool/DebugTool.h"
+#include "Mouse.h"
 Tile::Tile(Play::Point2D pos, E_TILE_COLOR color) :Obstacle(pos,E_OBJTYPE::E_TILE)
 {
 	spriteName = "BlueTile_single";
 	m_color = color;
+	m_boxCollider.Init(Play::GetSpriteWidth("BlueTile_single") * m_colliderScale, Play::GetSpriteHeight("BlueTile_single") * m_colliderScale, m_pos, this);
 }
 
 Tile::~Tile()
 {
+	delete this;
 }
 
 void Tile::Update()
 {
+	//std::vector<GameObject*> &list = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
+	//for (GameObject* obj : list)
+	//{
+	//	Mouse* mice = static_cast<Mouse*>(obj);
+	//	if (m_boxCollider.collidesWith(mice->GetCollider()))
+	//	{
+	//		mice->SetPosition(mice->GetPrevPos());
+	//		DebugValue(m_id,"colldier:", 50);
+	//	}
+	//}
 	Render();
-	//DrawBoundingBox();
 }
-
 
 
 void Tile::Render()
@@ -26,12 +39,12 @@ void Tile::Render()
 		{ 0.0f,m_scale ,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt, 0);
+	m_boxCollider.DrawBoundingBox();
 }
 
-void Tile::DrawBoundingBox()
+BoxCollider& Tile::GetCollider()
 {
-	Play::Point2D tl{ m_pos.x - Play::GetSpriteWidth(spriteName) / 2 * m_scale,m_pos.y - Play::GetSpriteHeight(spriteName) / 2 * m_scale };
-	Play::Point2D br{ m_pos.x + Play::GetSpriteWidth(spriteName) / 2 * m_scale,m_pos.y + Play::GetSpriteHeight(spriteName) / 2 * m_scale };
-	Play::DrawRect(tl, br, Play::cRed);
+	return m_boxCollider;
 }
+
 

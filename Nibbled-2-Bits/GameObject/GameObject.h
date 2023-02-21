@@ -1,16 +1,20 @@
 #pragma once
-
+#include <vector>
 enum class E_OBJTYPE
 {
 	E_NULL = -1,
 	E_MOUSE,
 	E_TILE,
+	E_BOUNDARY,
+	E_TRAP,
+	E_CHEESE,
 };
 //The real obj in the game scene, must have position, must drawable
 class GameObject 
 {
 public:
-	static int m_id;
+	static int total_id;
+	int m_id = 0;
 	E_OBJTYPE m_type = E_OBJTYPE::E_NULL;
 	const char* spriteName = "";
 	Play::Point2D m_pos{0.0f,0.0f};
@@ -20,12 +24,10 @@ public:
 	GameObject(float x, float y, E_OBJTYPE m_type);
 	
 	virtual void operator=(GameObject&);
-
+	//control logic
 	virtual void Update() = 0;
-
+	//control how to render
 	virtual void Render();
-
-	virtual void DrawBoundingBox();
 
 	virtual ~GameObject();
 

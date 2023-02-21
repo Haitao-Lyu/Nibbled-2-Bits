@@ -12,12 +12,8 @@ void DebugText(std::string text, Play::Point2D pos, Play::Colour color)
 
 void DebugValue(int text, const char* prefix, int yoffset, Play::Colour color)
 {
-	char* tempCache = new char[10]{};
-	std::string num = std::to_string(text);
-	std::copy(num.begin(), num.end(), tempCache);
 	Play::DrawDebugText({ DebugPrefixOffset,20 + yoffset }, prefix, color, true);
-	Play::DrawDebugText({ DebugX_Offset,20 + yoffset }, tempCache, color, true);
-	delete[]tempCache;
+	Play::DrawDebugText({ DebugX_Offset,20 + yoffset }, std::to_string(text).c_str(), color, true);
 }
 
 void DebugValue(float text,  const char* prefix, int yoffset, Play::Colour color)
