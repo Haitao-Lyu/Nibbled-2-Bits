@@ -43,17 +43,17 @@ float interpolate(float startValue, float endValue, float startTime, float endTi
 }
 
 
-void rotateClockwise(std::vector<std::vector<GameAreaObject*>>& arr) {
-
-	int n = arr.size();
-	int m = arr[0].size();
-	std::vector<std::vector<GameAreaObject*>> rotated(m, std::vector<GameAreaObject* >(n));
-
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < n; j++) {
-			rotated[i][j] = arr[n - j - 1][i];
-		}
-	}
-
-	arr = rotated;
-}
+//void rotateClockwise(std::vector<std::vector<GameAreaObject*>>& arr) {
+//
+//	int n = arr.size();
+//	int m = arr[0].size();
+//	std::vector<std::vector<GameAreaObject*>> rotated(m, std::vector<GameAreaObject* >(n));
+//
+//	for (int i = 0; i < m; i++) {
+//		for (int j = 0; j < n; j++) {
+//			rotated[i][j] = arr[n - j - 1][i];
+//		}
+//	}
+//
+//	arr = rotated;
+//}

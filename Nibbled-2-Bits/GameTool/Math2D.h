@@ -25,4 +25,4 @@ Play::Colour interpolate(Play::Colour c_start, Play::Colour c_end, float startTi
 
 float interpolate(float startValue, float endValue, float startTime, float endTime, float currentTime);
 
-void rotateClockwise(std::vector<std::vector<GameAreaObject*>>& arr);
+//void rotateClockwise(std::vector<std::vector<GameAreaObject*>>& arr);

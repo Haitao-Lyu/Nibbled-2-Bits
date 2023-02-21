@@ -45,7 +45,7 @@ private:
 	const char* c_grey = "_grey_";
 	const char* c_white = "_white_";
 	const char* m_Color;
-	float m_speed { 5.0f };
+	float m_speed { 3.0f };
 	float m_scale{ 1.0f };
 	float m_height = 0.0f;
 	float m_width = 0.0f;
