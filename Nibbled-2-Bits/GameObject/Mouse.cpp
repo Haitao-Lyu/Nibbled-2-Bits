@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "Boundary.h"
 
+//particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
 	switch (COLOR)

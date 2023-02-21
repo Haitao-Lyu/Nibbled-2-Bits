@@ -6,7 +6,7 @@ enum class E_OBJTYPE
 	E_MOUSE,
 	E_TILE,
 	E_BOUNDARY,
-	E_TRAP,
+	E_MOUSETRAP,
 	E_CHEESE,
 };
 //The real obj in the game scene, must have position, must drawable
