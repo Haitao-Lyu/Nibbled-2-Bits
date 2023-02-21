@@ -19,10 +19,10 @@ Timer,ENVIRONMENT,timer,timer
 Tick,ENVIRONMENT,tick,tick 
 Plus,ENVIRONMENT,plus,plus 
 Minus,ENVIRONMENT,minus,minus 
-Trap One Notset,HAZARD,trap_01_notset,trap_01_notset 
-Trap One Set,HAZARD,trap_01_set,trap_01_set 
-Trap Two Notset,HAZARD,trap_02_notset,trap_02_notset 
-Trap Two Set,HAZARD,trap_02_set,trap_02_set 
+Trap One Notset,HAZARD,trap_01_notset,trap
+Trap One Set,HAZARD,trap_01_notset,trap
+Trap Two Notset,HAZARD,trap_02_notset,trap
+Trap Two Set,HAZARD,trap_02_notset,trap
 Hamsterball,PROTECTIVE,hamsterball,hamsterball 
 Heart,PROTECTIVE,heart,heart 
 Brie,REWARD,brie,brie 

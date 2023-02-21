@@ -131,6 +131,7 @@ void Level::InitializeByName(std::string levelName)
 			boundary->SetCorner();
 		GameObjectMgr::AddNewGameObject(*boundary);
 	}
+
 	for (int i = 0; i < level.size(); i++)
 	{
 		for (int j = 0; j < level[i].size(); j++)
@@ -144,7 +145,7 @@ void Level::InitializeByName(std::string levelName)
 				case E_OBJTYPE::E_TILE:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					Tile* tile = new Tile(GameToWorld(pos));
+					Tile* tile = new Tile(GameToWorld(pos),E_TILE_COLOR::GREEN);
 					GameObjectMgr::AddNewGameObject(*tile);
 				}
 				break;

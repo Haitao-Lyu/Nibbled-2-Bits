@@ -1,0 +1,128 @@
+ID, x pos, y pos, rotation, Misc variable
+3,-1
+15,13
+single ,0,0,0,0
+single ,0,1,0,0
+single ,0,2,0,0
+single ,0,3,0,0
+single ,0,4,0,0
+single ,0,5,0,0
+single ,0,6,0,0
+single ,0,7,0,0
+single ,0,8,0,0
+single ,0,9,0,0
+single ,0,10,0,0
+single ,0,11,0,0
+single ,0,12,0,0
+single ,1,0,0,0
+single ,1,12,0,0
+single ,2,0,0,0
+single ,2,12,0,0
+single ,3,5,0,0
+single ,3,6,0,0
+trap,3,9,1,0
+single ,3,12,0,0
+single ,4,0,0,0
+single ,4,5,0,0
+single ,4,6,0,0
+single ,4,12,0,0
+single ,5,0,0,0
+single ,5,6,0,0
+single ,5,9,0,0
+single ,5,10,0,0
+single ,5,11,0,0
+single ,5,12,0,0
+single ,6,0,0,0
+single ,6,6,0,0
+trap,6,9,0,0
+single ,6,12,0,0
+single ,7,0,0,0
+single ,7,1,0,0
+single ,7,2,0,0
+single ,7,3,0,0
+single ,7,9,0,0
+single ,7,10,0,0
+single ,7,11,0,0
+single ,7,12,0,0
+single ,8,0,0,0
+single ,8,1,0,0
+single ,8,2,0,0
+single ,8,3,0,0
+Mouse,8,7,0,0
+single ,8,9,0,0
+single ,8,10,0,0
+single ,8,11,0,0
+single ,8,12,0,0
+single ,9,0,0,0
+single ,9,1,0,0
+single ,9,2,0,0
+single ,9,3,0,0
+single ,9,12,0,0
+single ,10,0,0,0
+single ,10,12,0,0
+single ,11,0,0,0
+single ,11,5,0,0
+single ,11,6,0,0
+single ,11,7,0,0
+single ,11,12,0,0
+single ,12,0,0,0
+trap,12,2,0,0
+single ,12,5,0,0
+trap,12,9,1,0
+single ,12,12,0,0
+single ,13,0,0,0
+single ,13,5,0,0
+single ,13,12,0,0
+single ,14,0,0,0
+single ,14,5,0,0
+single ,14,12,0,0
+single ,15,0,0,0
+single ,15,1,0,0
+single ,15,2,0,0
+single ,15,3,0,0
+single ,15,4,0,0
+single ,15,5,0,0
+single ,15,6,0,0
+single ,15,7,0,0
+single ,15,8,0,0
+single ,15,9,0,0
+single ,15,10,0,0
+Inventory
+MiceIn,0
+MiceOut,0
+Rate,0
+Theme,0
+Mouse,0
+single ,0
+tube ,0
+tube_one_way ,0
+tube_two_way ,0
+tube_three_way ,0
+tube_cross ,0
+tube_end ,0
+corner_cross ,0
+bridge ,0
+leaf ,0
+pen ,0
+timer ,0
+tick ,0
+plus ,0
+minus ,0
+hamsterball ,0
+heart ,0
+brie ,0
+edam ,0
+emmental ,0
+parmesan ,0
+swiss ,0
+carrot ,0
+cherry ,0
+grape ,0
+raspberry ,0
+strawberry ,0
+cornkernel ,0
+sunflowerseed ,0
+trap,0
+trap,0
+trap,0
+trap,0
