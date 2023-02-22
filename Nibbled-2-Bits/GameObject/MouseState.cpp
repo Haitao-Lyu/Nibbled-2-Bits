@@ -54,8 +54,8 @@ void MouseState::Render()
 	}
 	int spriteID = Play::GetSpriteId(spritePrefix.c_str());
 	//m_mice->SetSpriteName(spritePrefix.c_str());//not working maybe because const char ? ? ?
-	m_mice->m_height = Play::GetSpriteHeight(spriteID);
-	m_mice->m_width = Play::GetSpriteWidth(spriteID);
+	m_mice->m_spriteHeight = Play::GetSpriteHeight(spriteID);
+	m_mice->m_spriteWidth = Play::GetSpriteWidth(spriteID);
 
 	Play::DrawSpriteTransformed(spriteID, scaleMt * rtMt,0);
 

@@ -47,8 +47,6 @@ private:
 	const char* c_white = "_white_";
 	const char* m_Color;
 	float m_speed { 3.0f };
-	float m_height = 0.0f;
-	float m_width = 0.0f;
 	BoxCollider m_boxCollider;
 	MouseState* m_state;
 	MouseRunState*	   runState		;

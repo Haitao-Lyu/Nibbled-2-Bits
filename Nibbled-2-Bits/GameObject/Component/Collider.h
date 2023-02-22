@@ -22,30 +22,30 @@ public:
 class BoxCollider : public Collider {
 
 private:
-    Play::Point2D m_pos { 0,0 };
-    Play::Point2D lt { 0,0 };
-    Play::Point2D lb { 0,0 };
-    Play::Point2D rt { 0,0 };
-    Play::Point2D rb { 0,0 };
-    float m_width{ 0.0f }, m_height{ 0.0f };
+	Play::Point2D m_pos{ 0,0 };
+	Play::Point2D lt{ 0,0 };
+	Play::Point2D lb{ 0,0 };
+	Play::Point2D rt{ 0,0 };
+	Play::Point2D rb{ 0,0 };
+	float m_width{ 0.0f }, m_height{ 0.0f };
 public:
-    BoxCollider();
+	BoxCollider();
 
-    BoxCollider(float width, float height, Play::Point2D pos, GameObject* info);
+	BoxCollider(float width, float height, Play::Point2D pos, GameObject* info);
 
-    void Init(float width, float height, Play::Point2D pos, GameObject* info);
+	void Init(float width, float height, Play::Point2D pos, GameObject* info);
 
-    void UpdateShape(float width, float height, Play::Point2D pos);
+	void UpdateShape(float width, float height, Play::Point2D pos);
 
-    bool collidesWith( Collider& other)  override;
+	bool collidesWith(Collider& other)  override;
 
-    void DrawBoundingBox();
+	void DrawBoundingBox();
 
-    void OnCollision(std::function<void()> fun);
+	void OnCollision(std::function<void()> fun);
 
-    float GetWidth();
+	float GetWidth();
 
-    float GetHeight();
+	float GetHeight();
 };
 
 

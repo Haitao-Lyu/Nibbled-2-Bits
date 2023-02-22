@@ -20,6 +20,8 @@ public:
 	Play::Point2D m_pos{0.0f,0.0f};
 	float m_rot = 0;
 	float m_scale{ 1.0f };
+	float m_spriteHeight = 0;
+	float m_spriteWidth = 0;
 public:
 	GameObject(Play::Point2D pos, E_OBJTYPE m_type);
 

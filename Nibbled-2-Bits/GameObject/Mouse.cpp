@@ -104,28 +104,28 @@ void Mouse::MouseControl()
 	{
 		m_pos.y -= m_speed;
 		m_dir = E_MOUSE_DIR::UP;
-		m_boxCollider.UpdateShape(m_width, m_height, m_pos);
+		m_boxCollider.UpdateShape(m_spriteWidth, m_spriteHeight, m_pos);
 		SetMouseState(E_MOUSE_STATE::walkState);
 	}
 	else if (Play::KeyDown(VK_DOWN))
 	{
 		m_pos.y += m_speed;
 		m_dir = E_MOUSE_DIR::DOWN;
-		m_boxCollider.UpdateShape(m_width, m_height, m_pos);
+		m_boxCollider.UpdateShape(m_spriteWidth, m_spriteHeight, m_pos);
 		SetMouseState(E_MOUSE_STATE::walkState);
 	}
 	else if (Play::KeyDown(VK_RIGHT))
 	{
 		m_pos.x += m_speed;
 		m_dir = E_MOUSE_DIR::RIGHT;
-		m_boxCollider.UpdateShape(m_height, m_width, m_pos);
+		m_boxCollider.UpdateShape(m_spriteHeight, m_spriteWidth, m_pos);
 		SetMouseState(E_MOUSE_STATE::walkState);
 	}
 	else if (Play::KeyDown(VK_LEFT))
 	{
 		m_pos.x -= m_speed;
 		m_dir = E_MOUSE_DIR::LEFT;
-		m_boxCollider.UpdateShape(m_height, m_width, m_pos);
+		m_boxCollider.UpdateShape(m_spriteHeight, m_spriteWidth, m_pos);
 		SetMouseState(E_MOUSE_STATE::walkState);
 	}
 	else
@@ -159,7 +159,7 @@ void Mouse::Update()
 	MouseControl();
 
 	//debug collision box
-	//m_boxCollider.DrawBoundingBox();
+	m_boxCollider.DrawBoundingBox();
 
 	//Get Tile obj list and calculate collision // And block mouse moving
 	std::vector<GameObject*> &list = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
