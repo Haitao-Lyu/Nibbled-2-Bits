@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Timer.h"
-#include "Gametool.h"
 
 static float deltaTime;
 
@@ -19,6 +18,11 @@ bool Timer::isReachTimeInterval()
 	}
 	else
 		return false;
+}
+
+void Timer::Restart()
+{
+	m_timeCounter = 0;
 }
 
 void Timer::UpdateDeltaTime(float elaspedTime)

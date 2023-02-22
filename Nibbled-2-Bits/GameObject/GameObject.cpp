@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "../GameTool/DebugTool.h"
 #include "GameObjectMgr.h"
-
+#include "../MainGame.h"
 int GameObject::total_id = 0;
 
 GameObject::GameObject(Play::Point2D pos, E_OBJTYPE type)
@@ -67,7 +67,11 @@ void GameObject::SetSpriteName(const char* name)
 
 void GameObject::Render()
 {
-	if(std::strcmp(spriteName,"") == 1)//if has name
-	Play::DrawSprite(spriteName,m_pos,0);
+	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
+	const Play::Matrix2D scaleMt = Play::Matrix2D(
+		{ m_scale ,0.0f,0.0f },
+		{ 0.0f,m_scale ,0.0f },
+		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
+	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
 }
 

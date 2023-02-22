@@ -34,6 +34,7 @@ struct GameAreaObject {
 	int misc{ 0 };
 	bool mouseHole{ false };
 	bool vis{ true };
+	bool trap_color{true};//true for dark
 };
 
 namespace ResoureMgr

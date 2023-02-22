@@ -16,6 +16,12 @@ public:
 	MouseTrap(Play::Point2D pos, E_TRAPCOLOR color = E_TRAPCOLOR::DARK_WOOD);
 	~MouseTrap();
 
+	void SetColor(E_TRAPCOLOR color);
+
+	void OnColorChange();
+
+	void Update() override;
+	void Render() override;
 	
 };
 

@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "Level.h"
+#include "../ResourceMgr.h"
+#include "../MainGame.h"
 #include "../GameObject/GameObjectMgr.h"
 #include "../GameObject/Tile.h"
 #include "../GameObject/Mouse.h"
 #include "../GameObject/Boundary.h"
-#include "../ResourceMgr.h"
-#include "../MainGame.h"
+#include "../GameObject/MouseTrap.h"
+
 static const int GAME_AREA_WIDTH{ 870 };
 static const int GAME_AREA_HEIGHT{ 720 };
 static const int GRID_SIZE{ 50 };
@@ -82,6 +84,7 @@ void Level::InitializeByName(std::string levelName)
 {
 	std::vector<std::vector<GameAreaObject*>>& level = ResoureMgr::LoadLevel(levelName);
 
+	///*create boundary outside game area*//
 	int Boundary_row = GRID_ROW + 1;
 	int Boundary_col = GRID_COL + 2;
 	//add left column
@@ -132,6 +135,7 @@ void Level::InitializeByName(std::string levelName)
 		GameObjectMgr::AddNewGameObject(*boundary);
 	}
 
+	///*create game object by level file info
 	for (int i = 0; i < level.size(); i++)
 	{
 		for (int j = 0; j < level[i].size(); j++)
@@ -153,6 +157,18 @@ void Level::InitializeByName(std::string levelName)
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
 					Mouse* mice = new Mouse(GameToWorld(pos));
+					GameObjectMgr::AddNewGameObject(*mice);
+				}
+				break;
+				case E_OBJTYPE::E_MOUSETRAP:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					MouseTrap* mice = new MouseTrap(GameToWorld(pos));
+					mice->m_rot = item->rot * 90;
+					if (item->trap_color)
+						mice->SetColor(E_TRAPCOLOR::DARK_WOOD);
+					else
+						mice->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
 					GameObjectMgr::AddNewGameObject(*mice);
 				}
 				break;

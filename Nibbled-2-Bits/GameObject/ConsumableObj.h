@@ -6,7 +6,7 @@
 class ConsumableObj:public GameObject
 {
 
-private:
+protected:
 	BoxCollider m_boxCollider;
 	float m_scale = 1.0f;
 public:

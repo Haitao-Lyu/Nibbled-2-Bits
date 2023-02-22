@@ -22,7 +22,6 @@ class Tile:public Obstacle
 {
 private:
 	BoxCollider m_boxCollider;
-	float m_scale{ 1.0f };
 	float m_colliderScale{ 0.8f};
 	E_TILE_COLOR m_color;
 public:

@@ -19,10 +19,11 @@ void Obstacle::Update()
 
 void Obstacle::Render()
 {
+	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
 	const Play::Matrix2D scaleMt = Play::Matrix2D(
-		{ 1.0f ,0.0f,0.0f },
-		{ 0.0f,1.0f ,0.0f },
+		{ m_scale,0.0f,0.0f },
+		{ 0.0f,m_scale,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
-	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt, 0);
+	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
 	
 }

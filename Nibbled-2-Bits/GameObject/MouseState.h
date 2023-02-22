@@ -11,7 +11,7 @@ protected:
 	std::string spritePrefix = "Mouse_";
 	std::string spriteNameWithOutSuffix;
 	int frame = 0;
-	Timer timer{ 0.05f };
+	Timer timer{ 0.1f };
 public:
 	virtual void Update() = 0;
 	virtual void Render();
@@ -68,6 +68,8 @@ public:
 	MouseWhackedState(Mouse& mouse);
 	void Update() override;
 	void Render() override;
+
+	void OnWhacked(float whackTime);
 };
 
 class MouseHurtState : public MouseState
@@ -88,4 +90,6 @@ public:
 	MouseDieState(Mouse& mouse);
 	void Update()override;
 	void Render() override;
+
+	void OnDead();
 };

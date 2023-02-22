@@ -3,6 +3,7 @@
 #include "../GameTool/Timer.h"
 #include "MouseState.h"
 #include "Component/Collider.h"
+
 enum class E_MOUSE_STATE
 {
 	idleState,
@@ -46,7 +47,6 @@ private:
 	const char* c_white = "_white_";
 	const char* m_Color;
 	float m_speed { 3.0f };
-	float m_scale{ 1.0f };
 	float m_height = 0.0f;
 	float m_width = 0.0f;
 	BoxCollider m_boxCollider;
@@ -60,6 +60,8 @@ private:
 	MouseWhackedState* whackedState ;
 	E_MOUSE_DIR m_dir = E_MOUSE_DIR::UP;
 	E_MOUSE_STATE e_mouseState = E_MOUSE_STATE::idleState;
+	bool isWhacked = false;
+	bool isDead = false;
 private:
 	void OnStateChange();
 public:
@@ -75,7 +77,7 @@ public:
 	void MouseControl();
 
 	void SetPosition(Play::Point2D pos);
-	
+
 	BoxCollider& GetCollider();
 
 	Play::Point2D GetPrevPos();

@@ -17,7 +17,6 @@ private:
 	const char* cornerTileName = "BounderCorner";
 
 	BoxCollider m_boxCollider;
-	float m_scale = 1.25f;
 	E_DIR_BOUNDARY m_dir = E_DIR_BOUNDARY::UP;
 	bool isCorner = false;
 	bool isMouseHole = false;

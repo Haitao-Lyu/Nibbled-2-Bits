@@ -18,6 +18,8 @@ public:
 	E_OBJTYPE m_type = E_OBJTYPE::E_NULL;
 	const char* spriteName = "";
 	Play::Point2D m_pos{0.0f,0.0f};
+	float m_rot = 0;
+	float m_scale{ 1.0f };
 public:
 	GameObject(Play::Point2D pos, E_OBJTYPE m_type);
 

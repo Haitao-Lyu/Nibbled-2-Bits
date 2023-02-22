@@ -1,12 +1,29 @@
 #include "pch.h"
 #include "MouseTrap.h"
-
+#include "../MainGame.h"
 static const char* trap_dark_wood = "Trap_dark_wood";
 static const char* trap_dark_wood_not = "Trap_dark_wood_not";
 static const char* trap_light_wood =	"Trap_light_wood";
 static const char* trap_light_wood_not = "Trap_light_wood_not";
 
 MouseTrap::MouseTrap(Play::Point2D pos, E_TRAPCOLOR color):ConsumableObj(pos,E_OBJTYPE::E_MOUSETRAP),m_color(color)
+{
+	OnColorChange();
+	GetCollider().Init(Play::GetSpriteWidth(spriteName) * m_scale, Play::GetSpriteHeight(spriteName) * m_scale, m_pos, this);
+	//const char* text can't be changed ?
+}
+
+MouseTrap::~MouseTrap()
+{
+}
+
+void MouseTrap::SetColor(E_TRAPCOLOR color)
+{
+	m_color = color;
+	OnColorChange();
+}
+
+void MouseTrap::OnColorChange()
 {
 	switch (m_color)
 	{
@@ -21,6 +38,18 @@ MouseTrap::MouseTrap(Play::Point2D pos, E_TRAPCOLOR color):ConsumableObj(pos,E_O
 	}
 }
 
-MouseTrap::~MouseTrap()
+void MouseTrap::Update()
 {
+	Render();
+}
+
+void MouseTrap::Render()
+{
+	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
+	const Play::Matrix2D scaleMt = Play::Matrix2D(
+		{ m_scale ,0.0f,0.0f },
+		{ 0.0f,m_scale ,0.0f },
+		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
+	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
+	m_boxCollider.DrawBoundingBox();
 }

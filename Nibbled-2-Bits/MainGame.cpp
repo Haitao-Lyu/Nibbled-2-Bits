@@ -2,12 +2,11 @@
 #include "pch.h"
 
 #include "MainGame.h"
+#include "Level/Level.h"
 #include "GameTool/Timer.h"
 #include "ResourceMgr.h"
 #include "GameObject/Mouse.h"
 #include "GameObject/Tile.h"
-#include "GameObject/Boundary.h"
-#include "Level/Level.h"
 #include "GameObject/GameObjectMgr.h"
 #include "GameObject/Component/CollisionSystem.h"
 //#include "GameObject/Mouse.h"
@@ -21,7 +20,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
-	level1.InitializeByName("TILES");
+	level1.InitializeByName("TRAPS");
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -42,7 +41,9 @@ bool MainGameUpdate( float elapsedTime )
 	//mice_white.Update();
 	//mice_grey.Update();
 
+	//upper render first
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
+	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
 

@@ -5,7 +5,7 @@
 #include "GameObjectMgr.h"
 #include "Tile.h"
 #include "Boundary.h"
-
+#include "MouseTrap.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
@@ -128,6 +128,8 @@ void Mouse::MouseControl()
 		m_boxCollider.UpdateShape(m_height, m_width, m_pos);
 		SetMouseState(E_MOUSE_STATE::walkState);
 	}
+	else
+	SetMouseState(E_MOUSE_STATE::idleState);
 }
 
 void Mouse::SetPosition(Play::Point2D pos)
@@ -153,11 +155,11 @@ void Mouse::Update()
 
 	if (!m_state)
 		return;
-	SetMouseState(E_MOUSE_STATE::idleState);
+	//movement
 	MouseControl();
-	m_state->Update();
+
 	//debug collision box
-	m_boxCollider.DrawBoundingBox();
+	//m_boxCollider.DrawBoundingBox();
 
 	//Get Tile obj list and calculate collision // And block mouse moving
 	std::vector<GameObject*> &list = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
@@ -184,4 +186,25 @@ void Mouse::Update()
 			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
 		}
 	}
+
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_Trap= GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
+	for (GameObject* obj : list_Trap)
+	{
+		MouseTrap* tile = static_cast<MouseTrap*>(obj);
+		if (m_boxCollider.collidesWith(tile->GetCollider()))
+		{
+			isWhacked = true;
+			DebugValue(tile->GetID(), "collides:", 50);
+			GameObjectMgr::RemoveGameObjectByid(obj->m_id);
+		}
+	}
+
+	if (isWhacked)
+		SetMouseState(E_MOUSE_STATE::whackedState);
+
+	if (isDead)
+		SetMouseState(E_MOUSE_STATE::dieState);
+	//draw eveything at the end
+	m_state->Update();
 }

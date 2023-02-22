@@ -3,7 +3,7 @@
 #include "../GameTool/DebugTool.h"
 #include "../MainGame.h"
 #include "Mouse.h"
-
+#include "GameObjectMgr.h"
 
 static const Play::Matrix2D dir_left = Play::MatrixRotation(Play::DegToRad(90.0f));
 static const Play::Matrix2D dir_down = Play::MatrixRotation(Play::DegToRad(180.0f));
@@ -152,6 +152,7 @@ MouseWhackedState::MouseWhackedState(Mouse& mouse) :MouseState(&mouse)
 
 void MouseWhackedState::Update()
 {
+	OnWhacked(3.0f);
 	Render();
 }
 
@@ -166,6 +167,25 @@ void MouseWhackedState::Render()
 		}
 	}
 	MouseState::Render();
+}
+
+void MouseWhackedState::OnWhacked(float whackTime)
+{
+	static Timer timer(whackTime);
+	if (m_mice->isWhacked)
+	{
+		m_mice->m_pos = m_mice->prev_pos;
+		m_mice->SetMouseState(E_MOUSE_STATE::whackedState);
+		if (timer.isReachTimeInterval())
+		{
+			m_mice->isWhacked = false;
+			m_mice->SetMouseState(E_MOUSE_STATE::idleState);
+		}
+	}
+	else
+	{
+		timer.Restart();
+	}
 }
 
 MouseHurtState::MouseHurtState(Mouse& mouse) :MouseState(&mouse)
@@ -203,6 +223,7 @@ MouseDieState::MouseDieState(Mouse& mouse) :MouseState(&mouse)
 void MouseDieState::Update()
 {
 	Render();
+	OnDead();
 }
 
 void MouseDieState::Render()
@@ -216,6 +237,18 @@ void MouseDieState::Render()
 		}
 	}
 	MouseState::Render();
+}
+
+void MouseDieState::OnDead()
+{
+	if (m_mice->isDead)
+	{
+		m_mice->m_pos = m_mice->prev_pos;
+	}
+	if (frame == maxAnimFrame)
+	{
+		GameObjectMgr::RemoveGameObject(*m_mice);
+	}
 }
 
 MouseRunState::MouseRunState(Mouse& mouse) :MouseState(&mouse)

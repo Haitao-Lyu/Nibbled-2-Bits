@@ -2,7 +2,6 @@
 #include <vector>
 #include "Collider.h"
 
-
 namespace CollisionSystem
 {
 	void AddNewCollider(Collider* collider);
@@ -10,4 +9,5 @@ namespace CollisionSystem
 	void UpdateCollision();
 
 	void UpdateCollisionByCollider(Collider* collider);
+
 }

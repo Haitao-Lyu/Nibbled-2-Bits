@@ -130,16 +130,21 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 		{
 			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
 		}
-		else if (std::strcmp(s_type.c_str(), "trap") == 0)
+		else if (std::strcmp(s_type.c_str(), "trap_light") == 0)
 		{
-			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
+			tmpObject->m_type = E_OBJTYPE::E_MOUSETRAP;
+			tmpObject->trap_color = false;
+		}
+		else if (std::strcmp(s_type.c_str(), "trap_dark") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_MOUSETRAP;
+			tmpObject->trap_color = true;
 		}
 		tmpObject->posx = stoi(tokens[1]);
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);
 		tmpObject->rot = stoi(tokens[3]);
 		tmpObject->misc = stoi(tokens[4]);
 		objects[tmpObject->posx][ tmpObject->posy] = tmpObject;
-
 		//tokens.clear();
 	}
 
