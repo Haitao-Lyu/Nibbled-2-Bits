@@ -11,6 +11,7 @@ Boundary::Boundary(Play::Point2D pos):Obstacle(pos,E_OBJTYPE::E_BOUNDARY)
 {
 	m_scale = 1.25f;
 	m_boxCollider.Init(Play::GetSpriteWidth(tileName) * m_scale, Play::GetSpriteHeight(tileName) * m_scale, pos, this);
+	m_circleCollider.Init(pos , (Play::GetSpriteWidth(tileName)/2 - 5.0f)  * m_scale);
 }
 
 Boundary::~Boundary()
@@ -30,6 +31,7 @@ void Boundary::Render()
 		{ 0.0f,m_scale ,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 
+	//change direction based on position
 	Play::Matrix2D rtMt;
 	switch (m_dir)
 	{
@@ -56,7 +58,7 @@ void Boundary::Render()
 	}
 	else
 	Play::DrawSpriteTransformed(Play::GetSpriteId(tileName), scaleMt * rtMt, 0);
-	m_boxCollider.DrawBoundingBox();
+	m_circleCollider.DrawBoundingBox();
 	//m_boxCollider.DrawBoundingBox();
 }
 
@@ -70,7 +72,3 @@ void Boundary::SetCorner()
 	isCorner = true;
 }
 
-BoxCollider& Boundary::GetCollider()
-{
-	return m_boxCollider;
-}

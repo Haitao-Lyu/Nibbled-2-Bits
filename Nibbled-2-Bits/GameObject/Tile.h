@@ -1,6 +1,6 @@
 #pragma once
 #include "Obstacle.h"
-#include "Component/Collider.h"
+
 enum class E_TILE_COLOR
 {
 	BLUE,
@@ -21,8 +21,6 @@ enum class E_TILE_TYPE
 class Tile:public Obstacle
 {
 private:
-	BoxCollider m_boxCollider;
-	float m_colliderScale{ 0.8f};
 	E_TILE_COLOR m_color;
 public:
 	Tile(Play::Point2D pos, E_TILE_COLOR color = E_TILE_COLOR::BLUE);
@@ -30,6 +28,6 @@ public:
 	void Update() override;
 	void Render() override;
 	void SetTileType();
-	BoxCollider& GetCollider();
+
 };
 

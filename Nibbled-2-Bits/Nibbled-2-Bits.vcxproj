@@ -99,12 +99,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameObject\Boundary.h" />
+    <ClInclude Include="GameObject\Cheese.h" />
     <ClInclude Include="GameObject\Component\BoxCollider.h" />
+    <ClInclude Include="GameObject\Component\CircleCollider.h" />
     <ClInclude Include="GameObject\Component\Collider.h" />
     <ClInclude Include="GameObject\Component\CollisionSystem.h" />
     <ClInclude Include="GameObject\ConsumableObj.h" />
     <ClInclude Include="GameObject\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
+    <ClInclude Include="GameObject\MouseHole.h" />
     <ClInclude Include="GameObject\MouseState.h" />
     <ClInclude Include="GameObject\MouseTrap.h" />
     <ClInclude Include="GameObject\Obstacle.h" />
@@ -133,13 +136,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject\Boundary.cpp" />
+    <ClCompile Include="GameObject\Chesse.cpp" />
     <ClCompile Include="GameObject\Component\BoxCollider.cpp" />
+    <ClCompile Include="GameObject\Component\CircleCollider.cpp" />
     <ClCompile Include="GameObject\Component\Collider.cpp" />
     <ClCompile Include="GameObject\Component\CollisionSystem.cpp" />
     <ClCompile Include="GameObject\ConsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\GameObjectMgr.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
+    <ClCompile Include="GameObject\MouseHole.cpp" />
     <ClCompile Include="GameObject\MouseState.cpp" />
     <ClCompile Include="GameObject\MouseTrap.cpp" />
     <ClCompile Include="GameObject\Obstacle.cpp" />

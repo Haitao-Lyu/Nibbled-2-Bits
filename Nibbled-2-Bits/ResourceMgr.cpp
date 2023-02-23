@@ -62,21 +62,26 @@ void ResoureMgr::DrawBackground(E_BKCOLOR COLOR, E_BKMODE MODE)
 	}
 }
 
-std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string levelName)
+GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 {
 
 	std::ifstream levelFile;
 
-	static std::vector<std::vector<GameAreaObject*>> objects(GRID_WIDTH, std::vector<GameAreaObject*>(GRID_HEIGHT));
+	static GameAreaInfo gameAreaInfo(GRID_WIDTH,GRID_HEIGHT);
 
+	/// <summary>
+	/// WHY DONT JUST SAVE POSITION WHY SAVE INDEX ? ? ? ? ? 
+	/// </summary>
+	/// <param name="levelName"></param>
+	/// <returns></returns>
 
 	levelFile.open("data\\" + levelName + ".lev");
 	//Do nothing if the file does not exist
-	if (levelFile.fail()) {
+	if (levelFile.fail()) 
+	{
 		PLAY_ASSERT_MSG(levelFile.fail(), "LEVEL NAME IS INVALID");
-		return objects;
+		return gameAreaInfo;
 	}
-
 
 
 	std::string object;
@@ -85,25 +90,26 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 
 	//Read the next 2 lines as the mouse hole positions
 	std::getline(levelFile, object);
-	//std::istringstream ss{ object };
-	//std::string token;
-	//std::vector<std::string> tokens;
-	//while (std::getline(ss, token, ',')) {
-	//	tokens.push_back(token);
-	//}
+	std::istringstream ss{ object };
+	std::string token;
+	std::vector<std::string> tokens;
+	while (std::getline(ss, token, ',')) {
+		tokens.push_back(token);
+	}
+	//Mouse Hole Entry
+	gameAreaInfo.EntryPos.x = stoi(tokens[0]) + 1;
+	gameAreaInfo.EntryPos.y = (GRID_HEIGHT - 1)  - stoi(tokens[1]);
 
-	//m_gameArea.m_holeEntry.posx = stoi(tokens[0]);
-	//m_gameArea.m_holeEntry.posy = stoi(tokens[1]);
-
+	//Read the next 2 lines as the mouse hole positions
 	std::getline(levelFile, object);
-	//ss = std::istringstream{ object };
-	//tokens.clear();
-	//while (std::getline(ss, token, ',')) {
-	//	tokens.push_back(token);
-	//}
-
-	//m_gameArea.m_holeExit.posx = stoi(tokens[0]);
-	//m_gameArea.m_holeExit.posy = stoi(tokens[1]);
+	ss = std::istringstream{ object };
+	tokens.clear();
+	while (std::getline(ss, token, ',')) {
+		tokens.push_back(token);
+	}
+	//Mouse Hole Exit
+	gameAreaInfo.ExitPos.x = stoi(tokens[0]) + 1;
+	gameAreaInfo.ExitPos.y = (GRID_HEIGHT - 1)  -stoi(tokens[1]);
 
 	while (!levelFile.eof()) {
 		std::getline(levelFile, object);
@@ -129,6 +135,17 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 		else if (std::strcmp(s_type.c_str(), "Mouse") == 0)
 		{
 			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
+			tmpObject->m_color = 0;//grey
+		}
+		else if (std::strcmp(s_type.c_str(), "Mouse_dark_grey") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
+			tmpObject->m_color = 1;//dark_grey
+		}
+		else if (std::strcmp(s_type.c_str(), "white_walk_") == 0)//MOUSE
+		{
+			tmpObject->m_type = E_OBJTYPE::E_MOUSE;
+			tmpObject->m_color = 2;//white
 		}
 		else if (std::strcmp(s_type.c_str(), "trap_light") == 0)
 		{
@@ -140,16 +157,20 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 			tmpObject->m_type = E_OBJTYPE::E_MOUSETRAP;
 			tmpObject->trap_color = true;
 		}
+		else if (std::strcmp(s_type.c_str(), "cheese") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_CHEESE;
+		}
 		tmpObject->posx = stoi(tokens[1]);
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);
 		tmpObject->rot = stoi(tokens[3]);
 		tmpObject->misc = stoi(tokens[4]);
-		objects[tmpObject->posx][ tmpObject->posy] = tmpObject;
+		gameAreaInfo.objects[tmpObject->posx][ tmpObject->posy] = tmpObject;
 		//tokens.clear();
 	}
 
 	//debug
-	for (std::vector<GameAreaObject*>& col : objects)
+	for (std::vector<GameAreaObject*>& col : gameAreaInfo.objects)
 	{
 		for (GameAreaObject* item : col)
 		{
@@ -181,7 +202,7 @@ std::vector<std::vector<GameAreaObject*>>& ResoureMgr::LoadLevel(std::string lev
 
 	levelFile.close();
 
-	return objects;
+	return gameAreaInfo;
 	//m_gameArea.SetGameAreaObjects(objects);
 
 	//m_gameArea.m_lastSelected = { -1,-1 };

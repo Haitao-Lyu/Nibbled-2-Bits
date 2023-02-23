@@ -4,7 +4,7 @@ Mice Out,CONFIGURATION,minus,MiceOut
 Mice Rate,CONFIGURATION,timer,Rate
 Theme,CONFIGURATION,pen,Theme
 Mouse_grey,ENVIRONMENT,Mouse,Mouse
-Mouse_white,ENVIRONMENT,white_walk_,white_walk_
+Mouse_white,ENVIRONMENT,white_walk,white_walk_
 Mouse_dark_grey,ENVIRONMENT,Mouse_dark_grey,Mouse_dark_grey
 Single,ENVIRONMENT,single,single 
 Tube,ENVIRONMENT,tube,tube 
@@ -27,11 +27,11 @@ Trap Two Notset,HAZARD,trap_02_notset,trap_dark
 Trap Two Set,HAZARD,trap_02_notset,trap_dark
 Hamsterball,PROTECTIVE,hamsterball,hamsterball 
 Heart,PROTECTIVE,heart,heart 
-Brie,REWARD,brie,brie 
-Edam,REWARD,edam,edam 
-Emmental,REWARD,emmental,emmental 
-Parmesan,REWARD,parmesan,parmesan 
-Swiss,REWARD,swiss,swiss 
+Brie,REWARD,brie,cheese
+Edam,REWARD,edam,cheese
+Emmental,REWARD,emmental,cheese
+Parmesan,REWARD,parmesan,cheese
+Swiss,REWARD,swiss,cheese
 Carrot,REWARD,carrot,carrot 
 Cherry,REWARD,cherry,cherry 
 Grape,REWARD,grape,grape 

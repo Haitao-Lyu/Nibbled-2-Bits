@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "Boundary.h"
 #include "MouseTrap.h"
+#include "Cheese.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
@@ -58,6 +59,21 @@ Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE:
 
 Mouse::~Mouse()
 {
+}
+
+BoxCollider& Mouse::GetBoxCollider()
+{
+	return m_boxCollider;
+}
+
+CircleCollider& Mouse::GetCollider()
+{
+	return m_circleCollider;
+}
+
+Play::Point2D Mouse::GetPrevPos()
+{
+	return prev_pos;
 }
 
 
@@ -137,14 +153,151 @@ void Mouse::SetPosition(Play::Point2D pos)
 	m_pos = pos;
 }
 
-BoxCollider& Mouse::GetCollider()
+void Mouse::CheckBoxCollision()
 {
-	return m_boxCollider;
+	//debug collision box
+	m_boxCollider.DrawBoundingBox();
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
+	for (GameObject* obj : list_MOUSE)
+	{
+		Mouse* mouse = static_cast<Mouse*>(obj);
+		if (m_boxCollider.collidesWith(mouse->GetBoxCollider()))
+		{
+			m_pos = prev_pos;
+			DebugValue(mouse->GetID(), "collides:", 50);
+			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
+		}
+	}
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_tile = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
+	for (GameObject* obj : list_tile)
+	{
+		Tile* tile = static_cast<Tile*>(obj);
+		if (m_boxCollider.collidesWith(tile->GetBoxCollider()))
+		{
+			Play::Vector2D dir = normalize(prev_pos - m_pos);
+			m_pos = prev_pos;
+			//if (m_boxCollider.collidesWith(tile->GetCollider()))
+			//{
+			//	m_pos += dir * 10;
+			//}
+			DebugValue(tile->GetID(), "collides:", 50);
+			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
+		}
+	}
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_boundary = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
+	for (GameObject* obj : list_boundary)
+	{
+		Boundary* tile = static_cast<Boundary*>(obj);
+		if (m_boxCollider.collidesWith(tile->GetBoxCollider()))
+		{
+			m_pos = prev_pos;
+			DebugValue(tile->GetID(), "collides:", 50);
+			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
+		}
+	}
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_Trap = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
+	for (GameObject* obj : list_Trap)
+	{
+		MouseTrap* trap = static_cast<MouseTrap*>(obj);
+		if (m_boxCollider.collidesWith(trap->GetBoxCollider()))
+		{
+			isWhacked = true;
+			trap->SetActive(true);
+			DebugValue(trap->GetID(), "collides:", 50);
+		}
+	}
+	//Get cheese obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_CZ = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_CHEESE);
+	for (GameObject* obj : list_CZ)
+	{
+		Cheese* cz = static_cast<Cheese*>(obj);
+		if (m_boxCollider.collidesWith(cz->GetBoxCollider()))
+		{
+			cz->SetIsConsumed(true);
+			DebugValue(cz->GetID(), "collides:", 50);
+		}
+	}
+
 }
 
-Play::Point2D Mouse::GetPrevPos()
+void Mouse::CheckCircleCollision()
 {
-	return prev_pos;
+	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
+	m_circleCollider.DrawBoundingBox();
+	//Mouse
+	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
+	for (GameObject* obj : list_MOUSE)
+	{
+		if (obj->GetID() == m_id)
+			continue;//except it self
+		Mouse* mouse = static_cast<Mouse*>(obj);
+		CircleCollider& collider = mouse->GetCollider();
+		if (m_circleCollider.collidesWith(collider))
+		{
+			//move obj backward based on the distance and direction between two obj
+			Play::Vector2D dir = normalize(m_pos - mouse->m_pos);
+			m_pos = mouse->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			DebugValue(mouse->GetID(), "collides:", 50);
+		}
+	}
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_boundary = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
+	for (GameObject* obj : list_boundary)
+	{
+		Boundary* boundary = static_cast<Boundary*>(obj);
+		CircleCollider& collider = boundary->GetCollider();
+		if (m_circleCollider.collidesWith(collider))
+		{
+			//move obj backward based on the distance and direction between two obj
+			Play::Vector2D dir = normalize(m_pos - boundary->m_pos);
+			m_pos = boundary->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			DebugValue(boundary->GetID(), "collides:", 50);
+		}
+	}
+
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_tile = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
+	for (GameObject* obj : list_tile)
+	{
+		Tile* tile = static_cast<Tile*>(obj);
+		CircleCollider& collider = tile->GetCollider();
+		if (m_circleCollider.collidesWith(collider))
+		{
+			//move obj backward based on the distance and direction between two obj
+			Play::Vector2D dir = normalize(m_pos - tile->m_pos );
+			m_pos = tile->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			DebugValue(tile->GetID(), "collides:", 50);
+		}
+	}
+
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_Trap = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
+	for (GameObject* obj : list_Trap)
+	{
+		MouseTrap* trap = static_cast<MouseTrap*>(obj);
+		if (m_circleCollider.collidesWith(trap->GetCollider()))
+		{
+			isWhacked = true;
+			trap->SetActive(true);
+			DebugValue(trap->GetID(), "collides:", 50);
+		}
+	}
+
+	//Get cheese obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_CZ = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_CHEESE);
+	for (GameObject* obj : list_CZ)
+	{
+		Cheese* cz = static_cast<Cheese*>(obj);
+		if (m_circleCollider.collidesWith(cz->GetCollider()))
+		{
+			cz->SetIsConsumed(true);
+			DebugValue(cz->GetID(), "collides:", 50);
+		}
+	}
 }
 
 
@@ -158,53 +311,15 @@ void Mouse::Update()
 	//movement
 	MouseControl();
 
-	//debug collision box
-	m_boxCollider.DrawBoundingBox();
-
-	//Get Tile obj list and calculate collision // And block mouse moving
-	std::vector<GameObject*> &list = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
-	for (GameObject* obj : list)
-	{
-		Tile* tile = static_cast<Tile*>(obj);
-		if (m_boxCollider.collidesWith(tile->GetCollider()))
-		{
-			m_pos = prev_pos;
-			DebugValue(tile->GetID(),"collides:", 50);
-			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
-		}
-	}
-
-	//Get Tile obj list and calculate collision // And block mouse moving
-	std::vector<GameObject*>& list_boundary = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
-	for (GameObject* obj : list_boundary)
-	{
-		Boundary* tile = static_cast<Boundary*>(obj);
-		if (m_boxCollider.collidesWith(tile->GetCollider()))
-		{
-			m_pos = prev_pos;
-			DebugValue(tile->GetID(), "collides:", 50);
-			//GameObjectMgr::RemoveGameObjectByid(obj->m_id);
-		}
-	}
-
-	//Get Tile obj list and calculate collision // And block mouse moving
-	std::vector<GameObject*>& list_Trap= GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
-	for (GameObject* obj : list_Trap)
-	{
-		MouseTrap* tile = static_cast<MouseTrap*>(obj);
-		if (m_boxCollider.collidesWith(tile->GetCollider()))
-		{
-			isWhacked = true;
-			DebugValue(tile->GetID(), "collides:", 50);
-			GameObjectMgr::RemoveGameObjectByid(obj->m_id);
-		}
-	}
+	//CheckBoxCollision();
+	CheckCircleCollision();
 
 	if (isWhacked)
 		SetMouseState(E_MOUSE_STATE::whackedState);
 
 	if (isDead)
 		SetMouseState(E_MOUSE_STATE::dieState);
+
 	//draw eveything at the end
 	m_state->Update();
 }

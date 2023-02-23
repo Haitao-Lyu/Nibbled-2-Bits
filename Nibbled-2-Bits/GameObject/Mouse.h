@@ -2,7 +2,8 @@
 #include "GameObject.h"
 #include "../GameTool/Timer.h"
 #include "MouseState.h"
-#include "Component/Collider.h"
+#include "Component/BoxCollider.h"
+#include "Component/CircleCollider.h"
 
 enum class E_MOUSE_STATE
 {
@@ -48,6 +49,7 @@ private:
 	const char* m_Color;
 	float m_speed { 3.0f };
 	BoxCollider m_boxCollider;
+	CircleCollider m_circleCollider;
 	MouseState* m_state;
 	MouseRunState*	   runState		;
 	MouseDieState*	   dieState		;
@@ -76,7 +78,13 @@ public:
 
 	void SetPosition(Play::Point2D pos);
 
-	BoxCollider& GetCollider();
+	void CheckBoxCollision();
+
+	void CheckCircleCollision();
+
+	BoxCollider& GetBoxCollider();
+
+	CircleCollider& GetCollider();
 
 	Play::Point2D GetPrevPos();
 };

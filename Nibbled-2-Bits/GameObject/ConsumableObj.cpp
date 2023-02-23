@@ -14,6 +14,8 @@ ConsumableObj::~ConsumableObj()
 void ConsumableObj::Update()
 {
 	Render();
+	m_boxCollider.DrawBoundingBox();
+	m_circleCollider.DrawBoundingBox();
 }
 
 void ConsumableObj::Render()
@@ -24,10 +26,19 @@ void ConsumableObj::Render()
 		{ 0.0f,m_scale ,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
-	m_boxCollider.DrawBoundingBox();
 }
 
-BoxCollider& ConsumableObj::GetCollider()
+void ConsumableObj::SetIsConsumed(bool value)
+{
+	isConsumed = value;
+}
+
+BoxCollider& ConsumableObj::GetBoxCollider()
 {
 	return m_boxCollider;
+}
+
+CircleCollider& ConsumableObj::GetCollider()
+{
+	return m_circleCollider;
 }

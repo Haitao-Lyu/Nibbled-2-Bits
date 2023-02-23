@@ -15,6 +15,7 @@ Obstacle::~Obstacle()
 void Obstacle::Update()
 {
 	Render();
+	m_circleCollider.DrawBoundingBox();
 }
 
 void Obstacle::Render()
@@ -27,3 +28,14 @@ void Obstacle::Render()
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
 	
 }
+
+BoxCollider& Obstacle::GetBoxCollider()
+{
+	return m_boxCollider;
+}
+
+CircleCollider& Obstacle::GetCollider()
+{
+	return m_circleCollider;
+}
+

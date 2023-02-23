@@ -20,7 +20,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
-	level1.InitializeByName("TRAPS");
+	level1.InitializeByName("CHEESE");
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -46,6 +46,8 @@ bool MainGameUpdate( float elapsedTime )
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
+	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSEHOLE);
+	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_CHEESE);
 
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );

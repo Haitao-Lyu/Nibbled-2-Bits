@@ -9,5 +9,4 @@ namespace CollisionSystem
 	void UpdateCollision();
 
 	void UpdateCollisionByCollider(Collider* collider);
-
 }

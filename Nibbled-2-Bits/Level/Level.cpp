@@ -7,7 +7,8 @@
 #include "../GameObject/Mouse.h"
 #include "../GameObject/Boundary.h"
 #include "../GameObject/MouseTrap.h"
-
+#include "../GameObject/Cheese.h"
+#include "../GameObject/MouseHole.h"
 static const int GAME_AREA_WIDTH{ 870 };
 static const int GAME_AREA_HEIGHT{ 720 };
 static const int GRID_SIZE{ 50 };
@@ -82,7 +83,19 @@ Play::Point2D GameToWorld(Play::Point2D pos) {
 //when load level add a boundary outside
 void Level::InitializeByName(std::string levelName)
 {
-	std::vector<std::vector<GameAreaObject*>>& level = ResoureMgr::LoadLevel(levelName);
+	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
+	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
+
+
+	//*Create Mouse Hole*//
+	
+	Play::Point2D pos1{ gameAreaInfo.EntryPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.EntryPos.y * GRID_SIZE + GRID_SIZE / 2 - 7.0f};
+	MouseHole* mouse_entry = new MouseHole(GameToWorld(pos1));
+	GameObjectMgr::AddNewGameObject(*mouse_entry);
+
+	Play::Point2D pos2{ gameAreaInfo.ExitPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.ExitPos.y * GRID_SIZE + GRID_SIZE / 2  - 7.0f};
+	MouseHole* mouse_Exit = new MouseHole(GameToWorld(pos2));
+	GameObjectMgr::AddNewGameObject(*mouse_Exit);
 
 	///*create boundary outside game area*//
 	int Boundary_row = GRID_ROW + 1;
@@ -156,20 +169,39 @@ void Level::InitializeByName(std::string levelName)
 				case E_OBJTYPE::E_MOUSE:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					Mouse* mice = new Mouse(GameToWorld(pos));
-					GameObjectMgr::AddNewGameObject(*mice);
+					Mouse* mice = nullptr;
+
+					if(item->m_color == 0)
+						mice = new Mouse(GameToWorld(pos),E_MOUSE_COLOR::GREY);
+					if (item->m_color == 1)
+						mice = new Mouse(GameToWorld(pos), E_MOUSE_COLOR::DARK_GREY);
+					if (item->m_color == 2)
+						mice = new Mouse(GameToWorld(pos), E_MOUSE_COLOR::WHITE);
+					if (mice)
+					{
+						mice->m_rot = item->rot * 90;
+						GameObjectMgr::AddNewGameObject(*mice);
+					}
 				}
 				break;
 				case E_OBJTYPE::E_MOUSETRAP:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					MouseTrap* mice = new MouseTrap(GameToWorld(pos));
-					mice->m_rot = item->rot * 90;
+					MouseTrap* trap = new MouseTrap(GameToWorld(pos));
+					trap->m_rot = item->rot * 90;
 					if (item->trap_color)
-						mice->SetColor(E_TRAPCOLOR::DARK_WOOD);
+						trap->SetColor(E_TRAPCOLOR::DARK_WOOD);
 					else
-						mice->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
-					GameObjectMgr::AddNewGameObject(*mice);
+						trap->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
+					GameObjectMgr::AddNewGameObject(*trap);
+				}
+				break;
+				case E_OBJTYPE::E_CHEESE:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Cheese* cz = new Cheese(GameToWorld(pos));
+
+					GameObjectMgr::AddNewGameObject(*cz);
 				}
 				break;
 				default:
