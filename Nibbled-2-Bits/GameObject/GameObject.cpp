@@ -50,6 +50,11 @@ void GameObject::SetPosition(float x, float y)
 	m_pos = { x,y };
 }
 
+void GameObject::SetScale(float scale)
+{
+	m_scale = scale;
+}
+
 Play::Point2D& GameObject::GetPosition()
 {
 	return m_pos;

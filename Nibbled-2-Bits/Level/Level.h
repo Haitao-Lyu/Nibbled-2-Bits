@@ -28,6 +28,5 @@ public:
 	void CheckAjacentTiles();
 
 	void InitializeByName(std::string levelName);
-
 };
 

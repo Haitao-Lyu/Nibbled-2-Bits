@@ -74,6 +74,8 @@ public:
 
 	void Update() override;
 
+	void SetInitRotation(float dir);
+
 	void MouseControl();
 
 	void SetPosition(Play::Point2D pos);

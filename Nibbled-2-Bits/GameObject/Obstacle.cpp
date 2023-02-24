@@ -15,7 +15,7 @@ Obstacle::~Obstacle()
 void Obstacle::Update()
 {
 	Render();
-	m_circleCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox();
 }
 
 void Obstacle::Render()

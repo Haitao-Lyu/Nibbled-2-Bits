@@ -45,8 +45,8 @@ void Tile::Update()
 {
 	Render();
 	m_circleCollider.Init(m_pos, Play::GetSpriteHeight(spriteName) * m_scale / 2);
-	m_circleCollider.DrawBoundingBox(Play::cBlue);
-	//m_boxCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox(Play::cBlue);
+	//m_boxCollider.DrawBoundingBox(Play::cBlue);
 }
 
 

@@ -7,6 +7,7 @@
 #include "Boundary.h"
 #include "MouseTrap.h"
 #include "Cheese.h"
+#include "MouseHole.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
@@ -53,6 +54,7 @@ Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE:
 	walkState = new MouseWalkState(*this);
 	hurtState = new MouseHurtState(*this);
 	whackedState = new MouseWhackedState(*this);
+
 	m_state = idleState;
 
 }
@@ -227,7 +229,7 @@ void Mouse::CheckBoxCollision()
 void Mouse::CheckCircleCollision()
 {
 	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
-	m_circleCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox();
 	//Mouse
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
@@ -298,6 +300,18 @@ void Mouse::CheckCircleCollision()
 			DebugValue(cz->GetID(), "collides:", 50);
 		}
 	}
+
+	//Get cheese obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_hole = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::	E_MOUSEHOLE);
+	for (GameObject* obj : list_hole)
+	{
+		MouseHole* hole = static_cast<MouseHole*>(obj);
+		if (m_circleCollider.collidesWith(hole->GetCollider()))
+		{
+			hole->OnMouseIn(*this);
+			DebugValue(hole->GetID(), "collides:", 50);
+		}
+	}
 }
 
 
@@ -322,4 +336,21 @@ void Mouse::Update()
 
 	//draw eveything at the end
 	m_state->Update();
+}
+
+void Mouse::SetInitRotation(float dir)
+{
+	m_rot = dir;
+	if (m_rot == 90.0f)
+	{
+		m_dir = E_MOUSE_DIR::LEFT;
+	}
+	else if (m_rot == 180.0f)
+	{
+		m_dir = E_MOUSE_DIR::DOWN;
+	}
+	else if (m_rot == 270.0f)
+	{
+		m_dir = E_MOUSE_DIR::RIGHT;
+	}
 }

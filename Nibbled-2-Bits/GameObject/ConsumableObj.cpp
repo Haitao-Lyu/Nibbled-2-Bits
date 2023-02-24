@@ -14,8 +14,8 @@ ConsumableObj::~ConsumableObj()
 void ConsumableObj::Update()
 {
 	Render();
-	m_boxCollider.DrawBoundingBox();
-	m_circleCollider.DrawBoundingBox();
+	//m_boxCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox();
 }
 
 void ConsumableObj::Render()

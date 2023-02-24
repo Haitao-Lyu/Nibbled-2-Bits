@@ -13,14 +13,14 @@ static const int GAME_AREA_WIDTH{ 870 };
 static const int GAME_AREA_HEIGHT{ 720 };
 static const int GRID_SIZE{ 50 };
 static const int BOARDER_PIXELS{ 35 };
-static const int GRID_ROW = 16;
-static const int GRID_COL = 13;
+static const int GRID_COL{ 16 };
+static const int GRID_ROW{ 13 };
 Level::Level()
 {
-    m_mapinfo.resize(GRID_ROW);
+    m_mapinfo.resize(GRID_COL);
 	for (std::vector<int>& row : m_mapinfo)
 	{
-		row.resize(GRID_COL);
+		row.resize(GRID_ROW);
 	}
    
 }
@@ -88,22 +88,57 @@ void Level::InitializeByName(std::string levelName)
 
 
 	//*Create Mouse Hole*//
-	
-	Play::Point2D pos1{ gameAreaInfo.EntryPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.EntryPos.y * GRID_SIZE + GRID_SIZE / 2 - 7.0f};
-	MouseHole* mouse_entry = new MouseHole(GameToWorld(pos1));
+	Play::Point2D pos1{ gameAreaInfo.EntryPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.EntryPos.y * GRID_SIZE + GRID_SIZE / 2 };
+	MouseHole* mouse_entry = nullptr;
+	if (gameAreaInfo.EntryPos.x == 0)
+	{
+		mouse_entry = new MouseHole(GameToWorld(pos1),E_MOUSEHOLE_DIR::LEFT);
+	}
+	else if (gameAreaInfo.EntryPos.x == (GRID_COL  + 1))
+	{
+		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::RIGHT);
+	}
+	else if (gameAreaInfo.EntryPos.y == 0)
+	{
+		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::TOP);
+	}
+	else if (gameAreaInfo.EntryPos.y == GRID_ROW + 1)
+	{
+		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::BOTTOM);
+	}
+	if(mouse_entry)
 	GameObjectMgr::AddNewGameObject(*mouse_entry);
 
-	Play::Point2D pos2{ gameAreaInfo.ExitPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.ExitPos.y * GRID_SIZE + GRID_SIZE / 2  - 7.0f};
-	MouseHole* mouse_Exit = new MouseHole(GameToWorld(pos2));
+	Play::Point2D pos2{ gameAreaInfo.ExitPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.ExitPos.y * GRID_SIZE + GRID_SIZE / 2 };
+	MouseHole* mouse_Exit = nullptr;
+	if (gameAreaInfo.ExitPos.x == -1)
+	{
+		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::LEFT);
+	}
+	else if (gameAreaInfo.ExitPos.x == (GRID_COL + 1))
+	{
+		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::RIGHT);
+	}
+	else if (gameAreaInfo.ExitPos.y == 0)
+	{
+		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::TOP);
+	}
+	else if (gameAreaInfo.ExitPos.y == GRID_ROW + 1)
+	{
+		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::BOTTOM);
+	}
+	if (mouse_Exit)
+	{
+		mouse_Exit->SetType(E_MOUSEHOLE_TYPE::EXIT);
+	}
 	GameObjectMgr::AddNewGameObject(*mouse_Exit);
 
 	///*create boundary outside game area*//
-	int Boundary_row = GRID_ROW + 1;
-	int Boundary_col = GRID_COL + 2;
+	int Boundary_row = GRID_COL + 1;
+	int Boundary_col = GRID_ROW + 2;
 	//add left column
 	for (int j = 1; j < Boundary_col; j++)
 	{
-		
 		Play::Point2D pos{ 0 * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, j * GRID_SIZE + GRID_SIZE / 2 };
 		Boundary* boundary = new Boundary(GameToWorld(pos));
 		boundary->SetDirection(E_DIR_BOUNDARY::LEFT);
@@ -116,6 +151,7 @@ void Level::InitializeByName(std::string levelName)
 	// Add btm column (excluding top and bottom elements)
 	for (int i = 0; i < Boundary_row ; i++)
 	{
+
 		Play::Point2D pos{ i * GRID_SIZE + GRID_SIZE / 2, (Boundary_col - 1) * GRID_SIZE + GRID_SIZE / 2 };
 		Boundary* boundary = new Boundary(GameToWorld(pos));
 		boundary->SetDirection(E_DIR_BOUNDARY::DOWN);
@@ -128,6 +164,7 @@ void Level::InitializeByName(std::string levelName)
 	// Add right row
 	for (int j = Boundary_col - 2; j >= 0; j--)
 	{
+
 		Play::Point2D pos{ (Boundary_row - 1)  * GRID_SIZE + GRID_SIZE / 2, j * GRID_SIZE + GRID_SIZE / 2 };
 		Boundary* boundary = new Boundary(GameToWorld(pos));
 		boundary->SetDirection(E_DIR_BOUNDARY::RIGHT);
@@ -162,7 +199,7 @@ void Level::InitializeByName(std::string levelName)
 				case E_OBJTYPE::E_TILE:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					Tile* tile = new Tile(GameToWorld(pos),E_TILE_COLOR::GREEN);
+					Tile* tile = new Tile(GameToWorld(pos),E_TILE_COLOR::BLUE);
 					GameObjectMgr::AddNewGameObject(*tile);
 				}
 				break;
@@ -179,7 +216,7 @@ void Level::InitializeByName(std::string levelName)
 						mice = new Mouse(GameToWorld(pos), E_MOUSE_COLOR::WHITE);
 					if (mice)
 					{
-						mice->m_rot = item->rot * 90;
+						mice->SetInitRotation(static_cast<float>(item->rot * 90));
 						GameObjectMgr::AddNewGameObject(*mice);
 					}
 				}
@@ -188,7 +225,7 @@ void Level::InitializeByName(std::string levelName)
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
 					MouseTrap* trap = new MouseTrap(GameToWorld(pos));
-					trap->m_rot = item->rot * 90;
+					trap->m_rot = static_cast<float>(item->rot * 90);
 					if (item->trap_color)
 						trap->SetColor(E_TRAPCOLOR::DARK_WOOD);
 					else

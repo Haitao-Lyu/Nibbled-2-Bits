@@ -42,6 +42,8 @@ public:
 
 	void SetPosition(float x,float y);
 
+	void SetScale(float scale);
+
 	Play::Point2D& GetPosition();
 
 	const char* GetSpriteName();

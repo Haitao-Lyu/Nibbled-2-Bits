@@ -43,7 +43,7 @@ void Cheese::Update()
 	}
 	Render();
 	//m_boxCollider.DrawBoundingBox();
-	m_circleCollider.DrawBoundingBox(Play::cBlue);
+	//m_circleCollider.DrawBoundingBox(Play::cBlue);
 }
 
 void Cheese::Render()

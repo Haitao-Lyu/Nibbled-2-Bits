@@ -73,7 +73,7 @@ void MouseTrap::Update()
 	}
 	Render();
 	//m_boxCollider.DrawBoundingBox();
-	m_circleCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox(Play::cRed);
 }
 
 void MouseTrap::Render()
