@@ -2,8 +2,7 @@
 #include "MouseTrap.h"
 #include "../MainGame.h"
 #include "../GameTool/Timer.h"
-#include "GameObjectMgr.h"
-
+#include "../Manager/GameObjectMgr.h"
 static const char* trap_dark_wood = "Trap_dark_wood";
 static const char* trap_dark_wood_not = "Trap_dark_wood_not";
 static const char* trap_light_wood =	"Trap_light_wood";
@@ -12,8 +11,10 @@ static const char* trap_light_wood_not = "Trap_light_wood_not";
 MouseTrap::MouseTrap(Play::Point2D pos, E_TRAPCOLOR color):ConsumableObj(pos,E_OBJTYPE::E_MOUSETRAP),m_color(color)
 {
 	OnColorChange();
-	m_spriteWidth = Play::GetSpriteWidth(spriteName);
-	m_spriteHeight = Play::GetSpriteHeight(spriteName);
+
+	m_spriteWidth = static_cast<float>(Play::GetSpriteWidth(spriteName));
+	m_spriteHeight = static_cast<float>(Play::GetSpriteHeight(spriteName));
+
 	GetBoxCollider().Init( m_spriteWidth * m_scale, m_spriteHeight * m_scale, m_pos, this);
 	GetCollider().Init(pos, m_spriteWidth * m_scale / 2);
 	//const char* text can't be changed ?

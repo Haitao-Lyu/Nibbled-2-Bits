@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Level.h"
-#include "../ResourceMgr.h"
+#include "../Manager/ResourceMgr.h"
+#include "../Manager/GameObjectMgr.h"
 #include "../MainGame.h"
-#include "../GameObject/GameObjectMgr.h"
+
 #include "../GameObject/Tile.h"
 #include "../GameObject/Mouse.h"
 #include "../GameObject/Boundary.h"
@@ -15,14 +16,14 @@ static const int GRID_SIZE{ 50 };
 static const int BOARDER_PIXELS{ 35 };
 static const int GRID_COL{ 16 };
 static const int GRID_ROW{ 13 };
-Level::Level()
+Level::Level(const char* name)
 {
     m_mapinfo.resize(GRID_COL);
 	for (std::vector<int>& row : m_mapinfo)
 	{
 		row.resize(GRID_ROW);
 	}
-   
+	levelName = name;
 }
 
 Level::~Level()
@@ -81,7 +82,7 @@ Play::Point2D GameToWorld(Play::Point2D pos) {
 	return pos + botLeftGrid;
 }
 //when load level add a boundary outside
-void Level::InitializeByName(std::string levelName)
+void Level::LoadLevel()
 {
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;

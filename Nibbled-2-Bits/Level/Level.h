@@ -15,10 +15,13 @@ enum class E_BACKGROUND
 class Level
 {
 private:
+	const char* levelName;
 	//Game object id for loading
 	std::vector<std::vector<int>> m_mapinfo;
+
+
 public:
-	Level();
+	Level(const char* name);
 	~Level();
 
 	void render();
@@ -27,6 +30,6 @@ public:
 
 	void CheckAjacentTiles();
 
-	void InitializeByName(std::string levelName);
+	void LoadLevel();
 };
 

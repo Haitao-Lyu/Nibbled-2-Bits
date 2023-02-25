@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "../ResourceMgr.h"
 float GetRandomFloat(float a, float b);
 
 //// Converts radians to degrees

@@ -1,6 +1,5 @@
 #pragma once
-#include "pch.h"
-#include "GameObject/GameObjectMgr.h"
+#include "GameObjectMgr.h"
 #include <string>
 enum class E_BKCOLOR
 {

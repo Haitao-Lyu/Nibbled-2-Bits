@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "../GameTool/DebugTool.h"
-#include "GameObjectMgr.h"
+#include "../Manager/GameObjectMgr.h"
 #include "../MainGame.h"
 int GameObject::total_id = 0;
 

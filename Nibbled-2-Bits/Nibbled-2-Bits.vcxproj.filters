@@ -72,7 +72,7 @@
     <ClCompile Include="Level\Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceMgr.cpp">
+    <ClCompile Include="Manager\ResourceMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Obstacle.cpp">
@@ -87,7 +87,7 @@
     <ClCompile Include="GameObject\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\GameObjectMgr.cpp">
+    <ClCompile Include="Manager\GameObjectMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -120,7 +120,13 @@
     <ClCompile Include="Level\LevelMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\ApplicationMgr.cpp">
+    <ClCompile Include="Manager\ApplicationMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\LevelState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +191,7 @@
     <ClInclude Include="Level\Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMgr.h">
+    <ClInclude Include="Manager\ResourceMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\Obstacle.h">
@@ -200,7 +206,7 @@
     <ClInclude Include="GameObject\Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\GameObjectMgr.h">
+    <ClInclude Include="Manager\GameObjectMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
@@ -233,7 +239,13 @@
     <ClInclude Include="Level\LevelMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\ApplicationMgr.h">
+    <ClInclude Include="Manager\ApplicationMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\LevelState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

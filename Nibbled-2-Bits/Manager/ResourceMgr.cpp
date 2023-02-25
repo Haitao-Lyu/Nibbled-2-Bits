@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ResourceMgr.h"
-#include "MainGame.h"
+#include "../MainGame.h"
 #include <vector>
-#include "GameTool/DebugTool.h"
-#include "GameTool/Math2D.h"
+#include "../GameTool/DebugTool.h"
+#include "../GameTool/Math2D.h"
 const char* C_FONT_ABNORMAL_40 = "font_ABNORMAL40px_10x10";
 const char* C_FONT_BOLD_64 = "font64px_10x10";
 const char* C_FONT_LIGHT_64 = "fontui64px_10x10";
@@ -90,26 +90,26 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 
 	//Read the next 2 lines as the mouse hole positions
 	std::getline(levelFile, object);
-	std::istringstream ss{ object };
-	std::string token;
-	std::vector<std::string> tokens;
-	while (std::getline(ss, token, ',')) {
-		tokens.push_back(token);
+	std::istringstream ss1{ object };
+	std::string token1;
+	std::vector<std::string> tokens1;
+	while (std::getline(ss1, token1, ',')) {
+		tokens1.push_back(token1);
 	}
 	//Mouse Hole Entry
-	gameAreaInfo.EntryPos.x = stoi(tokens[0]) + 1;
-	gameAreaInfo.EntryPos.y = (GRID_HEIGHT - 1)  - stoi(tokens[1]);
+	gameAreaInfo.EntryPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
+	gameAreaInfo.EntryPos.y = static_cast<float>((GRID_HEIGHT - 1)  - stoi(tokens1[1]));
 
 	//Read the next 2 lines as the mouse hole positions
 	std::getline(levelFile, object);
-	ss = std::istringstream{ object };
-	tokens.clear();
-	while (std::getline(ss, token, ',')) {
-		tokens.push_back(token);
+	ss1 = std::istringstream{ object };
+	tokens1.clear();
+	while (std::getline(ss1, token1, ',')) {
+		tokens1.push_back(token1);
 	}
 	//Mouse Hole Exit
-	gameAreaInfo.ExitPos.x = stoi(tokens[0]) + 1;
-	gameAreaInfo.ExitPos.y = (GRID_HEIGHT - 1)  -stoi(tokens[1]);
+	gameAreaInfo.ExitPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
+	gameAreaInfo.ExitPos.y = static_cast<float>((GRID_HEIGHT - 1)  -stoi(tokens1[1]));
 
 	while (!levelFile.eof()) {
 		std::getline(levelFile, object);

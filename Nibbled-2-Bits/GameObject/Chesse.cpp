@@ -2,7 +2,7 @@
 #include "Cheese.h"
 #include <vector>
 #include "../MainGame.h"
-#include "GameObjectMgr.h"
+#include "../Manager/GameObjectMgr.h"
 const char* cz_01 = "cz_brie";
 const char* cz_02 = "cz_camembert";
 const char* cz_03 = "cz_cheddar";
@@ -25,8 +25,8 @@ static std::vector<const char* > chesse_list{ cz_01,cz_02,cz_03,cz_04,cz_05,cz_0
 Cheese::Cheese(Play::Point2D pos):ConsumableObj(pos,E_OBJTYPE::E_CHEESE)
 {
 	spriteName = chesse_list[Play::RandomRollRange(0, 15)];
-	m_spriteHeight = Play::GetSpriteHeight(spriteName);
-	m_spriteWidth = Play::GetSpriteWidth(spriteName);
+	m_spriteHeight = static_cast<float>(Play::GetSpriteHeight(spriteName));
+	m_spriteWidth = static_cast<float>(Play::GetSpriteWidth(spriteName));
 	m_boxCollider.Init(m_spriteWidth, m_spriteHeight,pos,this);
 	m_circleCollider.Init(pos, m_spriteHeight / 2 * m_scale);
 }

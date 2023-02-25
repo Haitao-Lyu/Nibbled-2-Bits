@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "GameObjectMgr.h"
 #include <map> // map faster or vector faster ? ? ?
-#include "Mouse.h"
 #include "../GameTool/DebugTool.h"
 namespace GameObjectMgr
 {
@@ -56,7 +55,7 @@ namespace GameObjectMgr
 		DebugValue((int)g_gameObjectMapbyType.size());
 		if (g_gameObjectMapbyType.find(static_cast<int>(type)) != g_gameObjectMapbyType.end())
 		{
-			std::vector<GameObject*>& list = g_gameObjectMapbyType[static_cast<int>(type)];
+			std::vector<GameObject*> &list = g_gameObjectMapbyType[static_cast<int>(type)];
 			// [TODO] Check Why there are so many obj ? ? Is it right ? ? ? 
 			//DebugValue((int)list.size());
 			for (GameObject* obj: g_gameObjectMapbyType[static_cast<int>(type)])

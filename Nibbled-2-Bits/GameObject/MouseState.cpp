@@ -3,7 +3,7 @@
 #include "../GameTool/DebugTool.h"
 #include "../MainGame.h"
 #include "Mouse.h"
-#include "GameObjectMgr.h"
+#include "../Manager/GameObjectMgr.h"
 
 static const Play::Matrix2D dir_left = Play::MatrixRotation(Play::DegToRad(90.0f));
 static const Play::Matrix2D dir_down = Play::MatrixRotation(Play::DegToRad(180.0f));
@@ -54,8 +54,8 @@ void MouseState::Render()
 	}
 	int spriteID = Play::GetSpriteId(spritePrefix.c_str());
 	//m_mice->SetSpriteName(spritePrefix.c_str());//not working maybe because const char ? ? ?
-	m_mice->m_spriteHeight = Play::GetSpriteHeight(spriteID);
-	m_mice->m_spriteWidth = Play::GetSpriteWidth(spriteID);
+	m_mice->m_spriteHeight = static_cast<float>(Play::GetSpriteHeight(spriteID));
+	m_mice->m_spriteWidth = static_cast<float>(Play::GetSpriteWidth(spriteID));
 
 	Play::DrawSpriteTransformed(spriteID, scaleMt * rtMt,0);
 

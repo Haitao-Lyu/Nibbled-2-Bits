@@ -2,7 +2,7 @@
 #include "Mouse.h"
 #include "../GameTool/DebugTool.h"
 #include "Component/CollisionSystem.h"
-#include "GameObjectMgr.h"
+#include "../Manager/GameObjectMgr.h"
 #include "Tile.h"
 #include "Boundary.h"
 #include "MouseTrap.h"

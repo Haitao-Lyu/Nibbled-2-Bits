@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MouseHole.h"
-#include "GameObjectMgr.h"
+#include "../Manager/GameObjectMgr.h"
 const char* mouseHoleName_b = "mouse_hole_bottom";
 const char* mouseHoleName_l = "mouse_hole_left";
 const char* mouseHoleName_r = "mouse_hole_right";
