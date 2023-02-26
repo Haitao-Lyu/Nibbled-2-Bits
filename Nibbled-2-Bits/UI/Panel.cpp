@@ -18,6 +18,6 @@ void Panel::Render()
 {
 	for (UIElement& element: m_childlist)
 	{
-		element.DrawSprite(1.0f);
+		element.Render(1.0f);
 	}
 }

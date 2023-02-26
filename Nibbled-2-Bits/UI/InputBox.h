@@ -20,7 +20,7 @@ public:
 	InputBox(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width, const char* title = "");
 	~InputBox();
 
-	void DrawSprite(float scale = 0.1f) override;
+	void Render(float scale = 0.1f) override;
 
 	bool OnClick() override;
 

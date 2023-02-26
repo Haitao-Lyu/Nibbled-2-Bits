@@ -3,16 +3,21 @@
 #include "../GameTool/Math2D.h"
 #include "../GameTool/DebugTool.h"
 
-UIElement::UIElement(Play::Point2D _pos, short height, short width)
+int UIElement::id = 0;
+
+
+UIElement::UIElement(Play::Point2D _pos,short height, short width)
 {
+	m_id = id++;
 	m_pos = _pos;
 	m_height = height;
 	m_witdth = width;
 	SetCollisionBoundary();
 }
 
-UIElement::UIElement(float x, float y, short height, short width)
+UIElement::UIElement(float x, float y, short height, short width )
 {
+	m_id = id++;
 	Play::Point2D _pos{ x,y };
 	m_pos = _pos;
 	m_height = height;
@@ -20,7 +25,7 @@ UIElement::UIElement(float x, float y, short height, short width)
 	SetCollisionBoundary();
 }
 
-void UIElement::DrawSprite(float scale)
+void UIElement::Render(float scale)
 {
 	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, 0, scale, 1);
 }
@@ -65,15 +70,30 @@ bool UIElement::OnDrag()
 	return false;
 }
 
+int UIElement::GetID()
+{
+	return m_id;
+}
+
 void UIElement::SetPosition(Play::Point2D pos)
 {
 	m_pos = pos;
+}
+
+void UIElement::SetSpriteName(const char* name)
+{
+	m_spriteName = name;
 }
 
 void UIElement::SetCollisionBoundary()
 {
 	m_lefttop_pos = m_pos - Play::Point2D(m_witdth / 2, m_height / 2);
 	m_rightbottom_pos = m_pos + Play::Point2D(m_witdth / 2, m_height / 2);
+}
+
+void UIElement::DrawBoundingBox(Play::Colour color)
+{
+	Play::DrawRect(m_lefttop_pos, m_rightbottom_pos, color);
 }
 
 UIElement::~UIElement()

@@ -14,9 +14,9 @@ InputBox::~InputBox()
 {
 }
 
-void InputBox::DrawSprite(float scale)
+void InputBox::Render(float scale)
 {
-	UIElement::DrawSprite(scale);
+	UIElement::Render(scale);
 	DebugText(m_inputTitle, { m_pos.x - m_witdth / 2 - 50, m_pos.y });
 	//btn_submit.DrawSprite(scale);
 }

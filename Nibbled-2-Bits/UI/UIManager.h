@@ -1,6 +1,6 @@
 #pragma once
 #include "UIElement.h"
-#include <vector>
+#include <map>
 
 enum class ParticleChoice
 {
@@ -27,7 +27,7 @@ class UIManager
 private:
 	//vector can only hold same size in consistent
 	//static related to class not entity
-	static std::vector<UIElement*> UIComponents_List;//base class must be pointer or reference
+	std::map<int,UIElement> UIComponents_Map;//base class must be pointer or reference
 private:
 	UIManager() {}
 
@@ -35,11 +35,9 @@ private:
 
 	UIManager& operator=(UIManager& instance) = delete;	
 
-	void DisableMouseActionWhenOnUI();
+	void CheckMouseIsOnUI();
 public:
 	static UIManager& GetInstance();
-
-	static std::vector<UIElement*>& GetUIList();
 
 	void AddNewUIElement(UIElement& component);
 

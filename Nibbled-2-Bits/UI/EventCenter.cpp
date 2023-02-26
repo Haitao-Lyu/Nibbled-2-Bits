@@ -32,7 +32,7 @@ namespace EventCenter
 
 	}
 
-	void UnregisterListener(const char* eventName)
+	void UnregisterListenersByEvent(const char* eventName)
 	{
 		g_listeners_.erase(eventName);
 	}

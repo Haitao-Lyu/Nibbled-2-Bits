@@ -15,13 +15,13 @@ public:
 
 	Button();
 
-	Button(float x, float y, const char* spriteName, short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* btnName = "BUTTON");
+	Button(float x, float y,  short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* spriteName = "", const char* btnName = "BUTTON");
 
-	Button(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* btnName = "BUTTON");
+	Button(Play::Point2f pos, short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* spriteName = "", const char* btnName = "BUTTON");
 
-	void SetSpriteName(const char* name = "Button_1");
+	void SetSpriteName(const char* name);
 
-	void DrawSprite(float scale = 1.0f) override;
+	void Render(float scale = 1.0f) override;
 
 	bool OnDrag();
 

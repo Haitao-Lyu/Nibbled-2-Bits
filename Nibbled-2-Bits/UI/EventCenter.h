@@ -37,7 +37,7 @@ namespace EventCenter
 
 	void UnregisterListener(const char* eventName, EventListener &listener);
 
-	void UnregisterListener(const char* eventName);
+	void UnregisterListenersByEvent(const char* eventName);
 
 	void PostEvent(const char* eventName, const Event& event);
 

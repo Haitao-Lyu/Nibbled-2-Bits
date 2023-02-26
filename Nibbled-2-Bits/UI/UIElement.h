@@ -4,18 +4,23 @@
 class UIElement
 {
 protected:
-	
+
 public:
+	static int id;
+	int m_id;//when it's const the "=" operator is deleted ? ? 
 	Play::Point2D m_pos{ 0.0f,0.0f };
-	short m_height = 0, m_witdth = 0;
+	short m_height = 0;
+	short m_witdth = 0;
 	const char* m_spriteName = "";
-	Play::Point2D m_lefttop_pos{ 0.0f,0.0f }, m_rightbottom_pos{0.0f,0.0f};
+	Play::Point2D m_lefttop_pos{ 0.0f,0.0f }, m_rightbottom_pos{ 0.0f,0.0f };
 
-	UIElement(Play::Point2D pos, short height, short width);
+	UIElement() {}
 
-	UIElement(float x, float y, short height, short width);
+	UIElement(Play::Point2D pos, short height = 100, short width = 50);
 
-	virtual void DrawSprite(float scale = 1.0f);
+	UIElement(float x, float y, short height = 100, short width = 50);
+
+	virtual void Render(float scale = 1.0f);
 
 	virtual bool OnClick();
 
@@ -23,9 +28,15 @@ public:
 
 	virtual bool OnDrag();
 
+	int GetID();
+
 	virtual void SetPosition(Play::Point2D pos);
 
+	void SetSpriteName(const char* name);
+
 	void SetCollisionBoundary();
+
+	void DrawBoundingBox(Play::Colour color = Play::cCyan);
 
 	virtual ~UIElement();
 

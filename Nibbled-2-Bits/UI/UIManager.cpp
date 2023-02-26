@@ -9,20 +9,13 @@
 
 MouseState lyu_mouse;
 
-std::vector<UIElement*> UIManager::UIComponents_List = {};
-
-std::vector<UIElement*>& UIManager::GetUIList()
-{
-	return UIComponents_List;
-}
-
-void UIManager::DisableMouseActionWhenOnUI()
+void UIManager::CheckMouseIsOnUI()
 {
 	//check UI hover
 	int btnCount = 0;
-	for (UIElement*& uielement : UIManager::GetUIList())
+	for (auto& [id, element] : UIComponents_Map)
 	{
-		if (uielement->OnHover())
+		if (element.OnHover())
 		{
 			lyu_mouse.isOnUI = true;
 			btnCount++;
@@ -40,14 +33,14 @@ UIManager& UIManager::GetInstance()
 
 void UIManager::AddNewUIElement(UIElement& component)
 {
-	UIComponents_List.push_back(&component);
+	UIComponents_Map[component.GetID()] = component;
 }
 
 void UIManager::DrawUIElements()
 {
-	for (UIElement*& element : UIComponents_List)
+	for (auto& [id, element] : UIComponents_Map)
 	{
-		element->DrawSprite();
+		element.Render();
 	}
 }
 
@@ -55,79 +48,18 @@ void UIManager::UIInitialize()
 {
 	using namespace Play;
 
-	Button* btn_fire = new Button(Point2f(150.f, 100.f), "Button_1", 50, 100, []() {
-	lyu_mouse.Current_Particle = ParticleChoice::E_FIRE;
-	DebugText("CLick");
-		}, "FIRE");
-
-	Button* btn_snow = new Button(Point2f(250.f, 100.f), "Button_1", 50, 100, []() {
-	lyu_mouse.Current_Particle = ParticleChoice::E_SONW;
-	DebugText("CLick"); },"SNOW");
-
-	Button* btn_water = new Button(Point2f(350.f, 100.f), "Button_1", 50, 100, []() {					
-	lyu_mouse.Current_Particle = ParticleChoice::E_Water;
-	DebugText("CLick"); }, "WATER");
-
-	Button* btn_fairy = new Button(Point2f(450.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Fairy;
-		DebugText("CLick");
-		}, "FAIRY");
-
-	Button* btn_Bubble = new Button(Point2f(550.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Bubble;
-		DebugText("CLick");
-		}, "BUBBLE");
-
-	Button* btn_cloud = new Button(Point2f(650.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Cloud;
-		DebugText("CLick");
-		},"CLOUD");
-
-	Button* btn_window = new Button(Point2f(750.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Window;
-		DebugText("CLick");
-		},"WINDOW");
-
-	Button* btn_line = new Button(Point2f(850.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Line;
-		DebugText("CLick");
-		}, "LINEMASK");
-
-	Button* btn_triangle = new Button(Point2f(950.f, 100.f), "Button_1", 50, 100, []() {
-		lyu_mouse.Current_Particle = ParticleChoice::E_Triangle;
-		DebugText("CLick");
-		},"TRIANGLE");
-
-	Slider* sldier_test  = new Slider({ 1050.f,100.f }, "roundbtn", 50, 50, "sliderbk", 25, 100);
-	InputBox* inputBox_test = new InputBox({ 1050.f,200.f }, "sliderbk", 25, 100, "quantites:");
-
-	UIManager::GetInstance().AddNewUIElement(*sldier_test);
-	UIManager::GetInstance().AddNewUIElement(*inputBox_test);
-	UIManager::GetInstance().AddNewUIElement(*btn_fire);
-	UIManager::GetInstance().AddNewUIElement(*btn_snow);
-	UIManager::GetInstance().AddNewUIElement(*btn_water);
-	UIManager::GetInstance().AddNewUIElement(*btn_fairy);
-	UIManager::GetInstance().AddNewUIElement(*btn_Bubble);
-	UIManager::GetInstance().AddNewUIElement(*btn_cloud);
-	UIManager::GetInstance().AddNewUIElement(*btn_window);
-	UIManager::GetInstance().AddNewUIElement(*btn_line);
-	UIManager::GetInstance().AddNewUIElement(*btn_triangle);
 }
 
 void UIManager::CheckUIEvent()
 {
-	std::vector<UIElement*> uilist = UIManager::GetUIList();
-
-	DisableMouseActionWhenOnUI();
-
-	//check button click event
-	for (UIElement* &uicomponent : uilist)
+	for (auto& [id, element] : UIComponents_Map)
 	{
-		uicomponent->OnDrag();
-		uicomponent->OnClick();
+		element.OnDrag();
+		element.OnClick();
 	}
 }
 
+//predefined particles
 void UIControl()
 {
 	using namespace Play;
