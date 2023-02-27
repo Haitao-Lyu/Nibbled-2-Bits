@@ -52,7 +52,8 @@ namespace GameObjectMgr
 
 	void UpdateGameObjectsByType(E_OBJTYPE type)
 	{
-		DebugValue((int)g_gameObjectMapbyType.size());
+		//check how many game objects are there
+		//DebugValue((int)g_gameObjectMapbyType.size());
 		if (g_gameObjectMapbyType.find(static_cast<int>(type)) != g_gameObjectMapbyType.end())
 		{
 			std::vector<GameObject*> &list = g_gameObjectMapbyType[static_cast<int>(type)];

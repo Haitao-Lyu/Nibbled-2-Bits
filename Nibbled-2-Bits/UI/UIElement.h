@@ -10,8 +10,9 @@ public:
 	int m_id;//when it's const the "=" operator is deleted ? ? 
 	Play::Point2D m_pos{ 0.0f,0.0f };
 	short m_height = 0;
-	short m_witdth = 0;
+	short m_width = 0;
 	const char* m_spriteName = "";
+	float m_scale = 1.0f;
 	Play::Point2D m_lefttop_pos{ 0.0f,0.0f }, m_rightbottom_pos{ 0.0f,0.0f };
 
 	UIElement() {}

@@ -15,9 +15,9 @@ public:
 
 	Button();
 
-	Button(float x, float y,  short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* spriteName = "", const char* btnName = "BUTTON");
+	Button(float x, float y,  short height, short width, const char* spriteName = "", FunctionType OnClickHandler = [] {}, const char* btnName = "");
 
-	Button(Play::Point2f pos, short sprite_height, short sprite_width, FunctionType OnClickHandler = [] {}, const char* spriteName = "", const char* btnName = "BUTTON");
+	Button(Play::Point2f pos, short height, short width,  const char* spriteName = "", FunctionType OnClickHandler = [] {}, const char* btnName = "");
 
 	void SetSpriteName(const char* name);
 
@@ -28,6 +28,8 @@ public:
 	bool OnHover() override;
 
 	bool OnClick() override;
+
+	void AddOnClickHandler(FunctionType fun);
 };
 
 

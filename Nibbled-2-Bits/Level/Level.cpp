@@ -10,12 +10,13 @@
 #include "../GameObject/MouseTrap.h"
 #include "../GameObject/Cheese.h"
 #include "../GameObject/MouseHole.h"
-static const int GAME_AREA_WIDTH{ 870 };
-static const int GAME_AREA_HEIGHT{ 720 };
-static const int GRID_SIZE{ 50 };
-static const int BOARDER_PIXELS{ 35 };
-static const int GRID_COL{ 16 };
-static const int GRID_ROW{ 13 };
+
+//from mouse editor
+Play::Point2D GameToWorld(Play::Point2D pos) {
+	Play::Point2D botLeftGrid{ DISPLAY_WIDTH - GAME_AREA_WIDTH + 25, DISPLAY_HEIGHT - GAME_AREA_HEIGHT };
+	return pos + botLeftGrid;
+}
+
 Level::Level(const char* name)
 {
     m_mapinfo.resize(GRID_COL);
@@ -24,6 +25,7 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW);
 	}
 	levelName = name;
+	gridComponent.InitGridInfo(GRID_ROW, GRID_COL, GAME_AREA_HEIGHT, GAME_AREA_WIDTH, {GAME_AREA_WIDTH - 20 ,GAME_AREA_HEIGHT/2},50,50);
 }
 
 Level::~Level()
@@ -31,9 +33,9 @@ Level::~Level()
 
 }
 
-void Level::render()
+void Level::Render()
 {
-	
+	gridComponent.Render();
 }
 
 void Level::SetTileType(std::vector<std::vector<int>>& adjacentTiles)
@@ -76,11 +78,9 @@ void Level::CheckAjacentTiles()
         }
     }
 }
-//from mouse editor
-Play::Point2D GameToWorld(Play::Point2D pos) {
-	Play::Point2D botLeftGrid{ DISPLAY_WIDTH - GAME_AREA_WIDTH + 25, DISPLAY_HEIGHT - GAME_AREA_HEIGHT };
-	return pos + botLeftGrid;
-}
+
+
+
 //when load level add a boundary outside
 void Level::LoadLevel()
 {

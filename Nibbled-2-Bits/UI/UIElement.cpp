@@ -11,7 +11,7 @@ UIElement::UIElement(Play::Point2D _pos,short height, short width)
 	m_id = id++;
 	m_pos = _pos;
 	m_height = height;
-	m_witdth = width;
+	m_width = width;
 	SetCollisionBoundary();
 }
 
@@ -21,12 +21,13 @@ UIElement::UIElement(float x, float y, short height, short width )
 	Play::Point2D _pos{ x,y };
 	m_pos = _pos;
 	m_height = height;
-	m_witdth = width;
+	m_width = width;
 	SetCollisionBoundary();
 }
 
 void UIElement::Render(float scale)
 {
+	if(std::strcmp(m_spriteName,"") != 0)
 	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, 0, scale, 1);
 }
 
@@ -36,7 +37,7 @@ bool UIElement::OnClick()
 	{
 		if (Play::KeyPressed(VK_LBUTTON))
 		{
-			//DebugText("clicking");
+			DebugText("clicking");
 			return true;
 		}
 	}
@@ -59,15 +60,14 @@ bool UIElement::OnHover()
 
 bool UIElement::OnDrag()
 {
-	if (OnHover())
+	if (Play::GetMouseButton(Play::Align::LEFT))
 	{
-		if (Play::KeyDown(VK_LBUTTON))
-		{
-			//DebugText("Dragging");
-			return true;
-		}
+		if (OnHover())
+			DebugText("Dragging");
+		return true;
 	}
-	return false;
+	else
+		return false;
 }
 
 int UIElement::GetID()
@@ -78,6 +78,7 @@ int UIElement::GetID()
 void UIElement::SetPosition(Play::Point2D pos)
 {
 	m_pos = pos;
+	SetCollisionBoundary();
 }
 
 void UIElement::SetSpriteName(const char* name)
@@ -87,13 +88,14 @@ void UIElement::SetSpriteName(const char* name)
 
 void UIElement::SetCollisionBoundary()
 {
-	m_lefttop_pos = m_pos - Play::Point2D(m_witdth / 2, m_height / 2);
-	m_rightbottom_pos = m_pos + Play::Point2D(m_witdth / 2, m_height / 2);
+	m_lefttop_pos = m_pos - Play::Point2D(m_width / 2, m_height / 2);
+	m_rightbottom_pos = m_pos + Play::Point2D(m_width / 2, m_height / 2);
 }
 
 void UIElement::DrawBoundingBox(Play::Colour color)
 {
 	Play::DrawRect(m_lefttop_pos, m_rightbottom_pos, color);
+	Play::DrawDebugText(m_pos, std::to_string(m_id).c_str(), color, true);
 }
 
 UIElement::~UIElement()

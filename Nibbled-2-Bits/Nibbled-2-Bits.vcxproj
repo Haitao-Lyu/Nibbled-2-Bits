@@ -105,6 +105,7 @@
     <ClInclude Include="GameObject\Component\Collider.h" />
     <ClInclude Include="GameObject\Component\CollisionSystem.h" />
     <ClInclude Include="GameObject\ConsumableObj.h" />
+    <ClInclude Include="GameObject\Tube.h" />
     <ClInclude Include="Manager\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
     <ClInclude Include="GameObject\MouseHole.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Level\LevelState.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Manager\ResourceMgr.h" />
+    <ClInclude Include="UI\Component\GridComponent.h" />
     <ClInclude Include="UI\Panel.h" />
     <ClInclude Include="Particle\ParticleCullingMask.h" />
     <ClInclude Include="Particle\FactoryInterface.h" />
@@ -148,6 +150,7 @@
     <ClCompile Include="GameObject\Component\CollisionSystem.cpp" />
     <ClCompile Include="GameObject\ConsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\Tube.cpp" />
     <ClCompile Include="Manager\GameObjectMgr.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
     <ClCompile Include="GameObject\MouseHole.cpp" />
@@ -164,6 +167,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Manager\ResourceMgr.cpp" />
+    <ClCompile Include="UI\Component\GridComponent.cpp" />
     <ClCompile Include="UI\Panel.cpp" />
     <ClCompile Include="Particle\ParticleCullingMask.cpp" />
     <ClCompile Include="UI\EventCenter.cpp" />
