@@ -11,9 +11,9 @@
 #include "UI/Button.h"
 
 
-Panel panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH)/2 - 10,DISPLAY_HEIGHT/2 }, 814/1.5 , 497/1.5 , "Panel_not_tab");
+Panel panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH)/2 - 10,DISPLAY_HEIGHT/2 }, static_cast<short>(814/1.5) , static_cast<short>(497/1.5) , "Panel_not_tab");
 
-Level level1("CHEESE");
+Level level1("GRIDTEST");
 
 Button btn({ 100,100 }, 100, 100, "iron_tube_cross");
  
@@ -32,13 +32,13 @@ bool MainGameUpdate( float elapsedTime )
 
 	panel.Render();
 	panel.DrawBoundingBox();
-	//level1.Render();
+	level1.Render();
 
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_CHEESE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSE);
-	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
+	//GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSEHOLE);
 
 	Play::PresentDrawingBuffer();

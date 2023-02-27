@@ -32,5 +32,7 @@ public:
 	void CheckAjacentTiles();
 
 	void LoadLevel();
+
+	void LoadLevelBaseOnGrid();
 };
 

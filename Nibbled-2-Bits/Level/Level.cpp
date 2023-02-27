@@ -25,7 +25,7 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW);
 	}
 	levelName = name;
-	gridComponent.InitGridInfo(GRID_ROW, GRID_COL, GAME_AREA_HEIGHT, GAME_AREA_WIDTH, {GAME_AREA_WIDTH - 20 ,GAME_AREA_HEIGHT/2},50,50);
+	gridComponent.InitGridInfo(GRID_ROW + 1, GRID_COL, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
 }
 
 Level::~Level()
@@ -79,7 +79,12 @@ void Level::CheckAjacentTiles()
     }
 }
 
+void Level::LoadLevelBaseOnGrid()
+{
+	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
+	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
 
+}
 
 //when load level add a boundary outside
 void Level::LoadLevel()
