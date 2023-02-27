@@ -60,11 +60,14 @@ bool UIElement::OnHover()
 
 bool UIElement::OnDrag()
 {
-	if (Play::GetMouseButton(Play::Align::LEFT))
+	if (OnHover())
 	{
-		if (OnHover())
+		if (Play::GetMouseButton(Play::Align::LEFT))
+		{
+
 			DebugText("Dragging");
-		return true;
+			return true;
+		}
 	}
 	else
 		return false;

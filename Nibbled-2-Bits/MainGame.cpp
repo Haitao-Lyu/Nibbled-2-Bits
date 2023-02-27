@@ -22,7 +22,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
 	level1.LoadLevel();
-	
+	panel.gridComponent.AddToGrids(&btn);
 }
 
 bool MainGameUpdate( float elapsedTime )
