@@ -13,6 +13,7 @@ public:
 	short m_width = 0;
 	const char* m_spriteName = "";
 	float m_scale = 1.0f;
+	bool isHolding = false;
 	Play::Point2D m_lefttop_pos{ 0.0f,0.0f }, m_rightbottom_pos{ 0.0f,0.0f };
 
 	UIElement() {}
@@ -21,13 +22,17 @@ public:
 
 	UIElement(float x, float y, short height = 100, short width = 50);
 
-	virtual void Render(float scale = 1.0f);
+	virtual void Update();
+
+	virtual void Render();
 
 	virtual bool OnClick();
 
 	virtual bool OnHover();
 
 	virtual bool OnDrag();
+
+	virtual bool OnHolding();
 
 	int GetID();
 

@@ -25,10 +25,15 @@ UIElement::UIElement(float x, float y, short height, short width )
 	SetCollisionBoundary();
 }
 
-void UIElement::Render(float scale)
+void UIElement::Update()
+{
+	Render();
+}
+
+void UIElement::Render()
 {
 	if(std::strcmp(m_spriteName,"") != 0)
-	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, 0, scale, 1);
+	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, 0, m_scale, 1);
 }
 
 bool UIElement::OnClick()
@@ -71,6 +76,29 @@ bool UIElement::OnDrag()
 	}
 	else
 		return false;
+}
+
+bool UIElement::OnHolding()
+{
+	if (isHolding)
+	{
+		if (Play::KeyDown(VK_LBUTTON))
+		{
+			return true;
+		}
+		else
+		{
+			isHolding = false;
+			return false;
+		}
+	}
+	if (OnHover())
+	{
+		if (Play::KeyDown(VK_LBUTTON))
+		{
+			isHolding = true;
+		}
+	}
 }
 
 int UIElement::GetID()

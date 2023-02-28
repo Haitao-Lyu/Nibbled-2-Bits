@@ -25,6 +25,8 @@ public:
 	Level(const char* name);
 	~Level();
 
+	void Update();
+
 	void Render();
 
 	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);

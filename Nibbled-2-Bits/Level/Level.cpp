@@ -25,12 +25,18 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW);
 	}
 	levelName = name;
-	gridComponent.InitGridInfo(GRID_ROW + 1, GRID_COL + 1, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
+	gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
 }
 
 Level::~Level()
 {
 
+}
+
+void Level::Update()
+{
+	
+	Render();
 }
 
 void Level::Render()
@@ -84,7 +90,98 @@ void Level::CheckAjacentTiles()
 void Level::LoadLevelBaseOnGrid()
 {
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
+	// col:16  row: 13
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
+
+	//*Create Mouse Hole*//
+	MouseHole* mouse_entry = nullptr;
+	if (gameAreaInfo.EntryPos.x == 0)
+	{
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::LEFT);
+	}
+	else if (gameAreaInfo.EntryPos.x == (GRID_COL + 1))
+	{
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::RIGHT);
+	}
+	else if (gameAreaInfo.EntryPos.y == 0)
+	{
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::TOP);
+	}
+	else if (gameAreaInfo.EntryPos.y == GRID_ROW + 1)
+	{
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::BOTTOM);
+	}
+	if (mouse_entry)
+		GameObjectMgr::AddNewGameObject(*mouse_entry);
+
+	Play::Point2D pos2{ gameAreaInfo.ExitPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.ExitPos.y * GRID_SIZE + GRID_SIZE / 2 };
+	MouseHole* mouse_Exit = nullptr;
+	if (gameAreaInfo.ExitPos.x == -1)
+	{
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::LEFT);
+	}
+	else if (gameAreaInfo.ExitPos.x == (GRID_COL + 1))
+	{
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::RIGHT);
+	}
+	else if (gameAreaInfo.ExitPos.y == 0)
+	{
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::TOP);
+	}
+	else if (gameAreaInfo.ExitPos.y == GRID_ROW + 1)
+	{
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::BOTTOM);
+	}
+	if (mouse_Exit)
+	{
+		mouse_Exit->SetType(E_MOUSEHOLE_TYPE::EXIT);
+	}
+	GameObjectMgr::AddNewGameObject(*mouse_Exit);
+
+	///*create boundary outside game area*//
+	//add TOP column
+	for (int j = 0; j < GRID_COL + 1; j++)
+	{
+		Boundary* boundary = new Boundary(gridComponent.GetGridPos(j,0));
+		boundary->SetDirection(E_DIR_BOUNDARY::UP);
+		//set corner
+		if (j == 0)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	//// Add RIGHT column (excluding top and bottom elements)
+	for (int i = 0; i < GRID_ROW + 1; i++)
+	{
+		Boundary* boundary = new Boundary(gridComponent.GetGridPos(GRID_COL + 1, i));
+		boundary->SetDirection(E_DIR_BOUNDARY::RIGHT);
+		//set corner
+		if (i == 0)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	//// Add BTM row
+	for (int j = GRID_COL + 1; j > 0; j--)
+	{
+		Boundary* boundary = new Boundary(gridComponent.GetGridPos(j, GRID_ROW + 1));
+		boundary->SetDirection(E_DIR_BOUNDARY::DOWN);
+		//set corner
+		if (j == GRID_COL + 1)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
+
+	//// Add LEFT column (excluding top and bottom elements)
+	for (int i = GRID_ROW + 1 ; i > 0; i--)
+	{
+		Boundary* boundary = new Boundary(gridComponent.GetGridPos(0, i));
+		boundary->SetDirection(E_DIR_BOUNDARY::LEFT);
+		//set corner
+		if (i == GRID_ROW + 1)
+			boundary->SetCorner();
+		GameObjectMgr::AddNewGameObject(*boundary);
+	}
 	
 	///*create game object by level file info
 	for (int i = 0; i < level.size(); i++)
@@ -100,7 +197,7 @@ void Level::LoadLevelBaseOnGrid()
 				case E_OBJTYPE::E_TILE:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					Tile* tile = new Tile(gridComponent.GetGridPos(i, j), E_TILE_COLOR::BLUE);
+					Tile* tile = new Tile(gridComponent.GetGridPos(i + 1, j), E_TILE_COLOR::BLUE);
 					GameObjectMgr::AddNewGameObject(*tile);
 				}
 				break;
@@ -110,11 +207,11 @@ void Level::LoadLevelBaseOnGrid()
 					Mouse* mice = nullptr;
 
 					if (item->m_color == 0)
-						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::GREY);
+						mice = new Mouse(gridComponent.GetGridPos(i + 1 , j ), E_MOUSE_COLOR::GREY);
 					if (item->m_color == 1)
-						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::DARK_GREY);
+						mice = new Mouse(gridComponent.GetGridPos(i + 1, j ), E_MOUSE_COLOR::DARK_GREY);
 					if (item->m_color == 2)
-						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::WHITE);
+						mice = new Mouse(gridComponent.GetGridPos(i + 1, j ), E_MOUSE_COLOR::WHITE);
 					if (mice)
 					{
 						mice->SetInitRotation(static_cast<float>(item->rot * 90));
@@ -125,7 +222,7 @@ void Level::LoadLevelBaseOnGrid()
 				case E_OBJTYPE::E_MOUSETRAP:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					MouseTrap* trap = new MouseTrap(gridComponent.GetGridPos(i , j ));
+					MouseTrap* trap = new MouseTrap(gridComponent.GetGridPos(i + 1, j ));
 					trap->m_rot = static_cast<float>(item->rot * 90);
 					if (item->trap_color)
 						trap->SetColor(E_TRAPCOLOR::DARK_WOOD);
@@ -137,7 +234,7 @@ void Level::LoadLevelBaseOnGrid()
 				case E_OBJTYPE::E_CHEESE:
 				{
 					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
-					Cheese* cz = new Cheese(gridComponent.GetGridPos(i , j ));
+					Cheese* cz = new Cheese(gridComponent.GetGridPos(i + 1, j ));
 
 					GameObjectMgr::AddNewGameObject(*cz);
 				}
@@ -164,19 +261,19 @@ void Level::LoadLevel()
 	MouseHole* mouse_entry = nullptr;
 	if (gameAreaInfo.EntryPos.x == 0)
 	{
-		mouse_entry = new MouseHole(GameToWorld(pos1),E_MOUSEHOLE_DIR::LEFT);
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y),E_MOUSEHOLE_DIR::LEFT);
 	}
 	else if (gameAreaInfo.EntryPos.x == (GRID_COL  + 1))
 	{
-		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::RIGHT);
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::RIGHT);
 	}
 	else if (gameAreaInfo.EntryPos.y == 0)
 	{
-		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::TOP);
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::TOP);
 	}
 	else if (gameAreaInfo.EntryPos.y == GRID_ROW + 1)
 	{
-		mouse_entry = new MouseHole(GameToWorld(pos1), E_MOUSEHOLE_DIR::BOTTOM);
+		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::BOTTOM);
 	}
 	if(mouse_entry)
 	GameObjectMgr::AddNewGameObject(*mouse_entry);
@@ -185,19 +282,19 @@ void Level::LoadLevel()
 	MouseHole* mouse_Exit = nullptr;
 	if (gameAreaInfo.ExitPos.x == -1)
 	{
-		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::LEFT);
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::LEFT);
 	}
 	else if (gameAreaInfo.ExitPos.x == (GRID_COL + 1))
 	{
-		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::RIGHT);
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::RIGHT);
 	}
 	else if (gameAreaInfo.ExitPos.y == 0)
 	{
-		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::TOP);
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::TOP);
 	}
 	else if (gameAreaInfo.ExitPos.y == GRID_ROW + 1)
 	{
-		mouse_Exit = new MouseHole(GameToWorld(pos2), E_MOUSEHOLE_DIR::BOTTOM);
+		mouse_Exit = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.ExitPos.x, gameAreaInfo.ExitPos.y), E_MOUSEHOLE_DIR::BOTTOM);
 	}
 	if (mouse_Exit)
 	{

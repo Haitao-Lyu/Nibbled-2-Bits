@@ -1,45 +1,16 @@
 #include "pch.h"
 #include "GridComponent.h"
 #include "../../GameTool/DebugTool.h"
-int GridItem::grid_id;
-
-GridItem::GridItem()
-{
-
-}
-
-GridItem::GridItem(Play::Point2D pos, short height, short width)
-{
-	grid_id++;
-	m_id = grid_id;
-	m_pos = pos;
-	m_height = height;
-	m_width = width;
-	m_lefttop_pos = m_pos - Play::Point2D(width / 2, height / 2);
-	m_rightbottom_pos = m_pos + Play::Point2D(width / 2, height / 2);
-}
-
-void GridItem::AddGridItem(UIElement* element)
-{
-	m_element = element;
-}
-
-void GridItem::DrawGrid(Play::Colour color /*= Play::cRed*/)
-{
-	Play::DrawRect(m_lefttop_pos, m_rightbottom_pos, color);
-	Play::DrawDebugText(m_pos, std::to_string(m_id).c_str(), color, true);
-}
-
 
 GridComponent::GridComponent()
 {
 	m_pos = { 0.0f,0.0f };
 	m_height = 100;
 	m_width = 100;
-	SetGridNum(2,2);
+	SetGridNum(2, 2);
 }
 
-GridComponent::GridComponent(Play::Point2D pos, short height, short width, short row , short col )
+GridComponent::GridComponent(Play::Point2D pos, short height, short width, short row, short col)
 {
 	m_pos = pos;
 	m_height = height;
@@ -55,16 +26,13 @@ void GridComponent::SetGridNum(short row, short col)
 
 Play::Point2D GridComponent::GetGridPos(int i, int j)
 {
-	if( i < gridList.size() && i >= 0)
-	if( j < gridList[0].size() && j >= 0)
-	return gridList[i][j].m_pos;
+	if (i < gridList.size() && i >= 0)
+		if (j < gridList[0].size() && j >= 0)
+			return gridList[i][j].m_pos;
+	
+	return Play::Point2D{ 0,0 };
 }
 
-void GridItem::SetGridSize(short height, short width)
-{
-	m_height = height;
-	m_width = width;
-}
 
 void GridComponent::InitGridInfo(short row, short col, short height, short width, Play::Point2D pos, short gridheight , short gridWidth)
 {
@@ -113,37 +81,38 @@ void GridComponent::Render()
 	{
 		//debug grids
 		grid.DrawGrid();
-		//if has uielement
+		//if has ui element
 		if (grid.m_element)
 		{
-			grid.m_element->Render(1.0f);
-			if (grid.m_element->OnDrag())
+			grid.m_element->Render();
+
+
+			if (grid.m_element->OnHolding())
 			{
 				UIElement btn;
 				btn.SetSpriteName(grid.m_element->m_spriteName);
 				btn.SetPosition(Play::GetMousePos());
-				btn.Render(0.5);
+				btn.m_scale = 0.5;
+				btn.Render();
 			}
-			else
-			{
-				//release mouse button
-			}
+
 		}
 	}
 }
 
 void GridComponent::AddToGrids(UIElement* element)
 {
-	for (std::vector<GridItem>& grids : gridList)
+	for (int j = 0; j < gridList[0].size(); j++)
 	{
-		for (GridItem& grid : grids)
+
+		for (int i = 0; i < gridList.size(); i++)
 		{
-			if (grid.m_element)
+			if (gridList[i][j].m_element)
 				continue;
 			else
 			{
-				element->SetPosition(grid.m_pos);
-				grid.m_element = element;
+				element->SetPosition(gridList[i][j].m_pos);
+				gridList[i][j].m_element = element;
 				break;
 			}
 

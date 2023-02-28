@@ -21,7 +21,7 @@ public:
 
 	void SetSpriteName(const char* name);
 
-	void Render(float scale = 1.0f) override;
+	void Render() override;
 
 	bool OnDrag();
 

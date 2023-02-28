@@ -25,6 +25,6 @@ public:
 
 	bool OnHover() override;
 
-	void Render(float scale = 1.0f) override;
+	void Render() override;
 };
 

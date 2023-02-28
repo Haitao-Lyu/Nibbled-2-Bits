@@ -23,6 +23,7 @@ namespace GameObjectMgr
 			for (int i = 0; i < g_gameObjectMapbyType[static_cast<int>(obj.m_type)].size(); i++)
 			{
 				GameObject* temp = g_gameObjectMapbyType[static_cast<int>(obj.m_type)][i];
+				if(temp)
 				if (temp->m_id == obj.m_id)
 				{
 					g_gameObjectMapbyType[static_cast<int>(obj.m_type)].erase(g_gameObjectMapbyType[static_cast<int>(obj.m_type)].begin() + i--);
@@ -61,6 +62,7 @@ namespace GameObjectMgr
 			//DebugValue((int)list.size());
 			for (GameObject* obj: g_gameObjectMapbyType[static_cast<int>(type)])
 			{
+				if(obj)
 				obj->Update();
 			}
 		}
@@ -75,8 +77,10 @@ namespace GameObjectMgr
 
 	std::vector<GameObject*>& GetGameObjectsByType(E_OBJTYPE type)
 	{
-		if(g_gameObjectMapbyType.find(static_cast<int>(type)) != g_gameObjectMapbyType.end())
-		return g_gameObjectMapbyType[static_cast<int>(type)];
+		if (g_gameObjectMapbyType.find(static_cast<int>(type)) != g_gameObjectMapbyType.end())
+			return g_gameObjectMapbyType[static_cast<int>(type)];
+		else
+			return g_gameObjectMapbyType[static_cast<int>(type)];
 	}
 
 }

@@ -234,6 +234,8 @@ void Mouse::CheckCircleCollision()
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
 	{
+		if (!obj)//check pointer valid
+			break;
 		if (obj->GetID() == m_id)
 			continue;//except it self
 		Mouse* mouse = static_cast<Mouse*>(obj);
@@ -248,8 +250,11 @@ void Mouse::CheckCircleCollision()
 	}
 	//Get Tile obj list and calculate collision // And block mouse moving
 	std::vector<GameObject*>& list_boundary = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
+
 	for (GameObject* obj : list_boundary)
 	{
+		if (!obj)//check pointer valid
+			break;
 		Boundary* boundary = static_cast<Boundary*>(obj);
 		CircleCollider& collider = boundary->GetCollider();
 		if (m_circleCollider.collidesWith(collider))
@@ -265,6 +270,8 @@ void Mouse::CheckCircleCollision()
 	std::vector<GameObject*>& list_tile = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TILE);
 	for (GameObject* obj : list_tile)
 	{
+		if (!obj)//check pointer valid
+			break;
 		Tile* tile = static_cast<Tile*>(obj);
 		CircleCollider& collider = tile->GetCollider();
 		if (m_circleCollider.collidesWith(collider))
@@ -280,6 +287,8 @@ void Mouse::CheckCircleCollision()
 	std::vector<GameObject*>& list_Trap = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);
 	for (GameObject* obj : list_Trap)
 	{
+		if (!obj)//check pointer valid
+			break;
 		MouseTrap* trap = static_cast<MouseTrap*>(obj);
 		if (m_circleCollider.collidesWith(trap->GetCollider()))
 		{
@@ -293,6 +302,8 @@ void Mouse::CheckCircleCollision()
 	std::vector<GameObject*>& list_CZ = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_CHEESE);
 	for (GameObject* obj : list_CZ)
 	{
+		if (!obj)//check pointer valid
+			break;
 		Cheese* cz = static_cast<Cheese*>(obj);
 		if (m_circleCollider.collidesWith(cz->GetCollider()))
 		{
@@ -305,6 +316,8 @@ void Mouse::CheckCircleCollision()
 	std::vector<GameObject*>& list_hole = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::	E_MOUSEHOLE);
 	for (GameObject* obj : list_hole)
 	{
+		if (!obj)//check pointer valid
+			break;
 		MouseHole* hole = static_cast<MouseHole*>(obj);
 		if (m_circleCollider.collidesWith(hole->GetCollider()))
 		{

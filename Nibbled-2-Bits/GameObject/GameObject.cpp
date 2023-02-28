@@ -11,7 +11,6 @@ GameObject::GameObject(Play::Point2D pos, E_OBJTYPE type)
 	m_type = type;
 	m_id = total_id;
 	total_id++;
-
 	GameObjectMgr::AddNewGameObject(*this);
 }
 

@@ -20,9 +20,6 @@ Button::Button(Play::Point2f pos,  short height, short width,  const char* sprit
 	m_spriteName = spriteName;
 	m_btnText = btnName;
 	m_OnClickHandler = OnClickHandler;
-	m_OnClickHandler = OnClickHandler; 
-
-
 }
 
 void Button::SetSpriteName(const char* name)
@@ -30,7 +27,7 @@ void Button::SetSpriteName(const char* name)
 	m_spriteName = name;
 }
 
-void Button::Render(float scale)
+void Button::Render()
 {
 	if (std::strcmp(m_spriteName, "") != 0)
 		m_scale = static_cast<float>(m_height / Play::GetSpriteHeight(m_spriteName));

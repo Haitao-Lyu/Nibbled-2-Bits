@@ -71,8 +71,8 @@ float Slider::GetValue()
 }
 
 
-void Slider::Render(float scale)
+void Slider::Render()
 {
-	rect.Render(scale);
-	btn.Render(scale);
+	rect.Render();
+	btn.Render();
 }

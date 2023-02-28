@@ -22,5 +22,5 @@ public:
 	Panel(Play::Point2D pos, short height , short width, const char* spriteName = "");
 	~Panel();
 
-	void Render();
+	void Render() override;
 };

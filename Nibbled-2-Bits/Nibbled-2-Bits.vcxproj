@@ -121,6 +121,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Manager\ResourceMgr.h" />
     <ClInclude Include="UI\Component\GridComponent.h" />
+    <ClInclude Include="UI\Component\GridItem.h" />
     <ClInclude Include="UI\Panel.h" />
     <ClInclude Include="Particle\ParticleCullingMask.h" />
     <ClInclude Include="Particle\FactoryInterface.h" />
@@ -168,6 +169,7 @@
     </ClCompile>
     <ClCompile Include="Manager\ResourceMgr.cpp" />
     <ClCompile Include="UI\Component\GridComponent.cpp" />
+    <ClCompile Include="UI\Component\GridItem.cpp" />
     <ClCompile Include="UI\Panel.cpp" />
     <ClCompile Include="Particle\ParticleCullingMask.cpp" />
     <ClCompile Include="UI\EventCenter.cpp" />

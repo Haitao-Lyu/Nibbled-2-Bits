@@ -9,9 +9,9 @@ static const Play::Matrix2D dir_up = Play::MatrixIdentity();
 
 Boundary::Boundary(Play::Point2D pos):Obstacle(pos,E_OBJTYPE::E_BOUNDARY)
 {
-	SetScale(1.25f);
+	SetScale(1.15f);
 	m_boxCollider.Init(Play::GetSpriteWidth(tileName) * m_scale, Play::GetSpriteHeight(tileName) * m_scale, pos, this);
-	m_circleCollider.Init(pos , (Play::GetSpriteWidth(tileName)/2 - 5.0f)  * m_scale);
+	m_circleCollider.Init(pos , (Play::GetSpriteWidth(tileName)/2 )  * m_scale);
 }
 
 Boundary::~Boundary()
@@ -58,8 +58,9 @@ void Boundary::Render()
 	}
 	else
 	Play::DrawSpriteTransformed(Play::GetSpriteId(tileName), scaleMt * rtMt, 0);
-	//m_circleCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox(Play::cBlue);
 	//m_boxCollider.DrawBoundingBox();
+	//TODO: REFACTOR SQAURE COLLDIER
 }
 
 void Boundary::SetDirection(E_DIR_BOUNDARY dir)
