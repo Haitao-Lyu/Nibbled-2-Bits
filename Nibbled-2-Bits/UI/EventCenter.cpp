@@ -11,7 +11,7 @@ namespace EventCenter
 
 	void RegisterListener(const char* eventName, EventListener &listener)
 	{
-		DebugValue((int)g_listeners_.size());
+		//DebugValue((int)g_listeners_.size());
 		if (!g_listeners_[eventName].empty())
 		{
 			for (int i = 0; i < g_listeners_[eventName].size(); g_listeners_[eventName])
@@ -41,10 +41,21 @@ namespace EventCenter
 	{
 		if (g_listeners_.empty())
 			return;
-		DebugValue(static_cast<int>(g_listeners_[eventName].size()),"listener:",20);
+		//DebugValue(static_cast<int>(g_listeners_[eventName].size()),"listener:",20);
 		for (auto& listener : g_listeners_[eventName])
 		{
 			listener.onEvent(&event);
+		}
+	}
+
+	void PostEvent(const char* eventName)
+	{
+		if (g_listeners_.empty())
+			return;
+		//DebugValue(static_cast<int>(g_listeners_[eventName].size()),"listener:",20);
+		for (auto& listener : g_listeners_[eventName])
+		{
+			listener.onEvent();
 		}
 	}
 
@@ -54,6 +65,10 @@ namespace EventCenter
 	}
 }
 
+
+Event::Event()
+{
+}
 
 Event::Event(FunctionType function)
 {
@@ -75,13 +90,24 @@ void Event::operator()() const
 
 bool EventListener::operator==(const EventListener& listener) const
 {
-	if (id == listener.id)
+	if (m_id == listener.m_id)
 		return true;
 	return false;
 }
 
+void EventListener::addEvent(FunctionType function)
+{
+	m_event.add(function);
+}
+
 void EventListener::onEvent(const Event* event)
 {
-	(*event)();
+	m_event.add(*event);
+	(m_event)();
+}
+
+void EventListener::onEvent()
+{
+	(m_event)();
 }
 

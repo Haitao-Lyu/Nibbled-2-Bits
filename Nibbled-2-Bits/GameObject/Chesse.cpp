@@ -40,6 +40,7 @@ void Cheese::Update()
 	if (isConsumed)
 	{
 		GameObjectMgr::RemoveGameObject(*this);
+		return;
 	}
 	Render();
 	//m_boxCollider.DrawBoundingBox();

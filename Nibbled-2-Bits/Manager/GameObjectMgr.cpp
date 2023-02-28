@@ -2,6 +2,7 @@
 #include "GameObjectMgr.h"
 #include <map> // map faster or vector faster ? ? ?
 #include "../GameTool/DebugTool.h"
+#include "../GameObject/Tube.h"
 namespace GameObjectMgr
 {
 	std::map<int, GameObject*> g_gameObjectMapAll;
@@ -27,6 +28,7 @@ namespace GameObjectMgr
 				if (temp->m_id == obj.m_id)
 				{
 					g_gameObjectMapbyType[static_cast<int>(obj.m_type)].erase(g_gameObjectMapbyType[static_cast<int>(obj.m_type)].begin() + i--);
+					//delete temp; //cause porblem
 				}
 			}
 		}
@@ -45,6 +47,7 @@ namespace GameObjectMgr
 				if (temp->m_id == obj.m_id)
 				{
 					g_gameObjectMapbyType[static_cast<int>(obj.m_type)].erase(g_gameObjectMapbyType[static_cast<int>(obj.m_type)].begin() + i--);
+					//delete temp; //cause porblem
 				}
 			}
 		}
@@ -82,6 +85,40 @@ namespace GameObjectMgr
 		else
 			return g_gameObjectMapbyType[static_cast<int>(type)];
 	}
+
+
+	GameObject* MakeGameObject(E_OBJTYPE gameObjectType, Play::Point2f pos)
+	{
+		GameObject* obj = nullptr;
+		switch (gameObjectType)
+		{
+		case E_OBJTYPE::E_NULL:
+			break;
+		case E_OBJTYPE::E_MOUSE:
+			break;
+		case E_OBJTYPE::E_TILE:
+			break;
+		case E_OBJTYPE::E_BOUNDARY:
+			break;
+		case E_OBJTYPE::E_MOUSETRAP:
+			break;
+		case E_OBJTYPE::E_CHEESE:
+			break;
+		case E_OBJTYPE::E_MOUSEHOLE:
+			break;
+		case E_OBJTYPE::E_TUBE:
+		{
+			Tube* tube = new Tube(pos);
+			obj = tube;
+			AddNewGameObject(*tube);
+		}
+			break;
+		default:
+			break;
+		}
+		return obj;
+	}
+
 
 }
 

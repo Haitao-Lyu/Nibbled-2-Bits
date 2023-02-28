@@ -4,25 +4,27 @@
 #include "Component/CircleCollider.h"
 //not all penguien need to be a bird
 //which way is better perpare base class ahead or create it when shared feature show up
-class Obstacle:public GameObject
+class ClickableObj :public GameObject
 {
 protected:
-	BoxCollider m_boxCollider;
 	CircleCollider m_circleCollider;
+	bool isHolding = false;
+	Play::Point2D m_lefttop_pos{ 0.0f,0.0f };
+	Play::Point2D m_rightbottom_pos{ 0.0f,0.0f };
 public:
-	Obstacle(Play::Point2D pos,E_OBJTYPE type);
-	~Obstacle();
+
+	ClickableObj(Play::Point2D pos, E_OBJTYPE type);
+
+	~ClickableObj();
 
 	virtual void Update() override;
 	virtual void Render() override;
 
+	virtual bool OnDrag();
 
-	BoxCollider& GetBoxCollider();
+	virtual bool OnHover();
+
+	virtual bool OnClick();
+
 	CircleCollider& GetCollider();
-
-	void SetPosition(Play::Point2D pos) override;
-
-	void SetPosition(float x, float y) override;
-
 };
-

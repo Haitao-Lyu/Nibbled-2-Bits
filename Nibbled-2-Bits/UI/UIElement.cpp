@@ -33,7 +33,8 @@ void UIElement::Update()
 void UIElement::Render()
 {
 	if(std::strcmp(m_spriteName,"") != 0)
-	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, 0, m_scale, 1);
+	Play::DrawSpriteRotated(m_spriteName, m_pos, 0, m_rot, m_scale, 1);
+
 }
 
 bool UIElement::OnClick()
@@ -41,6 +42,19 @@ bool UIElement::OnClick()
 	if (OnHover())
 	{
 		if (Play::KeyPressed(VK_LBUTTON))
+		{
+			DebugText("clicking");
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UIElement::OnClickRight()
+{
+	if (OnHover())
+	{
+		if (Play::KeyPressed(VK_RBUTTON))
 		{
 			DebugText("clicking");
 			return true;
@@ -92,12 +106,10 @@ bool UIElement::OnHolding()
 			return false;
 		}
 	}
-	if (OnHover())
+
+	if(OnClick())
 	{
-		if (Play::KeyDown(VK_LBUTTON))
-		{
-			isHolding = true;
-		}
+		isHolding = true;	
 	}
 }
 
@@ -110,6 +122,11 @@ void UIElement::SetPosition(Play::Point2D pos)
 {
 	m_pos = pos;
 	SetCollisionBoundary();
+}
+
+void UIElement::SetRotation(float rot)
+{
+	m_rot = rot;
 }
 
 void UIElement::SetSpriteName(const char* name)

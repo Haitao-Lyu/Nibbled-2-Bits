@@ -4,7 +4,8 @@
 #include <functional>
 #include <map>
 #include <string.h>
-class Event {
+class Event 
+{
 
 	typedef std::function<void()> FunctionType;
 
@@ -12,6 +13,7 @@ private:
 	std::vector<FunctionType> m_functions;//list of function?
 
 public:
+	Event();
 
 	Event(FunctionType function);
 
@@ -21,14 +23,23 @@ public:
 
 };
 
-class EventListener {
+class EventListener 
+{
+	typedef std::function<void()> FunctionType;
+private:
 	static int id;
+	int m_id;
+	Event m_event;
 public:
-	EventListener() { id++; }
+	EventListener() { m_id = id++; }
 
 	bool operator == (const EventListener& listener) const;
 
+	void addEvent(FunctionType function);
+
 	virtual void onEvent(const Event* event);
+
+	virtual void onEvent();
 };
 
 namespace EventCenter
@@ -40,6 +51,8 @@ namespace EventCenter
 	void UnregisterListenersByEvent(const char* eventName);
 
 	void PostEvent(const char* eventName, const Event& event);
+
+	void PostEvent(const char* eventName);
 
 	void DebugEvent();
 }

@@ -138,6 +138,9 @@
     <ClCompile Include="UI\Component\GridItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\ClickableObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Particle\ParticleCullingMask.h">
@@ -264,6 +267,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Component\GridItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\ClickableObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

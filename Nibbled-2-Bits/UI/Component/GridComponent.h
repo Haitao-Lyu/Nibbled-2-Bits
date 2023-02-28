@@ -2,15 +2,20 @@
 #include "GridItem.h"
 class GridComponent
 {
-public:
-	std::vector<std::vector<GridItem>> gridList = {};
+private:
+
 	Play::Point2D m_pos;
 	Play::Point2D m_lefttop_pos;
 	Play::Point2D m_rightbottom_pos;
+
 	short grid_row_num{ 0 };
 	short grid_col_num{ 0 };
 	short m_height;
 	short m_width;
+public:
+	std::vector<std::vector<GridItem>> gridList = {};
+
+	GridItem* heldGridItem = nullptr;
 
 	GridComponent();
 
@@ -24,6 +29,12 @@ public:
 
 	void Render();
 
-	void AddToGrids(UIElement* element);
+	void RemoveGridItemByID(int id);
+
+	void Push_back_Grids(UIElement* element);
+
+	void AddToGrids(UIElement* element,short x,short y);
+
+	Play::Point2D GetPos();
 };
 

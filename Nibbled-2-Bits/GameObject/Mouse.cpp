@@ -3,11 +3,13 @@
 #include "../GameTool/DebugTool.h"
 #include "Component/CollisionSystem.h"
 #include "../Manager/GameObjectMgr.h"
+
 #include "Tile.h"
 #include "Boundary.h"
 #include "MouseTrap.h"
 #include "Cheese.h"
 #include "MouseHole.h"
+#include "Tube.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
@@ -312,7 +314,7 @@ void Mouse::CheckCircleCollision()
 		}
 	}
 
-	//Get cheese obj list and calculate collision // And block mouse moving
+	//Get mousehole obj list and calculate collision // And block mouse moving
 	std::vector<GameObject*>& list_hole = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::	E_MOUSEHOLE);
 	for (GameObject* obj : list_hole)
 	{
@@ -325,6 +327,22 @@ void Mouse::CheckCircleCollision()
 			DebugValue(hole->GetID(), "collides:", 50);
 		}
 	}
+
+	//Get mousehole obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_tube = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_TUBE);
+	for (GameObject* obj : list_tube)
+	{
+		if (!obj)//check pointer valid
+			break;
+		Tube* tube = static_cast<Tube*>(obj);
+		if (m_circleCollider.collidesWith(tube->GetCollider()))
+		{
+
+			DebugValue(tube->GetID(), "collides:", 50);
+		}
+	}
+
+
 }
 
 
@@ -346,7 +364,6 @@ void Mouse::Update()
 
 	if (isDead)
 		SetMouseState(E_MOUSE_STATE::dieState);
-
 	//draw eveything at the end
 	m_state->Update();
 }

@@ -28,7 +28,7 @@ Play::Point2D GridComponent::GetGridPos(int i, int j)
 {
 	if (i < gridList.size() && i >= 0)
 		if (j < gridList[0].size() && j >= 0)
-			return gridList[i][j].m_pos;
+			return gridList[i][j].GetPos();
 	
 	return Play::Point2D{ 0,0 };
 }
@@ -66,7 +66,7 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 		for (int i = 0; i < grid_col_num; i++)
 		{
 			Play::Point2D pos = { m_lefttop_pos.x + i * grid_width + grid_width / 2, m_lefttop_pos.y + j * grid_height + grid_height / 2 };
-			GridItem grid(pos, grid_height, grid_width);
+			GridItem grid(pos, grid_height, grid_width,i,j);
 			gridList[i][j] = grid;
 		}
 	}
@@ -80,44 +80,58 @@ void GridComponent::Render()
 	for (GridItem& grid : grids)
 	{
 		//debug grids
-		grid.DrawGrid();
+		//grid.DrawGrid();
 		//if has ui element
-		if (grid.m_element)
+		if (grid.GetGridUIElement())
 		{
-			grid.m_element->Render();
-
-
-			if (grid.m_element->OnHolding())
-			{
-				UIElement btn;
-				btn.SetSpriteName(grid.m_element->m_spriteName);
-				btn.SetPosition(Play::GetMousePos());
-				btn.m_scale = 0.5;
-				btn.Render();
-			}
-
+			grid.GetGridUIElement()->Render();
 		}
 	}
 }
 
-void GridComponent::AddToGrids(UIElement* element)
+void GridComponent::RemoveGridItemByID(int id)
 {
+	for (std::vector<GridItem>& grids : gridList)
+		for (GridItem& grid : grids)
+		{
+			if (grid.GetID() == id)
+			{
+				grid.Clear();
+			}
+		}
+}
+
+void GridComponent::Push_back_Grids(UIElement* element)
+{
+	bool isAdded = false;
 	for (int j = 0; j < gridList[0].size(); j++)
 	{
 
 		for (int i = 0; i < gridList.size(); i++)
 		{
-			if (gridList[i][j].m_element)
+			if (isAdded)
+				break;
+			if (gridList[i][j].GetGridUIElement())
 				continue;
 			else
 			{
-				element->SetPosition(gridList[i][j].m_pos);
-				gridList[i][j].m_element = element;
+				element->SetPosition(gridList[i][j].GetPos());
+				gridList[i][j].SetGridItem(element);
+				isAdded = true;
 				break;
 			}
-
 		}
-		break;
 	}
 
+}
+
+void GridComponent::AddToGrids(UIElement* element, short x, short y)
+{
+	element->SetPosition(gridList[x][y].GetPos());
+	gridList[x][y].SetGridItem(element);
+}
+
+Play::Point2D GridComponent::GetPos()
+{
+	return m_pos;
 }

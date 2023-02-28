@@ -70,6 +70,7 @@ void MouseTrap::Update()
 		if (timer.isReachTimeInterval())
 		{
 			GameObjectMgr::RemoveGameObject(*this);
+			return;
 		}
 	}
 	Render();

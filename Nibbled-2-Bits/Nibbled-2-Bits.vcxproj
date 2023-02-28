@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="GameObject\Boundary.h" />
     <ClInclude Include="GameObject\Cheese.h" />
+    <ClInclude Include="GameObject\ClickableObj.h" />
     <ClInclude Include="GameObject\Component\BoxCollider.h" />
     <ClInclude Include="GameObject\Component\CircleCollider.h" />
     <ClInclude Include="GameObject\Component\Collider.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="BaseState.cpp" />
     <ClCompile Include="GameObject\Boundary.cpp" />
     <ClCompile Include="GameObject\Chesse.cpp" />
+    <ClCompile Include="GameObject\ClickableObj.cpp" />
     <ClCompile Include="GameObject\Component\BoxCollider.cpp" />
     <ClCompile Include="GameObject\Component\CircleCollider.cpp" />
     <ClCompile Include="GameObject\Component\Collider.cpp" />

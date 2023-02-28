@@ -23,7 +23,7 @@ public:
 
 	void Render() override;
 
-	bool OnDrag();
+	bool OnDrag() override;
 
 	bool OnHover() override;
 

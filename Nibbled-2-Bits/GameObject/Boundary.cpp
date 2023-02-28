@@ -9,7 +9,7 @@ static const Play::Matrix2D dir_up = Play::MatrixIdentity();
 
 Boundary::Boundary(Play::Point2D pos):Obstacle(pos,E_OBJTYPE::E_BOUNDARY)
 {
-	SetScale(1.15f);
+	SetScale(0.35f);
 	m_boxCollider.Init(Play::GetSpriteWidth(tileName) * m_scale, Play::GetSpriteHeight(tileName) * m_scale, pos, this);
 	m_circleCollider.Init(pos , (Play::GetSpriteWidth(tileName)/2 )  * m_scale);
 }

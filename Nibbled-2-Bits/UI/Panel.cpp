@@ -2,7 +2,7 @@
 #include "Panel.h"
 #include "../GameTool/DebugTool.h"
 #include "../MainGame.h"
-
+#include "EventCenter.h"
 Panel::Panel(Play::Point2D pos, short height, short width, const char* spriteName) : UIElement(pos, height, width)
 {
 	m_lt_pos = { m_pos.x - width / 2, m_pos.y - height / 2 };
@@ -17,6 +17,11 @@ Panel::~Panel()
 {
 }
 
+void Panel::Update()
+{
+
+	Render();
+}
 
 void Panel::Render()
 {

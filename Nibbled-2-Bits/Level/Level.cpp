@@ -3,13 +3,21 @@
 #include "../Manager/ResourceMgr.h"
 #include "../Manager/GameObjectMgr.h"
 #include "../MainGame.h"
-
+#include "../UI/Button.h"
 #include "../GameObject/Tile.h"
 #include "../GameObject/Mouse.h"
 #include "../GameObject/Boundary.h"
 #include "../GameObject/MouseTrap.h"
 #include "../GameObject/Cheese.h"
 #include "../GameObject/MouseHole.h"
+#include "../GameObject/Tube.h"
+#include "../UI/EventCenter.h"
+
+
+static const char* tube_cross_name = "iron_tube_cross";
+static const char* tube_one_name = "iron_tube_one_way";
+static const char* tube_three_name = "iron_tube_three_way";
+static const char* tube_two_name = "iron_tube_two_way";
 
 //from mouse editor
 Play::Point2D GameToWorld(Play::Point2D pos) {
@@ -19,13 +27,14 @@ Play::Point2D GameToWorld(Play::Point2D pos) {
 
 Level::Level(const char* name)
 {
-    m_mapinfo.resize(GRID_COL);
+	m_mapinfo.resize(GRID_COL + 2);
 	for (std::vector<int>& row : m_mapinfo)
 	{
-		row.resize(GRID_ROW);
+		row.resize(GRID_ROW + 2,-1);
 	}
 	levelName = name;
-	gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
+	m_gamePanel = new Panel({ GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, GAME_AREA_WIDTH);
+	m_gamePanel->gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
 }
 
 Level::~Level()
@@ -33,66 +42,254 @@ Level::~Level()
 
 }
 
-void Level::Update()
-{
-	
-	Render();
-}
-
-void Level::Render()
-{
-	gridComponent.Render();
-}
-
 void Level::SetTileType(std::vector<std::vector<int>>& adjacentTiles)
 {
-    if (adjacentTiles[0][1])
-    {
-        
-    }
+	if (adjacentTiles[0][1])
+	{
+
+	}
 
 }
 
 void Level::CheckAjacentTiles()
 {
-    std::vector<std::vector<int>> adjacentTiles{ {0,0,0} ,{0,0,0}, {0,0,0} };
-    for (int x = 0; x < m_mapinfo.size(); x++)
-    {
-        for (int y = 0; y < m_mapinfo[0].size(); y++)
-        {
-            GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x][y]);
-            if (obj->m_type == E_OBJTYPE::E_TILE)
-            {
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        // skip current position and out-of-bounds positions
-                        if (i == 0 && j == 0) {
-                            continue;
-                        }
-                        if (x + i < 0 || x + i >= m_mapinfo.size() || y + j < 0 || y + j >= m_mapinfo[0].size()) {
-                            continue;
-                        }
+	std::vector<std::vector<int>> adjacentTiles{ {0,0,0} ,{0,0,0}, {0,0,0} };
+	for (int x = 0; x < m_mapinfo.size(); x++)
+	{
+		for (int y = 0; y < m_mapinfo[0].size(); y++)
+		{
+			GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x][y]);
+			if (obj->m_type == E_OBJTYPE::E_TILE)
+			{
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						// skip current position and out-of-bounds positions
+						if (i == 0 && j == 0) {
+							continue;
+						}
+						if (x + i < 0 || x + i >= m_mapinfo.size() || y + j < 0 || y + j >= m_mapinfo[0].size()) {
+							continue;
+						}
 
-                        // check if adjacent tile exists
-                        GameObject* aj_obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x + i][y + j]);
-                        if (aj_obj->m_type == E_OBJTYPE::E_TILE) {
-                            adjacentTiles[i + 1][j + 1] = 1;
-                        }
-                    }
-                }
-            }
-        }
-    }
+						// check if adjacent tile exists
+						GameObject* aj_obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x + i][y + j]);
+						if (aj_obj->m_type == E_OBJTYPE::E_TILE) {
+							adjacentTiles[i + 1][j + 1] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
+void Level::Update()
+{
+	if (m_gamePanel)
+		m_gamePanel->Update();
 
+	if(m_itemPanel)
+		m_itemPanel->Update();
+
+	CheckPanelEvent();
+
+	LevelControl();
+}
+
+void Level::FromItemPanelAddToLevel(GridItem& grid, short x, short y)
+{
+	//if item exist remove item
+	if (m_mapinfo[x][y] != -1)
+	{
+		return;
+	}
+	else
+	{
+		Tube* obj = new Tube(grid.GetPos(), m_itemPanel->gridComponent.heldGridItem->m_info.tube_type);
+		//if not, create obj,  put UI item into game panel grid list
+		Button* btn = nullptr;
+		if (std::strcmp(obj->spriteName, tube_cross_name) == 0)
+		{
+			btn = new Button({ 100,100 }, 50, 50, "iron_tube_cross");
+		}
+		if (std::strcmp(obj->spriteName, tube_one_name) == 0)
+		{
+			btn = new Button({ 100,100 }, 50, 50, "iron_tube_one_way");
+		}
+		if (std::strcmp(obj->spriteName, tube_two_name) == 0)
+		{
+			btn = new Button({ 100,100 }, 50, 50, "iron_tube_two_way");
+		}
+		if (std::strcmp(obj->spriteName, tube_three_name) == 0)
+		{
+			btn = new Button({ 100,100 }, 50, 50, "iron_tube_three_way");
+		}
+		m_gamePanel->gridComponent.AddToGrids(btn, x, y);
+		//add level map info
+		m_mapinfo[x][y] = obj->GetID();
+		//add info to grid
+	}
+	m_itemPanel->gridComponent.heldGridItem = nullptr;
+}
+
+void Level::FromLevelMoveToLevel(GridItem &grid, short x, short y)
+{
+	//if item exist remove item
+	if (m_mapinfo[x][y] != -1)
+	{
+		return;
+	}
+	else
+	{
+		// move old game object
+		GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->SetPosition(m_gamePanel->gridComponent.GetGridPos(x,y));
+		//add old game obj id to level map info
+		m_mapinfo[x][y] = m_mapinfo[grid.m_info.m_x][grid.m_info.m_y];
+		//remove old pos level info
+		m_mapinfo[grid.m_info.m_x][grid.m_info.m_y] = -1;
+
+		//move old button
+		m_gamePanel->gridComponent.AddToGrids(grid.GetGridUIElement(), x, y);
+		//clear old grid button
+		grid.Clear();
+	}
+	m_gamePanel->gridComponent.heldGridItem = nullptr;
+}
+
+void Level::LevelControl()
+{
+	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			if (grid.GetGridUIElement())
+			{
+				if (grid.GetGridUIElement()->OnClickRight())
+				{
+					//if grid item is clicked, both button and game object rotate
+					grid.GetGridUIElement()->m_rot -= 90;
+					GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->m_rot -= 90;
+				}
+			}
+		}
+	}
+}
+
+void Level::CheckPanelEvent()
+{
+	//if holding item from item panel
+	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			//if has ui element - enable drag
+			if (grid.GetGridUIElement())
+			{
+				if (grid.GetGridUIElement()->OnHolding())
+				{
+					//create a temp btn image follow mouse based on grid
+					UIElement btn;
+					btn.SetSpriteName(grid.GetGridUIElement()->m_spriteName);
+					btn.SetPosition(Play::GetMousePos());
+					btn.Render();
+					//get held grid item info
+					m_itemPanel->gridComponent.heldGridItem = &grid;
+				}
+				else
+				{
+					if (m_itemPanel->gridComponent.heldGridItem)
+					{
+						//EventCenter::PostEvent("MouseRelease");
+						//check if hover in game panel grid
+						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
+						{
+							for (GridItem& grid_new : grids_2)
+							{
+								if (grid_new.OnHover())
+								{
+									if (!Play::KeyDown(VK_LBUTTON))
+									{
+										//add to level map info, add to level panel
+										FromItemPanelAddToLevel(grid_new, grid_new.m_info.m_x, grid_new.m_info.m_y);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//if holding item from level
+	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
+	{
+		for (GridItem& grid_hold : grids)
+		{
+			//if has ui element, grab and create new one follow the mouse
+			if (grid_hold.GetGridUIElement())
+			{
+				if (grid_hold.GetGridUIElement()->OnHolding())
+				{
+					//create a temp btn image follow mouse based on grid
+					// copy has problem ? ?
+					UIElement btn(*grid_hold.GetGridUIElement());
+					btn.SetSpriteName(grid_hold.GetGridUIElement()->m_spriteName);
+					btn.SetPosition(Play::GetMousePos());
+					btn.Render();
+					//get held grid item info
+					m_gamePanel->gridComponent.heldGridItem = &grid_hold;
+				}
+				else
+				{
+					if (m_gamePanel->gridComponent.heldGridItem)
+					{
+						//release mouse key event
+						//EventCenter::PostEvent("MouseRelease");
+						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
+						{
+							for (GridItem& grid_new : grids_2)
+							{
+								if (grid_new.OnHover())
+								{
+									if (!Play::KeyDown(VK_LBUTTON))
+									{
+										//add to level map info, add to level panel,pass in graded grid
+										FromLevelMoveToLevel(*m_gamePanel->gridComponent.heldGridItem, grid_new.m_info.m_x, grid_new.m_info.m_y);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Level::LoadLevelPanel()
+{
+	//All elements in a panel should scale by the scale of panel
+	Panel* panel = new Panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH) / 2 - 10,DISPLAY_HEIGHT / 2 }, static_cast<short>(814 / 1.5), static_cast<short>(497 / 1.5), "Panel_not_tab");
+	m_itemPanel = panel;
+
+	Button* btn = new Button({ 100,100 }, 100, 100, "iron_tube_cross");
+	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
+	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
+	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
+
+	m_itemPanel->gridComponent.Push_back_Grids(btn);
+	m_itemPanel->gridComponent.Push_back_Grids(btn2);
+	m_itemPanel->gridComponent.Push_back_Grids(btn3);
+	m_itemPanel->gridComponent.Push_back_Grids(btn4);
+}
 
 void Level::LoadLevelBaseOnGrid()
 {
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
 	// col:16  row: 13
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
-
+	GridComponent& gridComponent = m_gamePanel->gridComponent;
 	//*Create Mouse Hole*//
 	MouseHole* mouse_entry = nullptr;
 	if (gameAreaInfo.EntryPos.x == 0)
@@ -112,7 +309,12 @@ void Level::LoadLevelBaseOnGrid()
 		mouse_entry = new MouseHole(gridComponent.GetGridPos(gameAreaInfo.EntryPos.x, gameAreaInfo.EntryPos.y), E_MOUSEHOLE_DIR::BOTTOM);
 	}
 	if (mouse_entry)
+	{
 		GameObjectMgr::AddNewGameObject(*mouse_entry);
+		//Update id map
+		m_mapinfo[gameAreaInfo.EntryPos.x][gameAreaInfo.EntryPos.y] = mouse_entry->GetID();
+	}
+
 
 	Play::Point2D pos2{ gameAreaInfo.ExitPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.ExitPos.y * GRID_SIZE + GRID_SIZE / 2 };
 	MouseHole* mouse_Exit = nullptr;
@@ -136,7 +338,13 @@ void Level::LoadLevelBaseOnGrid()
 	{
 		mouse_Exit->SetType(E_MOUSEHOLE_TYPE::EXIT);
 	}
-	GameObjectMgr::AddNewGameObject(*mouse_Exit);
+	if (mouse_Exit)
+	{
+		GameObjectMgr::AddNewGameObject(*mouse_Exit);
+		//Update id map
+		m_mapinfo[gameAreaInfo.ExitPos.x][gameAreaInfo.ExitPos.y] = mouse_Exit->GetID();
+	}
+
 
 	///*create boundary outside game area*//
 	//add TOP column
@@ -148,6 +356,8 @@ void Level::LoadLevelBaseOnGrid()
 		if (j == 0)
 			boundary->SetCorner();
 		GameObjectMgr::AddNewGameObject(*boundary);
+		//Update id map
+		m_mapinfo[j][0] = boundary->GetID();
 	}
 
 	//// Add RIGHT column (excluding top and bottom elements)
@@ -159,6 +369,8 @@ void Level::LoadLevelBaseOnGrid()
 		if (i == 0)
 			boundary->SetCorner();
 		GameObjectMgr::AddNewGameObject(*boundary);
+		//Update id map
+		m_mapinfo[GRID_COL + 1][i] = boundary->GetID();
 	}
 
 	//// Add BTM row
@@ -170,6 +382,8 @@ void Level::LoadLevelBaseOnGrid()
 		if (j == GRID_COL + 1)
 			boundary->SetCorner();
 		GameObjectMgr::AddNewGameObject(*boundary);
+		//Update id map
+		m_mapinfo[j][GRID_ROW + 1] = boundary->GetID();
 	}
 
 	//// Add LEFT column (excluding top and bottom elements)
@@ -181,6 +395,8 @@ void Level::LoadLevelBaseOnGrid()
 		if (i == GRID_ROW + 1)
 			boundary->SetCorner();
 		GameObjectMgr::AddNewGameObject(*boundary);
+		//Update id map
+		m_mapinfo[0][i] = boundary->GetID();
 	}
 	
 	///*create game object by level file info
@@ -196,14 +412,16 @@ void Level::LoadLevelBaseOnGrid()
 				{
 				case E_OBJTYPE::E_TILE:
 				{
-					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+
 					Tile* tile = new Tile(gridComponent.GetGridPos(i + 1, j), E_TILE_COLOR::BLUE);
 					GameObjectMgr::AddNewGameObject(*tile);
+					//Update id map
+					m_mapinfo[i + 1][j] = tile->GetID();
 				}
 				break;
 				case E_OBJTYPE::E_MOUSE:
 				{
-					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+
 					Mouse* mice = nullptr;
 
 					if (item->m_color == 0)
@@ -217,11 +435,13 @@ void Level::LoadLevelBaseOnGrid()
 						mice->SetInitRotation(static_cast<float>(item->rot * 90));
 						GameObjectMgr::AddNewGameObject(*mice);
 					}
+					//Update id map
+					m_mapinfo[i + 1][j] = mice->GetID();
 				}
 				break;
 				case E_OBJTYPE::E_MOUSETRAP:
 				{
-					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+
 					MouseTrap* trap = new MouseTrap(gridComponent.GetGridPos(i + 1, j ));
 					trap->m_rot = static_cast<float>(item->rot * 90);
 					if (item->trap_color)
@@ -229,19 +449,23 @@ void Level::LoadLevelBaseOnGrid()
 					else
 						trap->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
 					GameObjectMgr::AddNewGameObject(*trap);
+					m_mapinfo[i + 1][j] = trap->GetID();
 				}
 				break;
 				case E_OBJTYPE::E_CHEESE:
 				{
-					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+
 					Cheese* cz = new Cheese(gridComponent.GetGridPos(i + 1, j ));
 
 					GameObjectMgr::AddNewGameObject(*cz);
+					//Update id map
+					m_mapinfo[i + 1][j] = cz->GetID();
 				}
 				break;
 				default:
 					break;
 				}
+		
 			}
 
 
@@ -250,12 +474,12 @@ void Level::LoadLevelBaseOnGrid()
 }
 
 //when load level add a boundary outside
-void Level::LoadLevel()
+void Level::LoadLevel_Old()
 {
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
 
-
+	GridComponent& gridComponent = m_gamePanel->gridComponent;
 	//*Create Mouse Hole*//
 	Play::Point2D pos1{ gameAreaInfo.EntryPos.x * GRID_SIZE + GRID_SIZE / 2 - GRID_SIZE, gameAreaInfo.EntryPos.y * GRID_SIZE + GRID_SIZE / 2 };
 	MouseHole* mouse_entry = nullptr;

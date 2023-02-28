@@ -17,6 +17,8 @@ public:
 
 	void Init(Play::Point2D pos ,float radius) ;
 
+	void UpdatePostion(Play::Point2D pos);
+
 	float GetRadius();
 
 };

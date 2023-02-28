@@ -8,7 +8,7 @@ const char* mouseHoleName_t = "mouse_hole_top";
 
 MouseHole::MouseHole(Play::Point2D pos, E_MOUSEHOLE_DIR dir):Obstacle(pos,E_OBJTYPE::E_MOUSEHOLE)
 {
-	SetScale(1.25f);
+	SetScale(0.35f);
 
 	switch (dir)
 	{

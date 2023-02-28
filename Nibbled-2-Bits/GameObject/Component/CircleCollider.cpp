@@ -37,6 +37,11 @@ void CircleCollider::Init(Play::Point2D pos, float radius)
 	m_radius = radius;
 }
 
+void CircleCollider::UpdatePostion(Play::Point2D pos)
+{
+	m_pos = pos;
+}
+
 float CircleCollider::GetRadius()
 {
 	return m_radius;

@@ -28,8 +28,7 @@ public:
 	GameObject(Play::Point2D pos, E_OBJTYPE m_type);
 
 	GameObject(float x, float y, E_OBJTYPE m_type);
-	
-	virtual void operator=(GameObject&);
+
 	//control logic
 	virtual void Update() = 0;
 	//control how to render
@@ -39,16 +38,20 @@ public:
 
 	int GetID();
 
-	void SetPosition(Play::Point2D pos);
+	virtual void SetPosition(Play::Point2D pos);
 
-	void SetPosition(float x,float y);
+	virtual void SetPosition(float x,float y);
 
 	void SetScale(float scale);
+
+	void SetRotation(float rot);
 
 	Play::Point2D& GetPosition();
 
 	const char* GetSpriteName();
 
 	void SetSpriteName(const char* name);
+
+	void DrawDebugInfo(Play::Colour color = Play::cRed);
 
 };

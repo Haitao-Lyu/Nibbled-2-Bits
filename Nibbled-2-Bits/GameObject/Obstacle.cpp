@@ -39,3 +39,15 @@ CircleCollider& Obstacle::GetCollider()
 	return m_circleCollider;
 }
 
+void Obstacle::SetPosition(Play::Point2D pos)
+{
+	m_pos = pos;
+	m_circleCollider.UpdatePostion(pos);
+}
+
+void Obstacle::SetPosition(float x, float y)
+{
+	m_pos = {x,y};
+	m_circleCollider.UpdatePostion(m_pos);
+}
+

@@ -10,8 +10,9 @@ Tube::Tube(Play::Point2D pos, E_TUBE_TYPE type):Obstacle(pos,E_OBJTYPE::E_TUBE)
 {
 	tube_type = type;
 	OnTypeChange();
-	m_scale = 0.5;
-	m_circleCollider.Init(m_pos,Play::GetSpriteWidth(spriteName) * m_scale);
+	m_circleCollider.Init(m_pos,Play::GetSpriteWidth(spriteName)/4 * m_scale);
+	m_boxCollider.Init(Play::GetSpriteWidth(spriteName) * m_scale, Play::GetSpriteHeight(spriteName) * m_scale, m_pos, this);
+	origin_Pos = m_pos;
 }
 
 void Tube::OnTypeChange()
@@ -37,7 +38,6 @@ void Tube::OnTypeChange()
 
 void Tube::Update()
 {
-
 	Render();
 	m_circleCollider.DrawBoundingBox();
 }
@@ -50,4 +50,5 @@ void Tube::Render()
 		{ 0.0f,m_scale,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt * rotMt, 0);
+	DrawDebugInfo(Play::cBlue);
 }

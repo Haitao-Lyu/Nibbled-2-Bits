@@ -29,16 +29,21 @@ void Button::SetSpriteName(const char* name)
 
 void Button::Render()
 {
+	//Scale from the defined height and width
 	if (std::strcmp(m_spriteName, "") != 0)
 		m_scale = static_cast<float>(m_height / Play::GetSpriteHeight(m_spriteName));
+
+	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
 
 	const Play::Matrix2D scaleMt = Play::Matrix2D(
 		{ m_scale,0.0f,0.0f },
 		{ 0.0f,m_scale,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
-	Play::DrawSpriteTransformed(Play::GetSpriteId(m_spriteName), scaleMt , 0);
+	Play::DrawSpriteTransformed(Play::GetSpriteId(m_spriteName), scaleMt * rotMt, 0);
 	//btn text show
 	Play::DrawDebugText(m_pos, m_btnText, Play::cRed, true);
+	//DEBUG UI
+	//DrawBoundingBox();
 }
 
 bool Button::OnDrag()

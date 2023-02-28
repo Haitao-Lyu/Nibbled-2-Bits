@@ -24,11 +24,6 @@ GameObject::GameObject(float x, float y, E_OBJTYPE type)
 	GameObjectMgr::AddNewGameObject(*this);
 }
 
-void GameObject::operator=(GameObject&)
-{
-
-}
-
 GameObject::~GameObject()
 {
 }
@@ -54,6 +49,11 @@ void GameObject::SetScale(float scale)
 	m_scale = scale;
 }
 
+void GameObject::SetRotation(float rot)
+{
+	m_rot = rot;
+}
+
 Play::Point2D& GameObject::GetPosition()
 {
 	return m_pos;
@@ -67,6 +67,11 @@ const char* GameObject::GetSpriteName()
 void GameObject::SetSpriteName(const char* name)
 {
 	spriteName = name;
+}
+
+void GameObject::DrawDebugInfo(Play::Colour color)
+{
+	Play::DrawDebugText(m_pos, std::to_string(m_id).c_str(), color, true);
 }
 
 void GameObject::Render()
