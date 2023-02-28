@@ -28,7 +28,7 @@ public:
 class GridComponent
 {
 public:
-	std::vector<GridItem> m_childlist = {};
+	std::vector<std::vector<GridItem>> gridList = {};
 	Play::Point2D m_pos;
 	Play::Point2D m_lefttop_pos;
 	Play::Point2D m_rightbottom_pos;
@@ -43,6 +43,7 @@ public:
 
 	void SetGridNum(short row, short col);
 
+	Play::Point2D GetGridPos(int i, int j);
 
 	void InitGridInfo(short row, short col, short height = 100, short width = 100,Play::Point2D pos  = {0.0f, 0.0f},short gridheight  = 0, short gridWidth = 0);
 

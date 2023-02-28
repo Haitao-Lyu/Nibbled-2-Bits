@@ -53,6 +53,13 @@ void GridComponent::SetGridNum(short row, short col)
 	grid_row_num = row;
 }
 
+Play::Point2D GridComponent::GetGridPos(int i, int j)
+{
+	if( i < gridList.size() && i >= 0)
+	if( j < gridList[0].size() && j >= 0)
+	return gridList[i][j].m_pos;
+}
+
 void GridItem::SetGridSize(short height, short width)
 {
 	m_height = height;
@@ -68,7 +75,11 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 	SetGridNum(row, col);
 	m_height = height;
 	m_width = width;
-	m_childlist.resize(grid_col_num * grid_row_num);
+
+	gridList.resize(grid_col_num);
+	for (std::vector<GridItem>& grids : gridList)
+		grids.resize(grid_row_num);
+
 	short grid_width;
 	short grid_height;
 	if (gridheight == 0 || gridWidth == 0)
@@ -88,7 +99,7 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 		{
 			Play::Point2D pos = { m_lefttop_pos.x + i * grid_width + grid_width / 2, m_lefttop_pos.y + j * grid_height + grid_height / 2 };
 			GridItem grid(pos, grid_height, grid_width);
-			m_childlist[index++] = grid;
+			gridList[i][j] = grid;
 		}
 	}
 
@@ -96,8 +107,9 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 
 void GridComponent::Render()
 {
-	DebugValue((int)m_childlist.size());
-	for (GridItem& grid : m_childlist)
+	DebugValue((int)gridList.size());
+	for (std::vector<GridItem>& grids : gridList)
+	for (GridItem& grid : grids)
 	{
 		//debug grids
 		grid.DrawGrid();
@@ -122,15 +134,21 @@ void GridComponent::Render()
 
 void GridComponent::AddToGrids(UIElement* element)
 {
-	for (GridItem& grid : m_childlist)
+	for (std::vector<GridItem>& grids : gridList)
 	{
-		if (grid.m_element)
-			continue;
-		else
+		for (GridItem& grid : grids)
 		{
-			element->SetPosition(grid.m_pos);
-			grid.m_element = element;
-			break;
+			if (grid.m_element)
+				continue;
+			else
+			{
+				element->SetPosition(grid.m_pos);
+				grid.m_element = element;
+				break;
+			}
+
 		}
+		break;
 	}
+
 }

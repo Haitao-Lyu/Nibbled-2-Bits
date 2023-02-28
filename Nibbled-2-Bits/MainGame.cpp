@@ -21,7 +21,8 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
-	level1.LoadLevel();
+	//level1.LoadLevel();
+	//level1.LoadLevelBaseOnGrid(); something wrong in gameobject map
 	panel.gridComponent.AddToGrids(&btn);
 }
 

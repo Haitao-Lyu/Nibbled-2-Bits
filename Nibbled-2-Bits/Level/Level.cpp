@@ -25,7 +25,7 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW);
 	}
 	levelName = name;
-	gridComponent.InitGridInfo(GRID_ROW + 1, GRID_COL, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
+	gridComponent.InitGridInfo(GRID_ROW + 1, GRID_COL + 1, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
 }
 
 Level::~Level()
@@ -79,11 +79,77 @@ void Level::CheckAjacentTiles()
     }
 }
 
+
+
 void Level::LoadLevelBaseOnGrid()
 {
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;
+	
+	///*create game object by level file info
+	for (int i = 0; i < level.size(); i++)
+	{
+		for (int j = 0; j < level[i].size(); j++)
+		{
+			GameAreaObject* item = level[i][j];
+			if (item)
+			{
+				//add level
+				switch (item->m_type)
+				{
+				case E_OBJTYPE::E_TILE:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Tile* tile = new Tile(gridComponent.GetGridPos(i, j), E_TILE_COLOR::BLUE);
+					GameObjectMgr::AddNewGameObject(*tile);
+				}
+				break;
+				case E_OBJTYPE::E_MOUSE:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Mouse* mice = nullptr;
 
+					if (item->m_color == 0)
+						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::GREY);
+					if (item->m_color == 1)
+						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::DARK_GREY);
+					if (item->m_color == 2)
+						mice = new Mouse(gridComponent.GetGridPos(i , j ), E_MOUSE_COLOR::WHITE);
+					if (mice)
+					{
+						mice->SetInitRotation(static_cast<float>(item->rot * 90));
+						GameObjectMgr::AddNewGameObject(*mice);
+					}
+				}
+				break;
+				case E_OBJTYPE::E_MOUSETRAP:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					MouseTrap* trap = new MouseTrap(gridComponent.GetGridPos(i , j ));
+					trap->m_rot = static_cast<float>(item->rot * 90);
+					if (item->trap_color)
+						trap->SetColor(E_TRAPCOLOR::DARK_WOOD);
+					else
+						trap->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
+					GameObjectMgr::AddNewGameObject(*trap);
+				}
+				break;
+				case E_OBJTYPE::E_CHEESE:
+				{
+					Play::Point2D pos{ item->posx * GRID_SIZE + GRID_SIZE / 2, item->posy * GRID_SIZE + GRID_SIZE / 2 };
+					Cheese* cz = new Cheese(gridComponent.GetGridPos(i , j ));
+
+					GameObjectMgr::AddNewGameObject(*cz);
+				}
+				break;
+				default:
+					break;
+				}
+			}
+
+
+		}
+	}
 }
 
 //when load level add a boundary outside
