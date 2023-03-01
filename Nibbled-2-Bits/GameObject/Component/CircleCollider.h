@@ -13,6 +13,8 @@ public:
 
 	bool collidesWith(Collider& other)  override;
 
+	bool collidesWithPoint(Play::Point2D pos);
+
 	void DrawBoundingBox(Play::Colour color = Play::cRed) override;
 
 	void Init(Play::Point2D pos ,float radius) ;

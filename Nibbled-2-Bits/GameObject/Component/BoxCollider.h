@@ -3,11 +3,12 @@
 class BoxCollider : public Collider {
 
 private:
+	float m_width{ 0.0f }, m_height{ 0.0f };
+public:
 	Play::Point2D lt{ 0,0 };
 	Play::Point2D lb{ 0,0 };
 	Play::Point2D rt{ 0,0 };
 	Play::Point2D rb{ 0,0 };
-	float m_width{ 0.0f }, m_height{ 0.0f };
 public:
 	BoxCollider();
 

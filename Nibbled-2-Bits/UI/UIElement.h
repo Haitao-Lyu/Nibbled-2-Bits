@@ -17,7 +17,8 @@ public:
 	short m_height = 0;
 	short m_width = 0;
 	bool isHolding = false;
-
+	bool isActive = true;
+	bool isVisable = true;
 	//TODO : Copy consturctor and  = overload
 	UIElement() {}
 

@@ -42,9 +42,11 @@ public:
 
 	virtual void SetPosition(float x,float y);
 
-	void SetScale(float scale);
+	virtual void Rotate(float rot);
 
-	void SetRotation(float rot);
+	virtual void SetScale(float scale);
+
+	virtual void SetRotation(float rot);
 
 	Play::Point2D& GetPosition();
 
@@ -52,6 +54,7 @@ public:
 
 	void SetSpriteName(const char* name);
 
+	//Draw ID Currnetly
 	void DrawDebugInfo(Play::Colour color = Play::cRed);
 
 };

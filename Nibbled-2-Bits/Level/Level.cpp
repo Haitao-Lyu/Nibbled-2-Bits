@@ -33,8 +33,9 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW + 2,-1);
 	}
 	levelName = name;
+	//Load game area level info
 	m_gamePanel = new Panel({ GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, GAME_AREA_WIDTH);
-	m_gamePanel->gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, {GAME_AREA_WIDTH, DISPLAY_HEIGHT/2 });
+	m_gamePanel->gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, { GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 });
 }
 
 Level::~Level()
@@ -86,7 +87,11 @@ void Level::CheckAjacentTiles()
 void Level::Update()
 {
 	if (m_gamePanel)
+	{
+		m_gamePanel->isVisable = false;
 		m_gamePanel->Update();
+	}
+
 
 	if(m_itemPanel)
 		m_itemPanel->Update();
@@ -101,6 +106,7 @@ void Level::FromItemPanelAddToLevel(GridItem& grid, short x, short y)
 	//if item exist remove item
 	if (m_mapinfo[x][y] != -1)
 	{
+		m_itemPanel->gridComponent.heldGridItem = nullptr;
 		return;
 	}
 	else
@@ -137,6 +143,7 @@ void Level::FromLevelMoveToLevel(GridItem &grid, short x, short y)
 	//if item exist remove item
 	if (m_mapinfo[x][y] != -1)
 	{
+		m_gamePanel->gridComponent.heldGridItem = nullptr;
 		return;
 	}
 	else
@@ -158,6 +165,7 @@ void Level::FromLevelMoveToLevel(GridItem &grid, short x, short y)
 
 void Level::LevelControl()
 {
+	//right click in game panel rotate obj
 	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
 	{
 		for (GridItem& grid : grids)
@@ -167,8 +175,8 @@ void Level::LevelControl()
 				if (grid.GetGridUIElement()->OnClickRight())
 				{
 					//if grid item is clicked, both button and game object rotate
-					grid.GetGridUIElement()->m_rot -= 90;
-					GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->m_rot -= 90;
+					grid.GetGridUIElement()->m_rot += 90;
+					GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->Rotate(+90);
 				}
 			}
 		}
@@ -213,6 +221,7 @@ void Level::CheckPanelEvent()
 										FromItemPanelAddToLevel(grid_new, grid_new.m_info.m_x, grid_new.m_info.m_y);
 									}
 								}
+							
 							}
 						}
 					}
@@ -232,8 +241,8 @@ void Level::CheckPanelEvent()
 				if (grid_hold.GetGridUIElement()->OnHolding())
 				{
 					//create a temp btn image follow mouse based on grid
-					// copy has problem ? ?
 					UIElement btn(*grid_hold.GetGridUIElement());
+					btn.m_rot = grid_hold.GetGridUIElement()->m_rot;
 					btn.SetSpriteName(grid_hold.GetGridUIElement()->m_spriteName);
 					btn.SetPosition(Play::GetMousePos());
 					btn.Render();
@@ -242,8 +251,21 @@ void Level::CheckPanelEvent()
 				}
 				else
 				{
+					//OnRelease Key create object
 					if (m_gamePanel->gridComponent.heldGridItem)
 					{
+						if (!Play::KeyDown(VK_LBUTTON))
+						{
+							if (!m_gamePanel->OnHover())
+							{
+								//if drag out of game panel, delete it
+								GameObjectMgr::RemoveGameObjectByid(m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y]);
+								//map info remove
+								m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y] = -1;
+								//remove from panel item
+								m_gamePanel->gridComponent.RemoveGridItemByID(m_gamePanel->gridComponent.heldGridItem->GetID());
+							}
+						}
 						//release mouse key event
 						//EventCenter::PostEvent("MouseRelease");
 						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
@@ -270,15 +292,15 @@ void Level::CheckPanelEvent()
 void Level::LoadLevelPanel()
 {
 	//All elements in a panel should scale by the scale of panel
-	Panel* panel = new Panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH) / 2 - 10,DISPLAY_HEIGHT / 2 }, static_cast<short>(814 / 1.5), static_cast<short>(497 / 1.5), "Panel_not_tab");
+	Panel* panel = new Panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH) / 2 + 25,DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, (DISPLAY_WIDTH - GAME_AREA_WIDTH) + 50, "");
+	panel->gridComponent.InitGridInfo(2, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
+
 	m_itemPanel = panel;
 
-	Button* btn = new Button({ 100,100 }, 100, 100, "iron_tube_cross");
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
 
-	m_itemPanel->gridComponent.Push_back_Grids(btn);
 	m_itemPanel->gridComponent.Push_back_Grids(btn2);
 	m_itemPanel->gridComponent.Push_back_Grids(btn3);
 	m_itemPanel->gridComponent.Push_back_Grids(btn4);

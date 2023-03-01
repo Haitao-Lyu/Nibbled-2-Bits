@@ -4,6 +4,7 @@
 #include <vector>
 #include "../GameTool/DebugTool.h"
 #include "../GameTool/Math2D.h"
+
 const char* C_FONT_ABNORMAL_40 = "font_ABNORMAL40px_10x10";
 const char* C_FONT_BOLD_64 = "font64px_10x10";
 const char* C_FONT_LIGHT_64 = "fontui64px_10x10";

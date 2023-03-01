@@ -44,6 +44,11 @@ void GameObject::SetPosition(float x, float y)
 	m_pos = { x,y };
 }
 
+void GameObject::Rotate(float rot)
+{
+	m_rot += rot;
+}
+
 void GameObject::SetScale(float scale)
 {
 	m_scale = scale;
@@ -51,6 +56,14 @@ void GameObject::SetScale(float scale)
 
 void GameObject::SetRotation(float rot)
 {
+	while (rot < 0)
+	{
+		rot >= 360;
+	}
+	while (rot > 360)
+	{
+		rot -= 360;
+	}
 	m_rot = rot;
 }
 

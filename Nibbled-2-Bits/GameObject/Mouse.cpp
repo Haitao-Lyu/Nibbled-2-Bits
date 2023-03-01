@@ -231,7 +231,7 @@ void Mouse::CheckBoxCollision()
 void Mouse::CheckCircleCollision()
 {
 	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
-	//m_circleCollider.DrawBoundingBox();
+	m_circleCollider.DrawBoundingBox();
 	//Mouse
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
@@ -337,7 +337,7 @@ void Mouse::CheckCircleCollision()
 		Tube* tube = static_cast<Tube*>(obj);
 		if (m_circleCollider.collidesWith(tube->GetCollider()))
 		{
-
+			tube->CollideMouse(this);
 			DebugValue(tube->GetID(), "collides:", 50);
 		}
 	}

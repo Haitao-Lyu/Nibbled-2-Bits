@@ -25,6 +25,16 @@ bool CircleCollider::collidesWith(Collider& other)
 	}
 }
 
+bool CircleCollider::collidesWithPoint(Play::Point2D pos)
+{
+	float distance = (m_pos - m_pos).Length();/* calculate distance between centers of the two circles */
+	if (distance <= m_radius)
+	{
+		return true;
+	}
+	return false;
+}
+
 void CircleCollider::DrawBoundingBox(Play::Colour color )
 {
 	Play::DrawCircle(m_pos, m_radius, color);

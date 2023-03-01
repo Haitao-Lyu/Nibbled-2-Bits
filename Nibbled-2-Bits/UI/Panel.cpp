@@ -10,16 +10,31 @@ Panel::Panel(Play::Point2D pos, short height, short width, const char* spriteNam
 	m_rt_pos = { m_pos.x + width / 2, m_pos.y - height / 2 };
 	m_rb_pos = { m_pos.x + width / 2, m_pos.y + height / 2 };
 	m_spriteName = spriteName;
-	gridComponent.InitGridInfo(3,3, height, width, pos);
+	gridComponent.InitGridInfo(2, 3, m_height, m_width, { m_pos.x, m_pos.y });
 }
 
 Panel::~Panel()
 {
 }
 
+void Panel::SetScale(float x, float y)
+{
+	x_scale = x;
+	y_scale = y;
+	m_height *= y_scale;
+	m_width *= x_scale;
+	gridComponent.InitGridInfo(2, 3, m_height, m_width , { m_pos.x, m_pos.y });
+	m_lt_pos = { m_pos.x - m_width / 2, m_pos.y - m_height / 2 };
+	m_lb_pos = { m_pos.x - m_width / 2, m_pos.y + m_height / 2 };
+	m_rt_pos = { m_pos.x + m_width / 2, m_pos.y - m_height / 2 };
+	m_rb_pos = { m_pos.x + m_width / 2, m_pos.y + m_height / 2 };
+	m_lefttop_pos = m_lt_pos;
+	m_rightbottom_pos = m_rb_pos;
+}
+
 void Panel::Update()
 {
-
+	if(isVisable)
 	Render();
 }
 
@@ -27,8 +42,6 @@ void Panel::Render()
 {
 	if (std::strcmp(m_spriteName, "") != 0)
 	{
-		y_scale = static_cast<float>(m_height) / Play::GetSpriteHeight(m_spriteName);
-		x_scale = static_cast<float>(m_width) / Play::GetSpriteWidth(m_spriteName);
 		const Play::Matrix2D scaleMt = Play::Matrix2D(
 			{ x_scale,0.0f,0.0f },
 			{ 0.0f,y_scale,0.0f },
@@ -37,4 +50,5 @@ void Panel::Render()
 	}
 	//debug grid
 	gridComponent.Render();
+	DrawBoundingBox();
 }
