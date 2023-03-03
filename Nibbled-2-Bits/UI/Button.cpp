@@ -31,7 +31,7 @@ void Button::Render()
 {
 	//Scale from the defined height and width
 	if (std::strcmp(m_spriteName, "") != 0)
-		m_scale = static_cast<float>(m_height / Play::GetSpriteHeight(m_spriteName));
+		m_scale = static_cast<float>(m_height) / Play::GetSpriteHeight(m_spriteName);
 
 	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
 

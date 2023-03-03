@@ -2,9 +2,6 @@
 #include "EventCenter.h"
 #include "../GameTool/DebugTool.h"
 
-
-int EventListener::id = 0;
-
 namespace EventCenter
 {
 	static std::map<const char*, std::vector<EventListener>> g_listeners_;
@@ -88,9 +85,18 @@ void Event::operator()() const
 	}
 }
 
+EventListener::EventListener()
+{
+}
+
+EventListener::EventListener(const char* name)
+{
+	specialName = name;
+}
+
 bool EventListener::operator==(const EventListener& listener) const
 {
-	if (m_id == listener.m_id)
+	if (std::strcmp(specialName,listener.specialName))
 		return true;
 	return false;
 }

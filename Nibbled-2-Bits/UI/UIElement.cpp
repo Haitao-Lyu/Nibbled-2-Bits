@@ -86,6 +86,8 @@ bool UIElement::OnHover()
 
 bool UIElement::OnDrag()
 {
+	if (!isDragable)
+		return false;
 	if (OnHover())
 	{
 		if (Play::GetMouseButton(Play::Align::LEFT))
@@ -101,6 +103,8 @@ bool UIElement::OnDrag()
 
 bool UIElement::OnHolding()
 {
+	if (!isDragable)
+		return false;
 	if (isHolding)
 	{
 		if (Play::KeyDown(VK_LBUTTON))

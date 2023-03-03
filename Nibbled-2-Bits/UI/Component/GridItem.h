@@ -23,6 +23,7 @@ private:
 	Play::Point2D m_pos;
 	//Grid UI Info
 	UIElement* m_element = nullptr;
+
 public:
 	GridItemInfo m_info;
 

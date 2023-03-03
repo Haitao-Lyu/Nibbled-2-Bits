@@ -19,6 +19,7 @@ public:
 	bool isHolding = false;
 	bool isActive = true;
 	bool isVisable = true;
+	bool isDragable = true;
 	//TODO : Copy consturctor and  = overload
 	UIElement() {}
 

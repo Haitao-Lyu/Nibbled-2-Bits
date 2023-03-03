@@ -162,6 +162,21 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 		{
 			tmpObject->m_type = E_OBJTYPE::E_CHEESE;
 		}
+		else if (std::strcmp(s_type.c_str(), "tube_one_way ") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_TUBE;
+			tmpObject->tubeType = 0;
+		}
+		else if (std::strcmp(s_type.c_str(), "tube_two_way ") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_TUBE;
+			tmpObject->tubeType = 1;
+		}
+		else if (std::strcmp(s_type.c_str(), "tube_three_way ") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_TUBE;
+			tmpObject->tubeType = 2;
+		}
 		tmpObject->posx = stoi(tokens[1]);
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);
 		tmpObject->rot = stoi(tokens[3]);

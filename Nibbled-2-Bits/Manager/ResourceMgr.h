@@ -35,6 +35,7 @@ struct GameAreaObject {
 	bool vis{ true };
 	bool trap_color{true};//true for dark
 	short m_color = 0;
+	short tubeType = 0;
 };
 
 struct GameAreaInfo

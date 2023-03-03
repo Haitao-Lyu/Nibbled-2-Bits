@@ -106,7 +106,8 @@ void GridComponent::Push_back_Grids(UIElement* element)
 	bool isAdded = false;
 	for (int j = 0; j < gridList[0].size(); j++)
 	{
-
+		if (isAdded)
+			break;
 		for (int i = 0; i < gridList.size(); i++)
 		{
 			if (isAdded)

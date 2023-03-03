@@ -27,11 +27,12 @@ class EventListener
 {
 	typedef std::function<void()> FunctionType;
 private:
-	static int id;
-	int m_id;
+	const char* specialName = "";
 	Event m_event;
 public:
-	EventListener() { m_id = id++; }
+	EventListener();
+
+	EventListener(const char* name);
 
 	bool operator == (const EventListener& listener) const;
 
