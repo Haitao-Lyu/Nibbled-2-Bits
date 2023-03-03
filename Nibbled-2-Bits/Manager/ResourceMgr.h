@@ -40,8 +40,8 @@ struct GameAreaObject {
 
 struct GameAreaInfo
 {
-	Play::Point2D EntryPos{ 0.0f, 0.0f };
-	Play::Point2D ExitPos { 0.0f, 0.0f };
+	Play::Point2D EntryPos{ 0, 0 };
+	Play::Point2D ExitPos { 0, 0 };
 	std::vector<std::vector<GameAreaObject*>>  objects;
 
 	GameAreaInfo(int row_num, int col_num):objects(row_num, std::vector<GameAreaObject*>(col_num))

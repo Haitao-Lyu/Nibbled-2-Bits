@@ -37,7 +37,7 @@ bool CircleCollider::collidesWithPoint(Play::Point2D pos)
 
 void CircleCollider::DrawBoundingBox(Play::Colour color )
 {
-	Play::DrawCircle(m_pos, m_radius, color);
+	Play::DrawCircle(m_pos, static_cast<int>(m_radius), color);
 	Play::DrawDebugText(m_pos, std::to_string(m_id).c_str(), color, true);
 }
 

@@ -60,13 +60,12 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 		grid_width = gridWidth;
 		grid_height = gridheight;
 	}
-	int index = 0;
 	for (int j = 0; j < grid_row_num; j++)
 	{
 		for (int i = 0; i < grid_col_num; i++)
 		{
-			Play::Point2D pos = { m_lefttop_pos.x + i * grid_width + grid_width / 2, m_lefttop_pos.y + j * grid_height + grid_height / 2 };
-			GridItem grid(pos, grid_height, grid_width,i,j);
+			Play::Point2D temppos = { m_lefttop_pos.x + i * grid_width + grid_width / 2, m_lefttop_pos.y + j * grid_height + grid_height / 2 };
+			GridItem grid(temppos, grid_height, grid_width,i,j);
 			gridList[i][j] = grid;
 		}
 	}

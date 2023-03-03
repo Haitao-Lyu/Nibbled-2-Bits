@@ -23,7 +23,21 @@ Tube::Tube(Play::Point2D pos, E_TUBE_TYPE type):Obstacle(pos,E_OBJTYPE::E_TUBE)
 void Tube::Rotate(float rot)
 {
 	m_rot += rot;
+	while (m_rot < 0)
+	{
+		m_rot += 360;
+	}
+	while (m_rot > 360)
+	{
+		m_rot -= 360;
+	}
 	OnDirctionChange(rot);
+}
+
+void Tube::SetType(E_TUBE_TYPE type)
+{
+	tube_type = type;
+	OnTypeChange();
 }
 
 void Tube::OnTypeChange()
@@ -54,6 +68,10 @@ void Tube::OnDirctionChange(float rot)
 	right_line = normal_line.Perpendicular();
 	left_line = -right_line;
 	inverseNormal_line = -normal_line;
+	normal_line.Normalize();
+	left_line.Normalize();
+	right_line.Normalize();
+	inverseNormal_line.Normalize();
 }
 
 void Tube::Update()
@@ -66,7 +84,7 @@ void Tube::Render()
 {
 	while (m_rot < 0)
 	{
-		m_rot >= 360;
+		m_rot += 360;
 	}
 	while (m_rot > 360)
 	{
@@ -87,7 +105,7 @@ void Tube::Render()
 
 void Tube::DrawTubeOpenDir()
 {
-	int line_long = 100;
+	float line_long = 100;
 	Play::Point2D startPos = m_pos;
 	Play::Point2D endPos = startPos + normal_line * line_long;
 
@@ -120,9 +138,8 @@ void Tube::DrawTubeOpenDir()
 void Tube::CollideMouse(Mouse* mice)
 {
 	//move obj backward based on the distance and direction between two obj
-
-
 	Play::Vector2D tubeToMice = mice->m_pos - m_pos;
+	tubeToMice.Normalize();
 
 	switch (tube_type)
 	{
@@ -131,15 +148,49 @@ void Tube::CollideMouse(Mouse* mice)
 		break;
 	case E_TUBE_TYPE::ONEWAY:
 	{
-		tubeToMice.Normalize();
-		left_line.Normalize();
-		right_line.Normalize();
 		float distance = (mice->GetPosition() - m_pos).Length();
-		//allow to get in
+		//when degree with the line < 20, cone is 40 dergee, allow to get in
 		if (acos(Play::dot(tubeToMice, left_line)) <= Play::DegToRad(20) || acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(20))// 30 degree
 		{
 
+		}//when mouse totally get in, avoid to be poped out
+		else if (distance < GetCollider().GetRadius())
+		{
+			
 		}
+		else
+		{
+			Play::Vector2D dir = normalize(mice->m_pos - m_pos);
+			mice->m_pos = m_pos + GetCollider().GetRadius() * dir + mice->GetCollider().GetRadius() * dir;
+		}
+		//TODO: USE THE REST LINE TO CHECK INSIDE CANT GET OUT
+	}
+		break;
+	case E_TUBE_TYPE::TWOWAY:
+	{
+		float distance = (mice->GetPosition() - m_pos).Length();
+		static int entry = -1;
+		//when degree with the line < 20, cone is 40 dergee, allow to get in
+		if (acos(Play::dot(tubeToMice, normal_line)) <= Play::DegToRad(20) )// 30 degree
+		{
+			entry = 0;
+		}
+		else if ( acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(20))
+		{
+			entry = 1;
+		}
+		else if (distance < 5)
+		{
+			if (entry == 0)
+			{
+				mice->SetRotation(m_rot - 90);
+			}
+			if (entry == 1)
+			{
+				mice->SetRotation(m_rot);
+			}
+		}
+		//when mouse totally get in, avoid to be poped out
 		else if (distance < GetCollider().GetRadius())
 		{
 
@@ -149,15 +200,26 @@ void Tube::CollideMouse(Mouse* mice)
 			Play::Vector2D dir = normalize(mice->m_pos - m_pos);
 			mice->m_pos = m_pos + GetCollider().GetRadius() * dir + mice->GetCollider().GetRadius() * dir;
 		}
-		//TODO: USE THE REST LINE TO CHECK INSIDE CANT GET OUT
 	}
-
-		break;
-	case E_TUBE_TYPE::TWOWAY:
-
 		break;
 	case E_TUBE_TYPE::THREEWAY:
+	{
+		float distance = (mice->GetPosition() - m_pos).Length();
+		//when degree with the line < 20, cone is 40 dergee, allow to get in
+		if (acos(Play::dot(tubeToMice, normal_line)) <= Play::DegToRad(20) || acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(20) || acos(Play::dot(tubeToMice, left_line)) <= Play::DegToRad(20))// 30 degree
+		{
 
+		}//when mouse totally get in, avoid to be poped out
+		else if (distance < GetCollider().GetRadius())
+		{
+
+		}
+		else
+		{
+			Play::Vector2D dir = normalize(mice->m_pos - m_pos);
+			mice->m_pos = m_pos + GetCollider().GetRadius() * dir + mice->GetCollider().GetRadius() * dir;
+		}
+	}
 		break;
 	default:
 		break;

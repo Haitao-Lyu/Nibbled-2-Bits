@@ -19,6 +19,8 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
+
+
 	//level1.LoadLevel();
 	level1.LoadLevelBaseOnGrid(); //something wrong in gameobject map
 	level1.LoadLevelPanel();
@@ -27,7 +29,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 bool MainGameUpdate( float elapsedTime )
 {
 	Timer::UpdateDeltaTime(elapsedTime);
-	ResoureMgr::DrawBackground(E_BKCOLOR::YELLOW);
+	ResoureMgr::DrawBackground(E_BKCOLOR::WOOD);
 
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);

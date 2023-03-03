@@ -13,7 +13,7 @@ GridItem::GridItem()
 
 }
 
-GridItem::GridItem(Play::Point2D pos, short height, short width,short x,short y)
+GridItem::GridItem(Play::Point2D pos, int height, int width, int x, int y)
 {
 	grid_id++;
 	m_id = grid_id;
@@ -64,7 +64,7 @@ void GridItem::DrawGrid(Play::Colour color /*= Play::cRed*/)
 }
 
 
-void GridItem::SetGridSize(short height, short width)
+void GridItem::SetGridSize(int height, int width)
 {
 	m_height = height;
 	m_width = width;

@@ -2,9 +2,10 @@
 class Timer
 {
 private:
+
+public:
 	float m_timeCounter = 0;
 	float m_timeInterval = 0;
-public:
 	Timer() {};
 	/*Set Interval*/
 	Timer(float interval) : m_timeInterval(interval) {}

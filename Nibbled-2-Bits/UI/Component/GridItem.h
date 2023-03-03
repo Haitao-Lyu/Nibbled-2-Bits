@@ -4,8 +4,8 @@
 #include "../../GameObject/Tube.h"
 struct GridItemInfo
 {
-	short m_x{ -1 };
-	short m_y{ -1 };
+	int m_x{ -1 };
+	int m_y{ -1 };
 	E_OBJTYPE obj_type = E_OBJTYPE::E_NULL;
 	E_TUBE_TYPE tube_type = E_TUBE_TYPE::CROSS;
 };
@@ -16,8 +16,8 @@ class GridItem
 private:
 	static int grid_id;
 	int m_id = 0;
-	short m_height;
-	short m_width;
+	int m_height;
+	int m_width;
 	Play::Point2D m_lefttop_pos;
 	Play::Point2D m_rightbottom_pos;
 	Play::Point2D m_pos;
@@ -31,7 +31,7 @@ public:
 
 	GridItem();
 
-	GridItem(Play::Point2D pos, short height, short width, short x, short y);
+	GridItem(Play::Point2D pos, int height, int width, int x, int y);
 
 	void SetGridItem(UIElement* element);
 
@@ -39,7 +39,7 @@ public:
 
 	void DrawGrid(Play::Colour color = Play::cRed);
 
-	void SetGridSize(short height, short width);
+	void SetGridSize(int height, int width);
 
 	void Clear();
 

@@ -8,10 +8,10 @@ enum class E_TUBE_COLOR
 
 enum class E_TUBE_TYPE
 {
-	CROSS,
 	ONEWAY,
 	TWOWAY,
 	THREEWAY,
+	CROSS,
 };
 
 class Tube:public Obstacle
@@ -27,6 +27,8 @@ public:
 	Tube(Play::Point2D pos, E_TUBE_TYPE type = E_TUBE_TYPE::CROSS);
 
 	void Rotate(float rot) override;
+
+	void SetType(E_TUBE_TYPE type);
 
 	void OnTypeChange();
 

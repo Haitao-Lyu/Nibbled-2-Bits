@@ -11,7 +11,7 @@ namespace EventCenter
 		//DebugValue((int)g_listeners_.size());
 		if (!g_listeners_[eventName].empty())
 		{
-			for (int i = 0; i < g_listeners_[eventName].size(); g_listeners_[eventName])
+			for (int i = 0; i < g_listeners_[eventName].size(); i++)
 			{
 				if (g_listeners_[eventName][i] == listener)//cmp id
 				{

@@ -52,6 +52,8 @@ void MouseState::Render()
 	default:
 		break;
 	}
+
+
 	int spriteID = Play::GetSpriteId(spritePrefix.c_str());
 	//m_mice->SetSpriteName(spritePrefix.c_str());//not working maybe because const char ? ? ?
 	m_mice->m_spriteHeight = static_cast<float>(Play::GetSpriteHeight(spriteID));
@@ -127,6 +129,24 @@ MouseWalkState::MouseWalkState(Mouse& mouse) :MouseState(&mouse)
 
 void MouseWalkState::Update()
 {
+
+	switch (m_mice->m_dir)
+	{
+	case E_MOUSE_DIR::UP:
+		m_mice->m_pos.y -= m_mice->m_speed;
+		break;
+	case E_MOUSE_DIR::LEFT:
+		m_mice->m_pos.x -= m_mice->m_speed;
+		break;
+	case E_MOUSE_DIR::DOWN:
+		m_mice->m_pos.y += m_mice->m_speed;
+		break;
+	case E_MOUSE_DIR::RIGHT:
+		m_mice->m_pos.x += m_mice->m_speed;
+		break;
+	default:
+		break;
+	}
 	Render();
 }
 
@@ -171,20 +191,20 @@ void MouseWhackedState::Render()
 
 void MouseWhackedState::OnWhacked(float whackTime)
 {
-	static Timer timer(whackTime);
+	static Timer whacktimer(whackTime);
 	if (m_mice->isWhacked)
 	{
 		m_mice->m_pos = m_mice->prev_pos;
 		m_mice->SetMouseState(E_MOUSE_STATE::whackedState);
-		if (timer.isReachTimeInterval())
+		if (whacktimer.isReachTimeInterval())
 		{
 			m_mice->isWhacked = false;
-			m_mice->SetMouseState(E_MOUSE_STATE::idleState);
+			m_mice->SetMouseState(E_MOUSE_STATE::walkState);
 		}
 	}
 	else
 	{
-		timer.Restart();
+		whacktimer.Restart();
 	}
 }
 

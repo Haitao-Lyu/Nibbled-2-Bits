@@ -93,8 +93,31 @@ void Level::Update()
 	}
 
 
-	if(m_itemPanel)
+	if (m_itemPanel)
+	{
 		m_itemPanel->Update();
+
+		//start Btn
+		if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
+		{
+			m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
+		}
+		else
+		{
+			m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
+		}
+		//Restart Btn
+		if (m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->OnClick())
+		{
+			m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
+		}
+		else
+		{
+			m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
+		}
+
+	}
+
 
 	CheckPanelEvent();
 
@@ -293,17 +316,32 @@ void Level::LoadLevelPanel()
 {
 	//All elements in a panel should scale by the scale of panel
 	Panel* panel = new Panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH) / 2 + 25,DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, (DISPLAY_WIDTH - GAME_AREA_WIDTH) + 50, "");
-	panel->gridComponent.InitGridInfo(2, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
+	panel->gridComponent.InitGridInfo(3, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
 
 	m_itemPanel = panel;
 
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
+	Button* btn_start = new Button({ 100,100 }, 100, 100, "grey_scale_round_button_unpushed",
+		[]()
+		{
+			EventCenter::PostEvent("GameStart");
+		});
+	Button* btn_Restart = new Button({ 100,100 }, 100, 100, "red_round_button_unpushed",
+		[]()
+		{
+			EventCenter::PostEvent("GameRestart");
+		});
+	btn_Restart->isDragable = false;
+	btn_start->isDragable = false;
 
 	m_itemPanel->gridComponent.Push_back_Grids(btn2);
 	m_itemPanel->gridComponent.Push_back_Grids(btn3);
 	m_itemPanel->gridComponent.Push_back_Grids(btn4);
+
+	m_itemPanel->gridComponent.AddToGrids(btn_start, 0, 2);
+	m_itemPanel->gridComponent.AddToGrids(btn_Restart, 2, 2);
 }
 
 void Level::LoadLevelBaseOnGrid()
@@ -454,7 +492,7 @@ void Level::LoadLevelBaseOnGrid()
 						mice = new Mouse(gridComponent.GetGridPos(i + 1, j ), E_MOUSE_COLOR::WHITE);
 					if (mice)
 					{
-						mice->SetInitRotation(static_cast<float>(item->rot * 90));
+						mice->SetRotation(static_cast<float>(item->rot * 90));
 						GameObjectMgr::AddNewGameObject(*mice);
 					}
 					//Update id map
@@ -482,6 +520,16 @@ void Level::LoadLevelBaseOnGrid()
 					GameObjectMgr::AddNewGameObject(*cz);
 					//Update id map
 					m_mapinfo[i + 1][j] = cz->GetID();
+				}
+				break;
+				case E_OBJTYPE::E_TUBE:
+				{
+					Tube* tb = new Tube(gridComponent.GetGridPos(i + 1, j));
+					tb->SetType((E_TUBE_TYPE)item->tubeType);
+					tb->Rotate(item->rot * 90);
+					GameObjectMgr::AddNewGameObject(*tb);
+					//Update id map
+					m_mapinfo[i + 1][j] = tb->GetID();
 				}
 				break;
 				default:
@@ -631,7 +679,7 @@ void Level::LoadLevel_Old()
 						mice = new Mouse(GameToWorld(pos), E_MOUSE_COLOR::WHITE);
 					if (mice)
 					{
-						mice->SetInitRotation(static_cast<float>(item->rot * 90));
+						mice->SetRotation(static_cast<float>(item->rot * 90));
 						GameObjectMgr::AddNewGameObject(*mice);
 					}
 				}

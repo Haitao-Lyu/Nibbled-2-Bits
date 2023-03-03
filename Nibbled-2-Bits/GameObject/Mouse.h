@@ -42,14 +42,15 @@ class Mouse:public GameObject
 	friend class MouseHurtState	;
 	friend class MouseWhackedState;
 private:
+	//TODO: Change restart function
+	Play::Point2D StartPos{ 0,0 };
 	Play::Point2D prev_pos{ 0.0f,0.0f };
 	const char* c_darkGrey = "_dark_grey_";
 	const char* c_grey = "_grey_";
 	const char* c_white = "_white_";
 	const char* m_Color;
 	float m_speed { 3.0f };
-	BoxCollider m_boxCollider;
-	CircleCollider m_circleCollider;
+
 	MouseState* m_state;
 	MouseRunState*	   runState		;
 	MouseDieState*	   dieState		;
@@ -62,6 +63,9 @@ private:
 	E_MOUSE_STATE e_mouseState = E_MOUSE_STATE::idleState;
 	bool isWhacked = false;
 	bool isDead = false;
+public:
+	BoxCollider m_boxCollider;
+	CircleCollider m_circleCollider;
 private:
 	void OnStateChange();
 public:
@@ -74,9 +78,11 @@ public:
 
 	void Update() override;
 
-	void SetInitRotation(float dir);
+	void SetRotation(float dir);
 
-	void MouseControl();
+	void OnRotationChanged();
+
+	void DebugMouseControl();
 
 	void SetPosition(Play::Point2D pos);
 

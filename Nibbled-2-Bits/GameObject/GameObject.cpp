@@ -58,7 +58,7 @@ void GameObject::SetRotation(float rot)
 {
 	while (rot < 0)
 	{
-		rot >= 360;
+		rot += 360;
 	}
 	while (rot > 360)
 	{

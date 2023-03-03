@@ -34,7 +34,7 @@ class MouseJumpState : public MouseState
 {
 private:
 	const int maxAnimFrame = 9;
-public:
+public:	
 	MouseJumpState(Mouse& mouse);
 	void Update()override;
 	void Render() override;

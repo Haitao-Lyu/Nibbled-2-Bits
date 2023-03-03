@@ -10,6 +10,7 @@
 #include "Cheese.h"
 #include "MouseHole.h"
 #include "Tube.h"
+#include "../UI/EventCenter.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
 {
@@ -33,6 +34,16 @@ Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::
 	hurtState = new MouseHurtState(*this);
 	whackedState = new MouseWhackedState(*this);
 	m_state = idleState;
+
+	//when game start btn pressed recevice the event
+	EventListener* startListener = new EventListener("MouseStartGameListener");
+	startListener->addEvent([this]() {this->SetMouseState(E_MOUSE_STATE::walkState); });
+	EventCenter::RegisterListener("GameStart", *startListener);
+
+	//restart
+	EventListener* restartListener = new EventListener("MouseRestartGameListener");
+	startListener->addEvent([this]() {this->SetMouseState(E_MOUSE_STATE::idleState); });
+	EventCenter::RegisterListener("GameRestart", *restartListener);
 }
 
 Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE::E_MOUSE)
@@ -118,7 +129,7 @@ void Mouse::OnStateChange()
 		break;
 	}
 }
-void Mouse::MouseControl()
+void Mouse::DebugMouseControl()
 {
 	if (Play::KeyDown(VK_UP))
 	{
@@ -354,7 +365,7 @@ void Mouse::Update()
 	if (!m_state)
 		return;
 	//movement
-	MouseControl();
+	DebugMouseControl();
 
 	//CheckBoxCollision();
 	CheckCircleCollision();
@@ -368,9 +379,26 @@ void Mouse::Update()
 	m_state->Update();
 }
 
-void Mouse::SetInitRotation(float dir)
+void Mouse::SetRotation(float rot)
 {
-	m_rot = dir;
+	m_rot = rot;
+	while (m_rot < 0)
+	{
+		m_rot += 360;
+	}
+	while (m_rot > 360)
+	{
+		m_rot -= 360;
+	}
+	OnRotationChanged();
+}
+
+void Mouse::OnRotationChanged()
+{
+	if (m_rot == 0.0f)
+	{
+		m_dir = E_MOUSE_DIR::UP;
+	}
 	if (m_rot == 90.0f)
 	{
 		m_dir = E_MOUSE_DIR::LEFT;
