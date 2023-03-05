@@ -319,7 +319,7 @@ void Level::LoadLevelPanel()
 	panel->gridComponent.InitGridInfo(3, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
 
 	m_itemPanel = panel;
-
+	 
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");

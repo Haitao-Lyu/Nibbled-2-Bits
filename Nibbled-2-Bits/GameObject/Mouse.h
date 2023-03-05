@@ -43,7 +43,6 @@ class Mouse:public GameObject
 	friend class MouseWhackedState;
 private:
 	//TODO: Change restart function
-	Play::Point2D StartPos{ 0,0 };
 	Play::Point2D prev_pos{ 0.0f,0.0f };
 	const char* c_darkGrey = "_dark_grey_";
 	const char* c_grey = "_grey_";

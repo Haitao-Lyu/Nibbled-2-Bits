@@ -9,10 +9,11 @@
 #include "GameObject/Component/CollisionSystem.h"
 #include "UI/Panel.h"
 #include "UI/Button.h"
+#include "UI/EventCenter.h"
 #include "GameObject/Tube.h"
 
 
-Level level1("CHEESE");
+Level level1("TUBETEST");
 
 
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
@@ -24,6 +25,15 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 	//level1.LoadLevel();
 	level1.LoadLevelBaseOnGrid(); //something wrong in gameobject map
 	level1.LoadLevelPanel();
+
+	//restart
+	EventListener* restartListener = new EventListener("MouseRestartGameListener");
+	restartListener->addEvent([]() 
+		{ 
+			GameObjectMgr::ClearAllGameobjects(); 
+			level1.LoadLevelBaseOnGrid(); 
+		});
+	EventCenter::RegisterListener("GameRestart", *restartListener);
 }
 
 bool MainGameUpdate( float elapsedTime )

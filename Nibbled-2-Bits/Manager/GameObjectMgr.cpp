@@ -71,6 +71,18 @@ namespace GameObjectMgr
 		}
 	}
 
+	void ClearAllGameobjects()
+	{
+		//delete all pointer in global list
+		for (auto& [id, obj] : g_gameObjectMapAll)
+		{
+			delete obj;
+		}
+		//pointer is all clean, so just clear
+		g_gameObjectMapAll.clear();
+		g_gameObjectMapbyType.clear();// will this clear the vector inside map as well?
+	}
+
 	GameObject* GetGameObjectByid(int id)
 	{
 		if (g_gameObjectMapAll.find(id) != g_gameObjectMapAll.end())

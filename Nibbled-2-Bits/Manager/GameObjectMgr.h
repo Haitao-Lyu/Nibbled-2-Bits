@@ -12,6 +12,8 @@ namespace GameObjectMgr
 
 	void UpdateGameObjectsByType(E_OBJTYPE TYPE);
 
+	void ClearAllGameobjects();
+
 	GameObject* MakeGameObject(E_OBJTYPE gameObjectType, Play::Point2f pos);
 
 	GameObject* GetGameObjectByid(int id);

@@ -34,16 +34,12 @@ Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::
 	hurtState = new MouseHurtState(*this);
 	whackedState = new MouseWhackedState(*this);
 	m_state = idleState;
-
 	//when game start btn pressed recevice the event
 	EventListener* startListener = new EventListener("MouseStartGameListener");
 	startListener->addEvent([this]() {this->SetMouseState(E_MOUSE_STATE::walkState); });
-	EventCenter::RegisterListener("GameStart", *startListener);
+	EventCenter::RegisterListener("GameStart", *startListener); 
 
-	//restart
-	EventListener* restartListener = new EventListener("MouseRestartGameListener");
-	startListener->addEvent([this]() {this->SetMouseState(E_MOUSE_STATE::idleState); });
-	EventCenter::RegisterListener("GameRestart", *restartListener);
+
 }
 
 Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE::E_MOUSE)

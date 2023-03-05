@@ -22,6 +22,7 @@ private:
 	Play::Vector2D right_line{ 0.0f,0.0f };
 	Play::Vector2D left_line{ 0.0f,0.0f };
 	Play::Vector2D inverseNormal_line{ 0.0f,0.0f };
+	int mouse_cur_dir = -1;
 public:
 	
 	Tube(Play::Point2D pos, E_TUBE_TYPE type = E_TUBE_TYPE::CROSS);

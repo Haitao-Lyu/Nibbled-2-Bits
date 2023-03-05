@@ -130,23 +130,23 @@ MouseWalkState::MouseWalkState(Mouse& mouse) :MouseState(&mouse)
 void MouseWalkState::Update()
 {
 
-	switch (m_mice->m_dir)
-	{
-	case E_MOUSE_DIR::UP:
-		m_mice->m_pos.y -= m_mice->m_speed;
-		break;
-	case E_MOUSE_DIR::LEFT:
-		m_mice->m_pos.x -= m_mice->m_speed;
-		break;
-	case E_MOUSE_DIR::DOWN:
-		m_mice->m_pos.y += m_mice->m_speed;
-		break;
-	case E_MOUSE_DIR::RIGHT:
-		m_mice->m_pos.x += m_mice->m_speed;
-		break;
-	default:
-		break;
-	}
+	//switch (m_mice->m_dir)
+	//{
+	//case E_MOUSE_DIR::UP:
+	//	m_mice->m_pos.y -= m_mice->m_speed;
+	//	break;
+	//case E_MOUSE_DIR::LEFT:
+	//	m_mice->m_pos.x -= m_mice->m_speed;
+	//	break;
+	//case E_MOUSE_DIR::DOWN:
+	//	m_mice->m_pos.y += m_mice->m_speed;
+	//	break;
+	//case E_MOUSE_DIR::RIGHT:
+	//	m_mice->m_pos.x += m_mice->m_speed;
+	//	break;
+	//default:
+	//	break;
+	//}
 	Render();
 }
 
