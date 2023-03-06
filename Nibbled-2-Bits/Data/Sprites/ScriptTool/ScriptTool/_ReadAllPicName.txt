@@ -1,4 +1,0 @@
-boundary_inner_corner_bottom_left
-boundary_inner_corner_bottom_right
-boundary_inner_corner_top_left
-boundary_inner_corner_top_right

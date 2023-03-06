@@ -13,7 +13,7 @@ namespace EventCenter
 		{
 			for (int i = 0; i < g_listeners_[eventName].size(); i++)
 			{
-				if (g_listeners_[eventName][i] == listener)//cmp id
+				if (g_listeners_[eventName][i] == listener)
 				{
 					return;
 				}
@@ -26,7 +26,10 @@ namespace EventCenter
 
 	void UnregisterListener(const char* eventName, EventListener &listener)
 	{
-
+		if (g_listeners_.empty())
+			return;
+		//DebugValue(static_cast<int>(g_listeners_[eventName].size()),"listener:",20);
+		//how to distinguish listener?
 	}
 
 	void UnregisterListenersByEvent(const char* eventName)
@@ -59,6 +62,14 @@ namespace EventCenter
 	void DebugEvent()
 	{
 
+	}
+	void ClearAll()
+	{
+		for (auto& [name, list] : g_listeners_)
+		{
+			list.clear();
+		}
+		g_listeners_.clear();
 	}
 }
 

@@ -97,6 +97,30 @@ void Level::Update()
 	{
 		m_itemPanel->Update();
 
+		//Set Dragable based on quantites, inventory function should sperate from grid component
+		for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
+		{
+			for (GridItem& grid : grids)
+			{
+				UIElement* P = grid.GetGridUIElement();
+				if (grid.m_info.quantities <= 0)
+				{
+					if (P)
+					{
+						grid.GetGridUIElement()->isDragable = false;
+					}
+				}
+				else
+				{
+					if (P)
+					{
+						grid.GetGridUIElement()->isDragable = true;
+					}
+				}
+
+			}
+		}
+
 		//start Btn
 		if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
 		{
@@ -117,10 +141,7 @@ void Level::Update()
 		}
 
 	}
-
-
 	CheckPanelEvent();
-
 	LevelControl();
 }
 
@@ -134,8 +155,12 @@ void Level::Clear()
 			i = -1;
 		}
 	}
-
+	//clear event
+	EventCenter::UnregisterListenersByEvent("GameStart");
+	//clear all game objects and reload
 	GameObjectMgr::ClearAllGameobjects();
+	//restart quantities
+
 }
 
 void Level::Destroy()
@@ -180,6 +205,9 @@ void Level::FromItemPanelAddToLevel(GridItem& grid, int x, int y)
 		//add level map info
 		m_mapinfo[x][y] = obj->GetID();
 		//add info to grid
+		m_itemPanel->gridComponent.heldGridItem->m_info.quantities -= 1;
+		if (m_itemPanel->gridComponent.heldGridItem->m_info.quantities <= 0)
+			m_itemPanel->gridComponent.heldGridItem->m_info.quantities = 0;
 	}
 	m_itemPanel->gridComponent.heldGridItem = nullptr;
 }
@@ -187,8 +215,7 @@ void Level::FromItemPanelAddToLevel(GridItem& grid, int x, int y)
 void Level::FromLevelMoveToLevel(GridItem &grid, int x, int y)
 {
 	//frame rate lead to bug
-	if (!m_gamePanel->OnHover())
-		return;
+
 	//if item exist remove item
 	if (m_mapinfo[x][y] != -1)
 	{
@@ -197,8 +224,6 @@ void Level::FromLevelMoveToLevel(GridItem &grid, int x, int y)
 	}
 	else
 	{
-		if (!m_gamePanel->OnHover())
-			return;
 		// move old game object
 		GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->SetPosition(m_gamePanel->gridComponent.GetGridPos(x,y));
 		//add old game obj id to level map info
@@ -227,7 +252,9 @@ void Level::LevelControl()
 				{
 					//if grid item is clicked, both button and game object rotate
 					grid.GetGridUIElement()->m_rot += 90;
-					GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y])->Rotate(+90);
+					GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y]);
+					if(obj)
+					obj->Rotate(90);
 				}
 			}
 		}
@@ -309,16 +336,20 @@ void Level::CheckPanelEvent()
 						{
 							if (!m_gamePanel->OnHover())
 							{
-								//if drag out of game panel, delete it
+								if (m_itemPanel->OnHover())
+								{
+									m_itemPanel->gridComponent.AddItem(m_gamePanel->gridComponent.heldGridItem->GetGridUIElement());
+								}
+								//if drag out of game panel, delete game object
 								GameObjectMgr::RemoveGameObjectByid(m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y]);
-								//map info remove
+								//remove from map info 
 								m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y] = -1;
-								//remove from panel item
+								//remove from game panel item
 								m_gamePanel->gridComponent.RemoveGridItemByID(m_gamePanel->gridComponent.heldGridItem->GetID());
+
+								m_gamePanel->gridComponent.heldGridItem = nullptr;
 							}
 						}
-						//release mouse key event
-						//EventCenter::PostEvent("MouseRelease");
 						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
 						{
 							for (GridItem& grid_new : grids_2)
@@ -340,6 +371,11 @@ void Level::CheckPanelEvent()
 	}
 }
 
+//inventory info
+static const int level1[2][2]{ 2,0,0,0 };
+static const int level2[2][2]{ 2,0,0,0 };
+static const int level3[2][2]{ 2,0,0,0 };
+
 void Level::LoadLevelPanel()
 {
 	//All elements in a panel should scale by the scale of panel
@@ -348,16 +384,16 @@ void Level::LoadLevelPanel()
 	panel->gridComponent.InitGridInfo(3, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
 	m_itemPanel = panel;
 	 
-	//Game item Initialize
+	//Game item lEVEL 1 UI Initialize
+	//level 1 : 2 , 0, 0 
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
+	m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = 99;
+	m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = 99;
+	m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = 99;
 
 
-
-	m_itemPanel->gridComponent.Push_back_Grids(btn2);
-	m_itemPanel->gridComponent.Push_back_Grids(btn3);
-	m_itemPanel->gridComponent.Push_back_Grids(btn4);
 
 	//Start and Restart Button
 	Button* btn_start = new Button({ 100,100 }, 100, 100, "grey_scale_round_button_unpushed",
@@ -370,6 +406,7 @@ void Level::LoadLevelPanel()
 		{
 			EventCenter::PostEvent("GameRestart");
 		}, "RESTART");
+
 	//Undragable btn in grid
 	btn_Restart->isDragable = false;
 	btn_start->isDragable = false;
@@ -403,7 +440,6 @@ void Level::LoadLeveltoScene()
 	}
 	if (mouse_entry)
 	{
-		GameObjectMgr::AddNewGameObject(*mouse_entry);
 		//Update id map
 		m_mapinfo[(int)gameAreaInfo.EntryPos.x][(int)gameAreaInfo.EntryPos.y] = mouse_entry->GetID();
 	}
@@ -433,7 +469,6 @@ void Level::LoadLeveltoScene()
 	}
 	if (mouse_Exit)
 	{
-		GameObjectMgr::AddNewGameObject(*mouse_Exit);
 		//Update id map
 		m_mapinfo[gameAreaInfo.ExitPos.x][gameAreaInfo.ExitPos.y] = mouse_Exit->GetID();
 	}
@@ -448,7 +483,6 @@ void Level::LoadLeveltoScene()
 		//set corner
 		if (j == 0)
 			boundary->SetCorner();
-		GameObjectMgr::AddNewGameObject(*boundary);
 		//Update id map
 		m_mapinfo[j][0] = boundary->GetID();
 	}
@@ -461,7 +495,6 @@ void Level::LoadLeveltoScene()
 		//set corner
 		if (i == 0)
 			boundary->SetCorner();
-		GameObjectMgr::AddNewGameObject(*boundary);
 		//Update id map
 		m_mapinfo[GRID_COL + 1][i] = boundary->GetID();
 	}
@@ -474,7 +507,6 @@ void Level::LoadLeveltoScene()
 		//set corner
 		if (j == GRID_COL + 1)
 			boundary->SetCorner();
-		GameObjectMgr::AddNewGameObject(*boundary);
 		//Update id map
 		m_mapinfo[j][GRID_ROW + 1] = boundary->GetID();
 	}
@@ -487,7 +519,6 @@ void Level::LoadLeveltoScene()
 		//set corner
 		if (i == GRID_ROW + 1)
 			boundary->SetCorner();
-		GameObjectMgr::AddNewGameObject(*boundary);
 		//Update id map
 		m_mapinfo[0][i] = boundary->GetID();
 	}
@@ -506,8 +537,7 @@ void Level::LoadLeveltoScene()
 				case E_OBJTYPE::E_TILE:
 				{
 
-					Tile* tile = new Tile(gridComponent.GetGridPos(i + 1, j), E_TILE_COLOR::BLUE);
-					GameObjectMgr::AddNewGameObject(*tile);
+					Tile* tile = new Tile(gridComponent.GetGridPos(i + 1, j), E_TILE_COLOR::GREEN);
 					//Update id map
 					m_mapinfo[i + 1][j] = tile->GetID();
 				}
@@ -526,7 +556,6 @@ void Level::LoadLeveltoScene()
 					if (mice)
 					{
 						mice->SetRotation(static_cast<float>(item->rot * 90));
-						GameObjectMgr::AddNewGameObject(*mice);
 					}
 					//Update id map
 					m_mapinfo[i + 1][j] = mice->GetID();
@@ -541,7 +570,6 @@ void Level::LoadLeveltoScene()
 						trap->SetColor(E_TRAPCOLOR::DARK_WOOD);
 					else
 						trap->SetColor(E_TRAPCOLOR::LIGHT_WOOD);
-					GameObjectMgr::AddNewGameObject(*trap);
 					m_mapinfo[i + 1][j] = trap->GetID();
 				}
 				break;
@@ -549,8 +577,6 @@ void Level::LoadLeveltoScene()
 				{
 
 					Cheese* cz = new Cheese(gridComponent.GetGridPos(i + 1, j ));
-
-					GameObjectMgr::AddNewGameObject(*cz);
 					//Update id map
 					m_mapinfo[i + 1][j] = cz->GetID();
 				}
@@ -560,7 +586,6 @@ void Level::LoadLeveltoScene()
 					Tube* tb = new Tube(gridComponent.GetGridPos(i + 1, j));
 					tb->SetType((E_TUBE_TYPE)item->tubeType);
 					tb->Rotate(item->rot * 90);
-					GameObjectMgr::AddNewGameObject(*tb);
 					//Update id map
 					m_mapinfo[i + 1][j] = tb->GetID();
 				}

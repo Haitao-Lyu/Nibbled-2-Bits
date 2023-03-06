@@ -11,11 +11,17 @@ enum class E_DIR_BOUNDARY
 	RIGHT
 };
 
+enum class E_BOUNDARY_COLOR
+{
+	WHITE,
+	WOOD
+};
+
 class Boundary:public Obstacle
 {
 private:
 	const char* cornerTileName = "BounderCorner";
-
+	E_BOUNDARY_COLOR m_color_type = E_BOUNDARY_COLOR::WHITE;
 	E_DIR_BOUNDARY m_dir = E_DIR_BOUNDARY::UP;
 	bool isCorner = false;
 	bool isMouseHole = false;

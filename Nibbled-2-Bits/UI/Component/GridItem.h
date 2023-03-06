@@ -8,6 +8,7 @@ struct GridItemInfo
 	int m_y{ -1 };
 	E_OBJTYPE obj_type = E_OBJTYPE::E_NULL;
 	E_TUBE_TYPE tube_type = E_TUBE_TYPE::CROSS;
+	int quantities = -1;
 };
 
 //TODO: should define new grid item inherit from griditem, griditem should be a interface
@@ -16,8 +17,7 @@ class GridItem
 private:
 	static int grid_id;
 	int m_id = 0;
-	int m_height;
-	int m_width;
+
 	Play::Point2D m_lefttop_pos;
 	Play::Point2D m_rightbottom_pos;
 	Play::Point2D m_pos;
@@ -26,7 +26,8 @@ private:
 
 public:
 	GridItemInfo m_info;
-
+	int m_height;
+	int m_width;
 public:
 
 	GridItem();

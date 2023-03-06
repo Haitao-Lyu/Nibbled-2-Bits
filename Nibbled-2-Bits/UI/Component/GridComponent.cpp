@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GridComponent.h"
 #include "../../GameTool/DebugTool.h"
-
+#include "../../Manager/ResourceMgr.h"
 GridComponent::GridComponent()
 {
 	m_pos = { 0.0f,0.0f };
@@ -80,10 +80,15 @@ void GridComponent::Render()
 	{
 		//debug grids
 		grid.DrawGrid();
-		//if has ui element
+		//if has ui element, draw it
 		if (grid.GetGridUIElement())
 		{
 			grid.GetGridUIElement()->Render();
+			if (grid.m_info.quantities > -1)
+			{
+				//no need to be here
+				Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::BOLD_64), ("x" + std::to_string(grid.m_info.quantities)).c_str(), {grid.GetPos().x + grid.m_width / 3, grid.GetPos().y}, Play::Align::CENTRE);
+			}
 		}
 	}
 }
@@ -100,7 +105,7 @@ void GridComponent::RemoveGridItemByID(int id)
 		}
 }
 
-void GridComponent::Push_back_Grids(UIElement* element)
+GridItem* GridComponent::Push_back_Grids(UIElement* element)
 {
 	bool isAdded = false;
 	for (int j = 0; j < gridList[0].size(); j++)
@@ -118,17 +123,38 @@ void GridComponent::Push_back_Grids(UIElement* element)
 				element->SetPosition(gridList[i][j].GetPos());
 				gridList[i][j].SetGridItem(element);
 				isAdded = true;
-				break;
+				return &gridList[i][j];
 			}
 		}
 	}
-
+	return nullptr;
 }
 
 void GridComponent::AddToGrids(UIElement* element, int x, int y)
 {
 	element->SetPosition(gridList[x][y].GetPos());
 	gridList[x][y].SetGridItem(element);
+}
+
+void GridComponent::AddItem(UIElement* element)
+{
+	int pass_id = Play::GetSpriteId(element->m_spriteName);
+	for (std::vector<GridItem>& grids : gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			int grid_id = -1;
+			if(grid.GetGridUIElement())
+				grid_id = Play::GetSpriteId(grid.GetGridUIElement()->m_spriteName);
+			if (pass_id == grid_id)
+			{
+				grid.m_info.quantities++;
+				return;
+			}
+		}
+	}
+	Push_back_Grids(element);
+
 }
 
 Play::Point2D GridComponent::GetPos()

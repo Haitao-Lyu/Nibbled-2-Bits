@@ -54,6 +54,8 @@ namespace EventCenter
 	void PostEvent(const char* eventName);
 
 	void DebugEvent();
+	
+	void Clear();
 }
 
 

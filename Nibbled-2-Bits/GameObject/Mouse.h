@@ -56,7 +56,7 @@ private:
 	const char* c_grey = "_grey_";
 	const char* c_white = "_white_";
 	const char* m_Color;
-	float m_speed { 3.0f };
+	float m_speed { 5.0f };
 
 	MouseState* m_state;
 	MouseRunState  m_runState;

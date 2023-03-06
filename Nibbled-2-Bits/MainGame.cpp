@@ -13,7 +13,7 @@
 #include "GameObject/Tube.h"
 
 
-Level level1("CHEESE");
+Level level1("LEVEL2");
 
 
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
@@ -27,19 +27,19 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 	level1.LoadLevelPanel();
 
 	//restart
-	EventListener* restartListener = new EventListener("MouseRestartGameListener");
-	restartListener->addEvent([]()
+	EventListener restartListener("MouseRestartGameListener");
+	restartListener.addEvent([]()
 		{
 			level1.Clear();
 			level1.LoadLeveltoScene();
 		});
-	EventCenter::RegisterListener("GameRestart", *restartListener);
+	EventCenter::RegisterListener("GameRestart", restartListener);
 }
 
 bool MainGameUpdate( float elapsedTime )
 {
 	Timer::UpdateDeltaTime(elapsedTime);
-	ResoureMgr::DrawBackground(E_BKCOLOR::WOOD);
+	ResoureMgr::DrawBackground(E_BKCOLOR::GREEN);
 
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);

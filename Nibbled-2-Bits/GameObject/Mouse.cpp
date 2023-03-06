@@ -230,6 +230,8 @@ void Mouse::CheckCircleCollision()
 {
 	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
 	//m_circleCollider.DrawBoundingBox();
+	
+
 	//Mouse
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
@@ -248,9 +250,9 @@ void Mouse::CheckCircleCollision()
 			DebugValue(mouse->GetID(), "collides:", 50);
 		}
 	}
+
 	//Get Tile obj list and calculate collision // And block mouse moving
 	std::vector<GameObject*>& list_boundary = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
-
 	for (GameObject* obj : list_boundary)
 	{
 		if (!obj)//check pointer valid
@@ -339,8 +341,6 @@ void Mouse::CheckCircleCollision()
 			DebugValue(tube->GetID(), "collides:", 50);
 		}
 	}
-
-
 }
 
 

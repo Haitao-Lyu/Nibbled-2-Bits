@@ -30,9 +30,11 @@ public:
 
 	void RemoveGridItemByID(int id);
 
-	void Push_back_Grids(UIElement* element);
+	GridItem* Push_back_Grids(UIElement* element);
 
 	void AddToGrids(UIElement* element,int x,int y);
+
+	void AddItem(UIElement* element);
 
 	Play::Point2D GetPos();
 
