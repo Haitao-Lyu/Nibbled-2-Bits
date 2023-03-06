@@ -14,7 +14,6 @@ enum class E_DIR_BOUNDARY
 class Boundary:public Obstacle
 {
 private:
-	const char* tileName = "BounderTile";
 	const char* cornerTileName = "BounderCorner";
 
 	E_DIR_BOUNDARY m_dir = E_DIR_BOUNDARY::UP;

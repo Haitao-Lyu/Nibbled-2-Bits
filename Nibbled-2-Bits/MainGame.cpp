@@ -13,7 +13,7 @@
 #include "GameObject/Tube.h"
 
 
-Level level1("TUBETEST");
+Level level1("CHEESE");
 
 
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
@@ -23,15 +23,15 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 
 
 	//level1.LoadLevel();
-	level1.LoadLevelBaseOnGrid(); //something wrong in gameobject map
+	level1.LoadLeveltoScene(); //something wrong in gameobject map
 	level1.LoadLevelPanel();
 
 	//restart
 	EventListener* restartListener = new EventListener("MouseRestartGameListener");
-	restartListener->addEvent([]() 
-		{ 
-			GameObjectMgr::ClearAllGameobjects(); 
-			level1.LoadLevelBaseOnGrid(); 
+	restartListener->addEvent([]()
+		{
+			level1.Clear();
+			level1.LoadLeveltoScene();
 		});
 	EventCenter::RegisterListener("GameRestart", *restartListener);
 }

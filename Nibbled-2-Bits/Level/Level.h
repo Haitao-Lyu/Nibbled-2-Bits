@@ -20,7 +20,7 @@ private:
 	const char* levelName;
 	//Game object id for loading
 	std::vector<std::vector<int>> m_mapinfo;
-
+	std::vector<std::vector<int>> inventoryInfo;
 	//All the panel items in level should be interactable
 	Panel* m_gamePanel;
 	Panel* m_itemPanel;
@@ -31,13 +31,17 @@ public:
 
 	void Update();
 
+	void Clear();
+
+	void Destroy();
+
 	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);
 
 	void CheckAjacentTiles();
 
-	void FromItemPanelAddToLevel(GridItem& grid, short x, short y);
+	void FromItemPanelAddToLevel(GridItem& grid, int x, int y);
 
-	void FromLevelMoveToLevel(GridItem& grid, short x, short y);
+	void FromLevelMoveToLevel(GridItem& grid, int x, int y);
 
 	void LevelControl();
 
@@ -45,8 +49,6 @@ public:
 
 	void LoadLevelPanel();
 
-	void LoadLevel_Old();
-
-	void LoadLevelBaseOnGrid();
+	void LoadLeveltoScene();
 };
 

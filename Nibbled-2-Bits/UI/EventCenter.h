@@ -6,9 +6,7 @@
 #include <string.h>
 class Event 
 {
-
 	typedef std::function<void()> FunctionType;
-
 private:
 	std::vector<FunctionType> m_functions;//list of function?
 
@@ -20,14 +18,14 @@ public:
 	void add(FunctionType function);
 
 	void operator() () const;//overload brackets
-
 };
 
 class EventListener 
 {
 	typedef std::function<void()> FunctionType;
 private:
-	const char* specialName = "";
+	const char* specialName = "";//Unique name
+
 	Event m_event;
 public:
 	EventListener();

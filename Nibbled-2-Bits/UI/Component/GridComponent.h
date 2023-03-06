@@ -3,15 +3,14 @@
 class GridComponent
 {
 private:
-
 	Play::Point2D m_pos;
 	Play::Point2D m_lefttop_pos;
 	Play::Point2D m_rightbottom_pos;
 
-	short grid_row_num{ 0 };
-	short grid_col_num{ 0 };
-	short m_height;
-	short m_width;
+	int grid_row_num{ 0 };
+	int grid_col_num{ 0 };
+	int m_height;
+	int m_width;
 public:
 	std::vector<std::vector<GridItem>> gridList = {};
 
@@ -19,13 +18,13 @@ public:
 
 	GridComponent();
 
-	GridComponent(Play::Point2D pos, short height = 100, short width = 100,short row = 2,short col = 2);
+	GridComponent(Play::Point2D pos, int height = 100, int width = 100,int row = 2,int col = 2);
 
-	void SetGridNum(short row, short col);
+	void SetGridNum(int row, int col);
 
 	Play::Point2D GetGridPos(int i, int j);
 
-	void InitGridInfo(short row, short col, short height = 100, short width = 100,Play::Point2D pos  = {0.0f, 0.0f},short gridheight  = 0, short gridWidth = 0);
+	void InitGridInfo(int row, int col, int height = 100, int width = 100,Play::Point2D pos  = {0.0f, 0.0f},int gridheight  = 0, int gridWidth = 0);
 
 	void Render();
 
@@ -33,8 +32,10 @@ public:
 
 	void Push_back_Grids(UIElement* element);
 
-	void AddToGrids(UIElement* element,short x,short y);
+	void AddToGrids(UIElement* element,int x,int y);
 
 	Play::Point2D GetPos();
+
+	~GridComponent();
 };
 

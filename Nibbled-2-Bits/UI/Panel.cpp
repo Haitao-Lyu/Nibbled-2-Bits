@@ -3,7 +3,7 @@
 #include "../GameTool/DebugTool.h"
 #include "../MainGame.h"
 #include "EventCenter.h"
-Panel::Panel(Play::Point2D pos, short height, short width, const char* spriteName) : UIElement(pos, height, width)
+Panel::Panel(Play::Point2D pos, float height, float width, const char* spriteName) : UIElement(pos, height, width)
 {
 	m_lt_pos = { m_pos.x - width / 2, m_pos.y - height / 2 };
 	m_lb_pos = { m_pos.x - width / 2, m_pos.y + height / 2 };
@@ -30,6 +30,12 @@ void Panel::SetScale(float x, float y)
 	m_rb_pos = { m_pos.x + m_width / 2, m_pos.y + m_height / 2 };
 	m_lefttop_pos = m_lt_pos;
 	m_rightbottom_pos = m_rb_pos;
+}
+
+void Panel::SetSpriteScale(float x, float y)
+{
+	x_scale = x;
+	y_scale = y;
 }
 
 void Panel::Update()

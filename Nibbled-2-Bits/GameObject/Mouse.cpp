@@ -26,20 +26,17 @@ Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::
 		m_Color = c_white;
 		break;
 	}
-	runState = new MouseRunState(*this);
-	dieState = new MouseDieState(*this);
-	idleState = new MouseIdleState(*this);
-	jumpState = new MouseJumpState(*this);
-	walkState = new MouseWalkState(*this);
-	hurtState = new MouseHurtState(*this);
-	whackedState = new MouseWhackedState(*this);
-	m_state = idleState;
-	//when game start btn pressed recevice the event
-	EventListener* startListener = new EventListener("MouseStartGameListener");
-	startListener->addEvent([this]() {this->SetMouseState(E_MOUSE_STATE::walkState); });
-	EventCenter::RegisterListener("GameStart", *startListener); 
+	m_state = &m_idleState;
+	//when game start btn pressed recevice the event // TODO: need to fix memory leak
 
+	EventListener startListener("MouseStartGameListener");// how to distinguish different listener
 
+	startListener.addEvent([this]() 
+		{
+			this->SetMouseState(E_MOUSE_STATE::walkState);
+		});
+
+	EventCenter::RegisterListener("GameStart", startListener); 
 }
 
 Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE::E_MOUSE)
@@ -56,20 +53,14 @@ Mouse::Mouse(float x, float y, E_MOUSE_COLOR COLOR) :GameObject(x, y, E_OBJTYPE:
 		m_Color = c_white;
 		break;
 	}
-	runState = new MouseRunState(*this);
-	dieState = new MouseDieState(*this);
-	idleState = new MouseIdleState(*this);
-	jumpState = new MouseJumpState(*this);
-	walkState = new MouseWalkState(*this);
-	hurtState = new MouseHurtState(*this);
-	whackedState = new MouseWhackedState(*this);
 
-	m_state = idleState;
+	m_state = &m_idleState;
 
 }
 
 Mouse::~Mouse()
 {
+
 }
 
 BoxCollider& Mouse::GetBoxCollider()
@@ -100,28 +91,28 @@ void Mouse::OnStateChange()
 	switch (e_mouseState)
 	{
 	case E_MOUSE_STATE::runState:
-		m_state = runState;
+		m_state = &m_runState;
 		break;
 	case E_MOUSE_STATE::dieState:
-		m_state = dieState;
+		m_state = &m_dieState;
 		break;
 	case E_MOUSE_STATE::idleState:
-		m_state = idleState;
+		m_state = &m_idleState;
 		break;
 	case E_MOUSE_STATE::jumpState:
-		m_state = jumpState;
+		m_state = &m_jumpState;
 		break;
 	case E_MOUSE_STATE::walkState:
-		m_state = walkState;
+		m_state = &m_walkState;
 		break;
 	case E_MOUSE_STATE::hurtState:
-		m_state = hurtState;
+		m_state = &m_hurtState;
 		break;
 	case E_MOUSE_STATE::whackedState:
-		m_state = whackedState;
+		m_state = &m_whackedState;
 		break;
 	default:
-		m_state = idleState;
+		m_state = &m_idleState;
 		break;
 	}
 }
@@ -238,7 +229,7 @@ void Mouse::CheckBoxCollision()
 void Mouse::CheckCircleCollision()
 {
 	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
-	m_circleCollider.DrawBoundingBox();
+	//m_circleCollider.DrawBoundingBox();
 	//Mouse
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
@@ -361,7 +352,7 @@ void Mouse::Update()
 	if (!m_state)
 		return;
 	//movement
-	DebugMouseControl();
+	//DebugMouseControl();
 
 	//CheckBoxCollision();
 	CheckCircleCollision();
@@ -372,7 +363,7 @@ void Mouse::Update()
 	if (isDead)
 		SetMouseState(E_MOUSE_STATE::dieState);
 	//draw eveything at the end
-	m_state->Update();
+	m_state->Update(this);
 }
 
 void Mouse::SetRotation(float rot)

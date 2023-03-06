@@ -1,14 +1,20 @@
 #pragma once
-#include "../BaseState.h"
+#include "GameFlowState.h"
 
-class LevelState:public BaseState
+class LevelState:public GameFlowState
 {
-private:
+
 
 public:
 	LevelState();
-	~LevelState();
 
+	virtual ~LevelState() override;
+
+	void OnEnter() override;
+
+	void OnExit() override;
+
+	GameFlowState* OnUpdate() override;
 
 };
 

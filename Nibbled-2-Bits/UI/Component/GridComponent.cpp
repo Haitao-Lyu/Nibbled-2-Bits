@@ -10,7 +10,7 @@ GridComponent::GridComponent()
 	SetGridNum(2, 2);
 }
 
-GridComponent::GridComponent(Play::Point2D pos, short height, short width, short row, short col)
+GridComponent::GridComponent(Play::Point2D pos, int height, int width, int row, int col)
 {
 	m_pos = pos;
 	m_height = height;
@@ -18,7 +18,7 @@ GridComponent::GridComponent(Play::Point2D pos, short height, short width, short
 	SetGridNum(row, col);
 }
 
-void GridComponent::SetGridNum(short row, short col)
+void GridComponent::SetGridNum(int row, int col)
 {
 	grid_col_num = col;
 	grid_row_num = row;
@@ -34,7 +34,7 @@ Play::Point2D GridComponent::GetGridPos(int i, int j)
 }
 
 
-void GridComponent::InitGridInfo(short row, short col, short height, short width, Play::Point2D pos, short gridheight , short gridWidth)
+void GridComponent::InitGridInfo(int row, int col, int height, int width, Play::Point2D pos, int gridheight , int gridWidth)
 {
 	m_pos = pos;
 	m_lefttop_pos = m_pos - Play::Point2D(width / 2, height / 2);
@@ -48,8 +48,8 @@ void GridComponent::InitGridInfo(short row, short col, short height, short width
 	for (std::vector<GridItem>& grids : gridList)
 		grids.resize(grid_row_num);
 
-	short grid_width;
-	short grid_height;
+	int grid_width;
+	int grid_height;
 	if (gridheight == 0 || gridWidth == 0)
 	{
 		grid_width = m_width / grid_col_num;
@@ -125,7 +125,7 @@ void GridComponent::Push_back_Grids(UIElement* element)
 
 }
 
-void GridComponent::AddToGrids(UIElement* element, short x, short y)
+void GridComponent::AddToGrids(UIElement* element, int x, int y)
 {
 	element->SetPosition(gridList[x][y].GetPos());
 	gridList[x][y].SetGridItem(element);
@@ -134,4 +134,11 @@ void GridComponent::AddToGrids(UIElement* element, short x, short y)
 Play::Point2D GridComponent::GetPos()
 {
 	return m_pos;
+}
+
+GridComponent::~GridComponent()
+{
+	gridList.clear();
+	delete heldGridItem;
+	heldGridItem = nullptr;
 }

@@ -6,7 +6,7 @@
 int UIElement::id = 0;
 
 
-UIElement::UIElement(Play::Point2D _pos,short height, short width)
+UIElement::UIElement(Play::Point2D _pos, float height, float width)
 {
 	m_id = id++;
 	m_pos = _pos;
@@ -15,7 +15,7 @@ UIElement::UIElement(Play::Point2D _pos,short height, short width)
 	SetCollisionBoundary();
 }
 
-UIElement::UIElement(float x, float y, short height, short width )
+UIElement::UIElement(float x, float y, float height, float width )
 {
 	m_id = id++;
 	Play::Point2D _pos{ x,y };

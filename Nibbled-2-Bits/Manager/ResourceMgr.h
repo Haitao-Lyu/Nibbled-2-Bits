@@ -48,6 +48,8 @@ struct GameAreaInfo
 	{
 		
 	}
+
+	void Destory();
 };
 
 namespace ResoureMgr
@@ -55,4 +57,6 @@ namespace ResoureMgr
 	void DrawBackground(E_BKCOLOR COLOR = E_BKCOLOR::WOOD, E_BKMODE MODE = E_BKMODE::FILL);
 
 	GameAreaInfo& LoadLevel(std::string levelName);
+
+	const char* GetFontName(E_FONTS font);
 };

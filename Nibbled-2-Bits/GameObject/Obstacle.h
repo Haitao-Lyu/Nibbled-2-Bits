@@ -11,7 +11,7 @@ protected:
 	CircleCollider m_circleCollider;
 public:
 	Obstacle(Play::Point2D pos,E_OBJTYPE type);
-	~Obstacle();
+	virtual ~Obstacle();
 
 	virtual void Update() override;
 	virtual void Render() override;

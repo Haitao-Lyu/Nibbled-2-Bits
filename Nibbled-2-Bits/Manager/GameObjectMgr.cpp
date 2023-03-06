@@ -78,7 +78,8 @@ namespace GameObjectMgr
 		{
 			delete obj;
 		}
-		//pointer is all clean, so just clear
+		//Two map have the same instance, so pointer point to the same object ?
+		//pointer is all clean, so just clear 
 		g_gameObjectMapAll.clear();
 		g_gameObjectMapbyType.clear();// will this clear the vector inside map as well?
 	}

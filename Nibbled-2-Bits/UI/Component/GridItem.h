@@ -50,4 +50,6 @@ public:
 	UIElement* GetGridUIElement();
 
 	Play::Point2D GetPos();
+
+	~GridItem();
 };

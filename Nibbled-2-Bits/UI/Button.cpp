@@ -3,6 +3,7 @@
 #include "../GameTool/DebugTool.h"
 #include "UIManager.h"
 #include "../MainGame.h"
+#include "../Manager/ResourceMgr.h"
 Button::Button() :UIElement(Play::Point2D(0, 0), 0, 0)
 {
 	
@@ -41,7 +42,7 @@ void Button::Render()
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 	Play::DrawSpriteTransformed(Play::GetSpriteId(m_spriteName), scaleMt * rotMt, 0);
 	//btn text show
-	Play::DrawDebugText(m_pos, m_btnText, Play::cRed, true);
+	Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::ABNORMAL_40), m_btnText, m_pos, Play::Align::CENTRE);
 	//DEBUG UI
 	//DrawBoundingBox();
 }

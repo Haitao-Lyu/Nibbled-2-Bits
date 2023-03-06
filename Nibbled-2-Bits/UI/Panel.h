@@ -20,10 +20,10 @@ private:
 public:
 	GridComponent gridComponent;//component should always be public
 
-	Panel(Play::Point2D pos, short height , short width, const char* spriteName = "");
+	Panel(Play::Point2D pos, float height , float width, const char* spriteName = "");
 	~Panel();
 	void SetScale(float x, float y);
-
+	void SetSpriteScale(float x, float y);
 	void Update() override;
 	void Render() override;
 };

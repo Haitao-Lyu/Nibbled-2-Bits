@@ -106,16 +106,24 @@
     <ClInclude Include="GameObject\Component\Collider.h" />
     <ClInclude Include="GameObject\Component\CollisionSystem.h" />
     <ClInclude Include="GameObject\ConsumableObj.h" />
+    <ClInclude Include="GameObject\MouseState\MouseDieState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseHurtState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseIdleState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseJumpState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseRunState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseWalkState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseWhackedState.h" />
     <ClInclude Include="GameObject\Tube.h" />
+    <ClInclude Include="Level\GameFlowState.h" />
+    <ClInclude Include="Level\MainMenuState.h" />
     <ClInclude Include="Manager\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
     <ClInclude Include="GameObject\MouseHole.h" />
-    <ClInclude Include="GameObject\MouseState.h" />
+    <ClInclude Include="GameObject\MouseState\MouseState.h" />
     <ClInclude Include="GameObject\MouseTrap.h" />
     <ClInclude Include="GameObject\Obstacle.h" />
     <ClInclude Include="GameObject\Tile.h" />
     <ClInclude Include="Manager\ApplicationMgr.h" />
-    <ClInclude Include="BaseState.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Level\LevelMgr.h" />
     <ClInclude Include="Level\LevelState.h" />
@@ -143,7 +151,6 @@
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseState.cpp" />
     <ClCompile Include="GameObject\Boundary.cpp" />
     <ClCompile Include="GameObject\Chesse.cpp" />
     <ClCompile Include="GameObject\ClickableObj.cpp" />
@@ -153,11 +160,20 @@
     <ClCompile Include="GameObject\Component\CollisionSystem.cpp" />
     <ClCompile Include="GameObject\ConsumableObj.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseDieState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseHurtState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseIdleState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseJumpState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseRunState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseWalkState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseWhackedState.cpp" />
     <ClCompile Include="GameObject\Tube.cpp" />
+    <ClCompile Include="Level\GameFlowState.cpp" />
+    <ClCompile Include="Level\MainMenuState.cpp" />
     <ClCompile Include="Manager\GameObjectMgr.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
     <ClCompile Include="GameObject\MouseHole.cpp" />
-    <ClCompile Include="GameObject\MouseState.cpp" />
+    <ClCompile Include="GameObject\MouseState\MouseState.cpp" />
     <ClCompile Include="GameObject\MouseTrap.cpp" />
     <ClCompile Include="GameObject\Obstacle.cpp" />
     <ClCompile Include="GameObject\Tile.cpp" />

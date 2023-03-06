@@ -14,8 +14,8 @@ public:
 	const char* m_spriteName = "";
 	static int id;
 	int m_id;//when it's const the "=" operator is deleted ? ? 
-	short m_height = 0;
-	short m_width = 0;
+	float m_height = 0;
+	float m_width = 0;
 	bool isHolding = false;
 	bool isActive = true;
 	bool isVisable = true;
@@ -23,9 +23,9 @@ public:
 	//TODO : Copy consturctor and  = overload
 	UIElement() {}
 
-	UIElement(Play::Point2D pos, short height = 100, short width = 50);
+	UIElement(Play::Point2D pos, float height = 100, float width = 50);
 
-	UIElement(float x, float y, short height = 100, short width = 50);
+	UIElement(float x, float y, float height = 100, float width = 50);
 
 	virtual void Update();
 

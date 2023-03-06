@@ -68,7 +68,7 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 
 	std::ifstream levelFile;
 
-	static GameAreaInfo gameAreaInfo(GRID_WIDTH,GRID_HEIGHT);
+	GameAreaInfo* gameAreaInfo = new GameAreaInfo(GRID_WIDTH,GRID_HEIGHT);
 
 	/// <summary>
 	/// WHY DONT JUST SAVE POSITION WHY SAVE INDEX ? ? ? ? ? 
@@ -81,7 +81,7 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 	if (levelFile.fail()) 
 	{
 		PLAY_ASSERT_MSG(levelFile.fail(), "LEVEL NAME IS INVALID");
-		return gameAreaInfo;
+		return *gameAreaInfo;
 	}
 
 
@@ -98,8 +98,8 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 		tokens1.push_back(token1);
 	}
 	//Mouse Hole Entry
-	gameAreaInfo.EntryPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
-	gameAreaInfo.EntryPos.y = static_cast<float>((GRID_HEIGHT - 1)  - stoi(tokens1[1]));
+	gameAreaInfo->EntryPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
+	gameAreaInfo->EntryPos.y = static_cast<float>((GRID_HEIGHT - 1)  - stoi(tokens1[1]));
 
 	//Read the next 2 lines as the mouse hole positions
 	std::getline(levelFile, object);
@@ -109,8 +109,8 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 		tokens1.push_back(token1);
 	}
 	//Mouse Hole Exit
-	gameAreaInfo.ExitPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
-	gameAreaInfo.ExitPos.y = static_cast<float>((GRID_HEIGHT - 1)  -stoi(tokens1[1]));
+	gameAreaInfo->ExitPos.x = static_cast<float>(stoi(tokens1[0]) + 1);
+	gameAreaInfo->ExitPos.y = static_cast<float>((GRID_HEIGHT - 1)  -stoi(tokens1[1]));
 
 	while (!levelFile.eof()) {
 		std::getline(levelFile, object);
@@ -181,46 +181,56 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);
 		tmpObject->rot = stoi(tokens[3]);
 		tmpObject->misc = stoi(tokens[4]);
-		gameAreaInfo.objects[tmpObject->posx][ tmpObject->posy] = tmpObject;
+		gameAreaInfo->objects[tmpObject->posx][ tmpObject->posy] = tmpObject;
 		//tokens.clear();
 	}
 
-	//debug
-	for (std::vector<GameAreaObject*>& col : gameAreaInfo.objects)
-	{
-		for (GameAreaObject* item : col)
-		{
-			if (item)
-				logDebugInfo(std::to_string((int)(item->m_type)) + " " + std::to_string(item->posx) + " " + std::to_string(item->posy) , "debug.log");
-			else
-				logDebugInfo("nullptr", "debug.log");
-		}
-		logDebugInfo("\n");
-	}
-	//std::vector<std::tuple<int, int>> playerInventory;
-
-	//while (!levelFile.eof()) {
-	//	std::getline(levelFile, object);
-	//	if (object == "") continue; // ignore empty lines
-
-	//	std::istringstream ss{ object };
-	//	std::string token;
-	//	std::vector<std::string> tokens;
-
-	//	while (std::getline(ss, token, ',')) {
-	//		tokens.push_back(token);
+	//print debug info
+	//for (std::vector<GameAreaObject*>& col : gameAreaInfo->objects)
+	//{
+	//	for (GameAreaObject* item : col)
+	//	{
+	//		if (item)
+	//			logDebugInfo(std::to_string((int)(item->m_type)) + " " + std::to_string(item->posx) + " " + std::to_string(item->posy) , "debug.log");
+	//		else
+	//			logDebugInfo("nullptr", "debug.log");
 	//	}
-
-	//	playerInventory.push_back({ idMap[tokens[0]], stoi(tokens[1]) });
+	//	logDebugInfo("\n");
 	//}
-
-	//m_panel.SetPlayerInventory(playerInventory);
 
 	levelFile.close();
 
-	return gameAreaInfo;
-	//m_gameArea.SetGameAreaObjects(objects);
+	return *gameAreaInfo;
 
-	//m_gameArea.m_lastSelected = { -1,-1 };
 }
 
+const char* ResoureMgr::GetFontName(E_FONTS font)
+{
+	switch (font)
+	{
+	case E_FONTS::ABNORMAL_40:
+		return C_FONT_ABNORMAL_40;
+		break;
+	case E_FONTS::BOLD_64:
+		return C_FONT_BOLD_64;
+		break;
+	case E_FONTS::LIGHT_64:
+		return C_FONT_LIGHT_64;
+		break;
+	default:
+		break;
+	}
+}
+
+void GameAreaInfo::Destory()
+{
+	for (std::vector<GameAreaObject*>& list : objects)
+	{
+		for (GameAreaObject* obj : list)
+		{
+			delete obj;
+		}
+		list.clear();//Will clear function handle the pointer ? ? ? // Or always manually delete
+	}
+	objects.clear();
+}

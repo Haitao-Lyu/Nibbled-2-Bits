@@ -1,9 +1,17 @@
 #pragma once
 #include "GameObject.h"
 #include "../GameTool/Timer.h"
-#include "MouseState.h"
+#include "MouseState/MouseState.h"
 #include "Component/BoxCollider.h"
 #include "Component/CircleCollider.h"
+
+#include "MouseState/MouseIdleState.h"
+#include "MouseState/MouseHurtState.h"
+#include "MouseState/MouseDieState.h"
+#include "MouseState/MouseJumpState.h"
+#include "MouseState/MouseRunState.h"
+#include "MouseState/MouseWhackedState.h"
+#include "MouseState/MouseWalkState.h"
 
 enum class E_MOUSE_STATE
 {
@@ -51,13 +59,13 @@ private:
 	float m_speed { 3.0f };
 
 	MouseState* m_state;
-	MouseRunState*	   runState		;
-	MouseDieState*	   dieState		;
-	MouseIdleState*	   idleState	;
-	MouseJumpState*	   jumpState	;
-	MouseWalkState*	   walkState	;
-	MouseHurtState*	   hurtState	;
-	MouseWhackedState* whackedState ;
+	MouseRunState  m_runState;
+	MouseDieState  m_dieState;
+	MouseIdleState m_idleState;
+	MouseJumpState m_jumpState;
+	MouseWalkState m_walkState;
+	MouseHurtState m_hurtState;
+	MouseWhackedState m_whackedState;
 	E_MOUSE_DIR m_dir = E_MOUSE_DIR::UP;
 	E_MOUSE_STATE e_mouseState = E_MOUSE_STATE::idleState;
 	bool isWhacked = false;
@@ -71,7 +79,7 @@ public:
 
 	Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR = E_MOUSE_COLOR::DARK_GREY);
 	Mouse(float x, float y, E_MOUSE_COLOR COLOR = E_MOUSE_COLOR::DARK_GREY);
-	~Mouse();
+	~Mouse() override;
 
 	void SetMouseState(E_MOUSE_STATE e_state);
 

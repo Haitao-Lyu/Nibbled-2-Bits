@@ -184,7 +184,7 @@ void Tube::CollideMouse(Mouse* mice)
 			{
 				mice->SetRotation(m_rot - 90);
 			}
-			if (mouse_cur_dir == 1)
+			else if (mouse_cur_dir == 1)
 			{
 				mice->SetRotation(m_rot);
 			}
@@ -213,13 +213,44 @@ void Tube::CollideMouse(Mouse* mice)
 	{
 		float distance = (mice->GetPosition() - m_pos).Length();
 		//when degree with the line < 20, cone is 40 dergee, allow to get in
-		if (acos(Play::dot(tubeToMice, normal_line)) <= Play::DegToRad(20) || acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(20) || acos(Play::dot(tubeToMice, left_line)) <= Play::DegToRad(20))// 30 degree
+		if (acos(Play::dot(tubeToMice, normal_line)) <= Play::DegToRad(10))// 30 degree
 		{
-
-		}//when mouse totally get in, avoid to be poped out
+			mouse_cur_dir = 0;
+		}
+		else if (acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(10))
+		{
+			mouse_cur_dir = 1;
+		}
+		else if (acos(Play::dot(tubeToMice, left_line)) <= Play::DegToRad(10))
+		{
+			mouse_cur_dir = 2;
+		}
+		else if (distance < 5)
+		{
+			if (mouse_cur_dir == 0)
+			{
+				mice->SetRotation(m_rot - 90);
+			}
+			else if (mouse_cur_dir == 1)
+			{
+				mice->SetRotation(m_rot);
+			}
+			else if (mouse_cur_dir == 2)//
+			{
+				//mice->SetRotation(m_rot + 90);
+			}
+		}
+		//when mouse totally get in, avoid to pop out
 		else if (distance < GetCollider().GetRadius())
 		{
+			if (acos(Play::dot(tubeToMice, normal_line)) <= Play::DegToRad(10) || acos(Play::dot(tubeToMice, right_line)) <= Play::DegToRad(10) || acos(Play::dot(tubeToMice, left_line)) <= Play::DegToRad(10))
+			{
 
+			}
+			else
+			{
+				mice->SetPosition(m_pos);
+			}
 		}
 		else
 		{

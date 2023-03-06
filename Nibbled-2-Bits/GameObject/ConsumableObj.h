@@ -17,7 +17,7 @@ protected:
 	ConsumableObj() = delete;
 public:
 	ConsumableObj(Play::Point2D pos, E_OBJTYPE type);
-	~ConsumableObj();
+	virtual ~ConsumableObj();
 
 	virtual void Update() override;
 	virtual void Render() override;

@@ -7,11 +7,20 @@ static const Play::Matrix2D dir_down = Play::MatrixRotation(Play::DegToRad(180.0
 static const Play::Matrix2D dir_right = Play::MatrixRotation(Play::DegToRad(270.0f));
 static const Play::Matrix2D dir_up = Play::MatrixIdentity();
 
+static const char* bottom_name = "boundary_bottom";
+static const char* left_name = "boundary_left";
+static const char* right_name = "boundary_right";
+static const char* top_name = "boundary_top";
+static const char* boundary_inner_corner_bottom_left_name = "boundary_inner_corner_bottom_left";
+static const char* boundary_inner_corner_bottom_right_name = "boundary_inner_corner_bottom_right";
+static const char* boundary_inner_corner_top_left_name = "boundary_inner_corner_top_left";
+static const char* boundary_inner_corner_top_right_name = "boundary_inner_corner_top_right";
 Boundary::Boundary(Play::Point2D pos):Obstacle(pos,E_OBJTYPE::E_BOUNDARY)
 {
 	SetScale(0.35f);
-	m_boxCollider.Init(Play::GetSpriteWidth(tileName) * m_scale, Play::GetSpriteHeight(tileName) * m_scale, pos, this);
-	m_circleCollider.Init(pos , (Play::GetSpriteWidth(tileName)/2 )  * m_scale);
+	spriteName = "boundary_top";
+	m_boxCollider.Init(Play::GetSpriteWidth(spriteName) * m_scale, Play::GetSpriteHeight(spriteName) * m_scale, pos, this);
+	m_circleCollider.Init(pos , (Play::GetSpriteWidth(spriteName)/2 )  * m_scale);
 }
 
 Boundary::~Boundary()
@@ -32,32 +41,35 @@ void Boundary::Render()
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 
 	//change direction based on position
-	Play::Matrix2D rtMt;
 	switch (m_dir)
 	{
 	case E_DIR_BOUNDARY::UP:
-		rtMt = dir_up;
+		cornerTileName = boundary_inner_corner_top_left_name;
+		spriteName = top_name;
 		break;
 	case E_DIR_BOUNDARY::LEFT:
-		rtMt = dir_left;
-		m_boxCollider.UpdateShape(Play::GetSpriteHeight(tileName) * m_scale, Play::GetSpriteWidth(tileName) * m_scale, m_pos);
+		cornerTileName = boundary_inner_corner_bottom_left_name;
+		spriteName = left_name;
+		m_boxCollider.UpdateShape(Play::GetSpriteHeight(spriteName) * m_scale, Play::GetSpriteWidth(spriteName) * m_scale, m_pos);
 		break;
 	case E_DIR_BOUNDARY::DOWN:
-		rtMt = dir_down;
+		cornerTileName = boundary_inner_corner_bottom_right_name;
+		spriteName = bottom_name;
 		break;
 	case E_DIR_BOUNDARY::RIGHT:
-		rtMt = dir_right;
-		m_boxCollider.UpdateShape(Play::GetSpriteHeight(tileName) * m_scale, Play::GetSpriteWidth(tileName) * m_scale, m_pos);
+		cornerTileName = boundary_inner_corner_top_right_name;
+		spriteName = right_name;
+		m_boxCollider.UpdateShape(Play::GetSpriteHeight(spriteName) * m_scale, Play::GetSpriteWidth(spriteName) * m_scale, m_pos);
 		break;
 	default:
 		break;
 	}
 	if (isCorner)
 	{
-		Play::DrawSpriteTransformed(Play::GetSpriteId(cornerTileName), scaleMt * rtMt, 0);
+		Play::DrawSpriteTransformed(Play::GetSpriteId(cornerTileName), scaleMt, 0);
 	}
 	else
-	Play::DrawSpriteTransformed(Play::GetSpriteId(tileName), scaleMt * rtMt, 0);
+	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt , 0);
 	//m_circleCollider.DrawBoundingBox(Play::cBlue);
 	//m_boxCollider.DrawBoundingBox();
 	//TODO: REFACTOR SQAURE COLLDIER

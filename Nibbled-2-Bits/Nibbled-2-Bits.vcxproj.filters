@@ -81,7 +81,7 @@
     <ClCompile Include="GameObject\ConsumableObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\MouseState.cpp">
+    <ClCompile Include="GameObject\MouseState\MouseState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Tile.cpp">
@@ -126,9 +126,6 @@
     <ClCompile Include="Level\LevelState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BaseState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Component\GridComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -139,6 +136,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\ClickableObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseIdleState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseWalkState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseRunState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseWhackedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseJumpState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseHurtState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MouseState\MouseDieState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\GameFlowState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\MainMenuState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -212,7 +236,7 @@
     <ClInclude Include="GameObject\ConsumableObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\MouseState.h">
+    <ClInclude Include="GameObject\MouseState\MouseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\Tile.h">
@@ -257,9 +281,6 @@
     <ClInclude Include="Level\LevelState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Component\GridComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -270,6 +291,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\ClickableObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseIdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseWalkState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseRunState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseWhackedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseJumpState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseHurtState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MouseState\MouseDieState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\GameFlowState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\MainMenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
