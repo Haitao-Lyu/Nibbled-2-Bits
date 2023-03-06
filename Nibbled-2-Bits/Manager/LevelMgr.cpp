@@ -22,6 +22,13 @@ void LevelMgr::Destroy()
 	delete _instance;
 }
 
+Level* LevelMgr::GetLevel(int i)
+{
+	if(i < level_list.size())
+		return &level_list[i];
+	return nullptr;
+}
+
 void LevelMgr::AddNewLevel(const char* name)
 {
 	Level level(name);

@@ -24,7 +24,7 @@ private:
 	//All the panel items in level should be interactable
 	Panel* m_gamePanel;
 	Panel* m_itemPanel;
-
+	int TargetNumber = 0;
 public:
 	Level(const char* name);
 	~Level();

@@ -125,7 +125,7 @@
     <ClInclude Include="GameObject\Tile.h" />
     <ClInclude Include="Manager\ApplicationMgr.h" />
     <ClInclude Include="Level\Level.h" />
-    <ClInclude Include="Level\LevelMgr.h" />
+    <ClInclude Include="Manager\LevelMgr.h" />
     <ClInclude Include="Level\LevelState.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Manager\ResourceMgr.h" />
@@ -179,7 +179,7 @@
     <ClCompile Include="GameObject\Tile.cpp" />
     <ClCompile Include="Manager\ApplicationMgr.cpp" />
     <ClCompile Include="Level\Level.cpp" />
-    <ClCompile Include="Level\LevelMgr.cpp" />
+    <ClCompile Include="Manager\LevelMgr.cpp" />
     <ClCompile Include="Level\LevelState.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

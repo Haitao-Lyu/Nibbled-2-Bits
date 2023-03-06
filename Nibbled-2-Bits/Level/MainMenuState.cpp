@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "MainMenuState.h"
-
+#include "LevelState.h"
 GameFlowState* MainMenuState::OnUpdate()
 {
 	if (Play::KeyPressed(VK_SPACE))
 	{
-		return new MainMenuState();
+		return new LevelState();
 	}
 	return nullptr;
 }

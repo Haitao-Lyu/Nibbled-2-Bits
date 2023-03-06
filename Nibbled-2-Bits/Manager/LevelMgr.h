@@ -1,5 +1,5 @@
 #pragma once
-#include "level.h"
+#include "../Level/level.h"
 class LevelMgr
 {
 private:
@@ -20,6 +20,8 @@ public:
 	void AddNewLevel(const char* name);
 
 	void Destroy();
+
+	Level* GetLevel(int i);
 
 	~LevelMgr();
 };

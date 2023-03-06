@@ -117,7 +117,7 @@
     <ClCompile Include="GameObject\MouseHole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\LevelMgr.cpp">
+    <ClCompile Include="Manager\LevelMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Manager\ApplicationMgr.cpp">
@@ -272,7 +272,7 @@
     <ClInclude Include="GameObject\MouseHole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\LevelMgr.h">
+    <ClInclude Include="Manager\LevelMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Manager\ApplicationMgr.h">

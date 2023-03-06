@@ -2,6 +2,8 @@
 #include "GameFlowState.h"
 class MainMenuState :public GameFlowState
 {
+	//Load MainMenu Panel
+
 public:
 
 	MainMenuState();

@@ -1,9 +1,10 @@
 #pragma once
 #include "GameFlowState.h"
-
+#include "Level.h"
 class LevelState:public GameFlowState
 {
 
+	Level* currentLevel = nullptr;
 
 public:
 	LevelState();

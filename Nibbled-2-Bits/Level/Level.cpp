@@ -160,7 +160,7 @@ void Level::Clear()
 	//clear all game objects and reload
 	GameObjectMgr::ClearAllGameobjects();
 	//restart quantities
-
+	//TODO : .. Restart quantities
 }
 
 void Level::Destroy()
@@ -376,6 +376,7 @@ static const int level1[2][2]{ 2,0,0,0 };
 static const int level2[2][2]{ 2,0,0,0 };
 static const int level3[2][2]{ 2,0,0,0 };
 
+//need to be change to contain differ info
 void Level::LoadLevelPanel()
 {
 	//All elements in a panel should scale by the scale of panel

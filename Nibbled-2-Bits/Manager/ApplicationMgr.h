@@ -1,16 +1,8 @@
 #pragma once
 #include "../Level/GameFlowState.h"
 
-class ApplicationMgr
+namespace ApplicationMgr
 {
-
-private:
-	GameFlowState* m_gameState;
-public:
-	ApplicationMgr();
-	~ApplicationMgr();
-
 	void Update();
-
 };
 
