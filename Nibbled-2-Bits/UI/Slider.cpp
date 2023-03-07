@@ -8,7 +8,7 @@ Slider::Slider(Play::Point2D pos, const char* b_spriteName, short b_sprite_heigh
 	m_pos = pos;
 	//btn init move slightly left
 	btn = Button( {pos.x - b_sprite_width / 2,pos.y}, b_sprite_height, b_sprite_width);
-	rect = RectFill{ pos,r_spriteName,r_sprite_height,r_sprite_width };
+	rect = RectFill{ pos,r_sprite_height,r_sprite_width,r_spriteName };
 	SetText(btn_text);
 	m_originX = btn.m_pos.x;
 	m_length = r_sprite_width;

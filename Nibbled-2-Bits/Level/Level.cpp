@@ -12,7 +12,7 @@
 #include "../GameObject/MouseHole.h"
 #include "../GameObject/Tube.h"
 #include "../UI/EventCenter.h"
-
+#include "../UI/TextField.h"
 
 static const char* tube_cross_name = "iron_tube_cross";
 static const char* tube_one_name = "iron_tube_one_way";
@@ -40,7 +40,7 @@ Level::Level(const char* name)
 
 Level::~Level()
 {
-
+	Destroy();
 }
 
 void Level::SetTileType(std::vector<std::vector<int>>& adjacentTiles)
@@ -84,14 +84,71 @@ void Level::CheckAjacentTiles()
 	}
 }
 
+void Level::OnEnter()
+{
+	//Enter Level
+	LoadLevelPanel();
+	LoadLeveltoScene();
+	//set cheese event
+	EventListener czListener("CheezeConsumedListener");
+	czListener.addEvent([this]()
+		{
+			this->m_endLevelPanel->gridComponent.gridList[this->cheeseNumber++][0].GetGridUIElement()->SetSpriteName("cz_swiss_big");
+		});
+	EventCenter::RegisterListener("CheezeConsumed", czListener);
+
+
+	//set restart button Event
+	EventListener restartListener("MouseRestartGameListener");
+	restartListener.addEvent([this]()
+		{
+			this->Clear();
+			this->LoadLeveltoScene();
+		});
+	EventCenter::RegisterListener("GameRestart", restartListener);
+
+	//Everytime rotate snap to the grid
+	EventListener MouseRotationChangedListener("MouseRotationChangedListener");
+	MouseRotationChangedListener.addEvent([this]()
+		{
+			std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
+			float minDis = 10000;
+			GridItem* closestGrid = nullptr;
+			for (GameObject* obj : list_MOUSE)
+			{
+				if (!obj)//check pointer valid
+					break;
+				Mouse* mouse = static_cast<Mouse*>(obj);
+				//could do math to accelerate
+				for (std::vector<GridItem>& grids : this->m_gamePanel->gridComponent.gridList)
+				{
+					for (GridItem& grid : grids)
+					{
+						float dis = (mouse->m_pos - grid.GetPos()).Length();
+						if (dis < minDis)
+						{
+							minDis = dis;
+							closestGrid = &grid;
+						}
+					}
+				}
+				if(closestGrid)
+				obj->SetPosition(closestGrid->GetPos());
+			}
+		});
+	EventCenter::RegisterListener("MouseRotationChanged", MouseRotationChangedListener);
+
+}
+
 void Level::Update()
 {
+
+
 	if (m_gamePanel)
 	{
 		m_gamePanel->isVisable = false;
 		m_gamePanel->Update();
 	}
-
 
 	if (m_itemPanel)
 	{
@@ -141,8 +198,25 @@ void Level::Update()
 		}
 
 	}
+
+	if (m_endLevelPanel)
+		m_endLevelPanel->Update();
+
 	CheckPanelEvent();
 	LevelControl();
+
+	if (Play::KeyPressed(0x4A))
+	{
+		m_endLevelPanel->SetActive(true);
+		m_endLevelPanel->SetVisibility(true);
+	}
+}
+
+void Level::OnExit()
+{
+	Destroy();
+	//Clear Level Event
+	EventCenter::UnregisterListenersByEvent("GameRestart");
 }
 
 void Level::Clear()
@@ -155,21 +229,37 @@ void Level::Clear()
 			i = -1;
 		}
 	}
-	//clear event
+	//clear Game object event
 	EventCenter::UnregisterListenersByEvent("GameStart");
+	//clear cheese event
+	EventCenter::UnregisterListenersByEvent("CheezeConsumed");
+	//clear rotation event
+	EventCenter::UnregisterListenersByEvent("MouseRotationChanged");
 	//clear all game objects and reload
 	GameObjectMgr::ClearAllGameobjects();
 	//restart quantities
 	//TODO : .. Restart quantities
 }
 
+//when exit it's already destroyed
 void Level::Destroy()
 {
-	delete m_gamePanel;
-	m_gamePanel = nullptr;
+	Clear();
+	if (m_gamePanel)
+	{
+		delete m_gamePanel;
+		m_gamePanel = nullptr;
+	}
+	if (m_itemPanel)
+	{
+		delete m_itemPanel;
+		m_itemPanel = nullptr;
+	}
+}
 
-	delete m_itemPanel;
-	m_itemPanel = nullptr;
+bool Level::isLevelEnd()
+{
+	return isEnd;
 }
 
 void Level::FromItemPanelAddToLevel(GridItem& grid, int x, int y)
@@ -263,6 +353,28 @@ void Level::LevelControl()
 
 void Level::CheckPanelEvent()
 {
+	//This function Could be packed up into Button Class
+	//Endlevel Panel Exit Btn
+	if (m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->OnClick())
+	{
+		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
+		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
+	}
+	else
+	{
+		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
+	}
+
+	if (m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->OnClick())
+	{
+		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
+		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
+	}
+	else
+	{
+		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
+	}
+
 	//if holding item from item panel
 	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
 	{
@@ -413,6 +525,42 @@ void Level::LoadLevelPanel()
 	btn_start->isDragable = false;
 	m_itemPanel->gridComponent.AddToGrids(btn_start, 0, 2);
 	m_itemPanel->gridComponent.AddToGrids(btn_Restart, 2, 2);
+
+	//Another Event, when game start set btn disabled
+
+
+	//EndLevel Panel Create
+	Panel* exit_panel = new Panel({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, 422, 433, "blue_panel");
+	m_endLevelPanel = exit_panel;
+
+	TextField* tab = new TextField({ exit_panel->m_pos.x, exit_panel->m_pos.y - exit_panel->m_height / 2 + 50 }, 50, 100, "Good ! ! JOB ! ! ");
+
+	exit_panel->AddToPanel(tab);
+
+	exit_panel->gridComponent.InitGridInfo(2, 3, 0, 0, { exit_panel->m_pos.x - exit_panel->m_width / 3, exit_panel->m_pos.y - 50 }, 100, 100);
+
+	Button* btn_exit = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 100, 100, "red_round_button_unpushed", []()
+		{
+			EventCenter::PostEvent("ExitButtonPressed");
+		}, "Exit");
+
+
+	Button* btn_next = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 100, 100, "green_round_button_unpushed", [this]()
+		{
+			this->isEnd = true;
+		}, "Next");
+
+	Button* btn_cz = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102,"cz_swiss_big_grey");
+	Button* btn_cz2 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
+	Button* btn_cz3 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
+	exit_panel->gridComponent.Push_back_Grids(btn_cz);
+	exit_panel->gridComponent.Push_back_Grids(btn_cz2);
+	exit_panel->gridComponent.Push_back_Grids(btn_cz3);
+	exit_panel->gridComponent.AddToGrids(btn_next, 0, 1);
+	exit_panel->gridComponent.AddToGrids(btn_exit, 2, 1);
+
+	m_endLevelPanel->SetVisibility(false);
+	m_endLevelPanel->SetActive(false);
 }
 
 void Level::LoadLeveltoScene()

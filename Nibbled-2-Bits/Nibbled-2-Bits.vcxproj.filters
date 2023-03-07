@@ -123,7 +123,7 @@
     <ClCompile Include="Manager\ApplicationMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level\LevelState.cpp">
+    <ClCompile Include="Level\MainGameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Component\GridComponent.cpp">
@@ -163,6 +163,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Level\MainMenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\StateInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TextField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,7 +284,7 @@
     <ClInclude Include="Manager\ApplicationMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level\LevelState.h">
+    <ClInclude Include="Level\MainGameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Component\GridComponent.h">
@@ -318,6 +324,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level\MainMenuState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\StateInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TextField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

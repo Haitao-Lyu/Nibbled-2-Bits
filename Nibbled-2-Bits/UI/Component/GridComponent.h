@@ -18,7 +18,7 @@ public:
 
 	GridComponent();
 
-	GridComponent(Play::Point2D pos, int height = 100, int width = 100,int row = 2,int col = 2);
+	GridComponent(Play::Point2D pos, int height = 0, int width = 0,int row = 2,int col = 2);
 
 	void SetGridNum(int row, int col);
 

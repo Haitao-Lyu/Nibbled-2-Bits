@@ -1,9 +1,10 @@
 #pragma once
 #include "GameFlowState.h"
+#include "../UI/Panel.h"
 class MainMenuState :public GameFlowState
 {
 	//Load MainMenu Panel
-
+	Panel* MainMenuPanel = nullptr;
 public:
 
 	MainMenuState();

@@ -49,15 +49,22 @@ void Button::Render()
 
 bool Button::OnDrag()
 {
+	if (!isActive)
+		return false;
 	return UIElement::OnDrag();
 }
 
 bool Button::OnHover()
 {
+	if (!isActive)
+		return false;
 	return UIElement::OnHover();
 }
 bool Button::OnClick()
 {
+	if (!isActive)
+ 		return false;
+
 	if (UIElement::OnClick())
 	{
 		m_OnClickHandler();

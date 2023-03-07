@@ -79,7 +79,7 @@ void GridComponent::Render()
 	for (GridItem& grid : grids)
 	{
 		//debug grids
-		grid.DrawGrid();
+		//grid.DrawGrid();
 		//if has ui element, draw it
 		if (grid.GetGridUIElement())
 		{

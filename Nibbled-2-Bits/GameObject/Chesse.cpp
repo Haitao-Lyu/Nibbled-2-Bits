@@ -3,6 +3,7 @@
 #include <vector>
 #include "../MainGame.h"
 #include "../Manager/GameObjectMgr.h"
+#include "../UI/EventCenter.h"
 const char* cz_01 = "cz_brie";
 const char* cz_02 = "cz_camembert";
 const char* cz_03 = "cz_cheddar";
@@ -40,6 +41,7 @@ void Cheese::Update()
 	if (isConsumed)
 	{
 		GameObjectMgr::RemoveGameObject(*this);
+		EventCenter::PostEvent("CheezeConsumed");
 		return;
 	}
 	Render();

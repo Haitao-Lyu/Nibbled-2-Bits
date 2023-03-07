@@ -22,18 +22,30 @@ private:
 	std::vector<std::vector<int>> m_mapinfo;
 	std::vector<std::vector<int>> inventoryInfo;
 	//All the panel items in level should be interactable
-	Panel* m_gamePanel;
-	Panel* m_itemPanel;
-	int TargetNumber = 0;
+	Panel* m_gamePanel{ nullptr };
+	Panel* m_itemPanel{ nullptr };
+	Panel* m_endLevelPanel{ nullptr };
+	bool isEnd = false;
+
+public:
+	int exitMouseNumber = 0;
+	int cheeseNumber = 0;
+
 public:
 	Level(const char* name);
 	~Level();
+
+	void OnEnter();
+
+	void OnExit();
 
 	void Update();
 
 	void Clear();
 
 	void Destroy();
+
+	bool isLevelEnd();
 
 	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);
 

@@ -20,8 +20,9 @@ public:
 	bool isActive = true;
 	bool isVisable = true;
 	bool isDragable = true;
+
 	//TODO : Copy consturctor and  = overload
-	UIElement() {}
+	UIElement();
 
 	UIElement(Play::Point2D pos, float height = 100, float width = 50);
 

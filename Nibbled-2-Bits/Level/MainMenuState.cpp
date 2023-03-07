@@ -1,29 +1,79 @@
 #include "pch.h"
 #include "MainMenuState.h"
-#include "LevelState.h"
-GameFlowState* MainMenuState::OnUpdate()
-{
-	if (Play::KeyPressed(VK_SPACE))
-	{
-		return new LevelState();
-	}
-	return nullptr;
-}
+#include "MainGameState.h"
+#include "../UI/Button.h"
+#include "../MainGame.h"
+#include "../GameTool/Timer.h"
+#include "../Manager/ResourceMgr.h"
+#include "../Particle/ParticleManager.h"
 
 MainMenuState::MainMenuState()
 {
+
 }
 
 MainMenuState::~MainMenuState()
 {
+
 }
 
 void MainMenuState::OnEnter()
 {
-	
+	using namespace Play;
+	//ParticleMgr::GetInstance().CreateNewEmitter(
+	//	{ DISPLAY_WIDTH / 2,0 },
+	//	//init emitter scale
+	//	Vector2f{ DISPLAY_WIDTH, 100.0f },
+	//	//init emitter rotation based on intial direction { 0 , -1 }
+	//	120.0f,
+	//	//init particle num
+	//	10,///cant do one has a bug
+	//	//init random speed extent
+	//	Vector2f(1.5f, 3.5f),
+	//	//init lifetime min and max
+	//	Vector2f(1.3f, 2.2f),
+	//	//init random particle direction of motion range
+	//	180.0f,
+	//	//init size range
+	//	Vector2f(0.2f, 1.0f),
+	//	//init delay time
+	//	0.2f,
+	//	//init gravity & direction
+	//	5.0f,
+	//	Vector2f(0.0f, 1.0f),
+	//	//init three color
+	//	Play::Colour(242, 242, 242),
+	//	Play::Colour(242, 200, 242),
+	//	Play::Colour(200, 242, 242),
+	//	//init three alpha
+	//	Play::Vector3D(0.6f, 0.2f, 0.4f),
+	//	"smoke",
+	//	//rotate speed and increment value
+	//	Play::Vector3D(-3.0f, 3.0f, 0.0f),
+	//	//size life time
+	//	Play::Vector3D(1.0f, 1.0f, 1.0f)
+	//);
 }
+
+
+GameFlowState* MainMenuState::OnUpdate()
+{
+	//Update Will Only Draw the UI OnPanel
+	Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::ABNORMAL_40), "@Power - by - Haita0:)", { DISPLAY_HEIGHT / 3,DISPLAY_WIDTH / 2 }, Play::CENTRE);
+	Play::DrawFontText("RubikIso-Regular126px_10x10", "Nibbled - 2 - Bits", { DISPLAY_WIDTH / 2 ,DISPLAY_HEIGHT / 4 }, Play::CENTRE);
+
+	ParticleMgr::GetInstance().UpdateEmitterList();
+
+	if (Play::KeyPressed(VK_SPACE))
+	{
+		return new MainGameState();
+	}
+	return nullptr;
+}
+
 
 void MainMenuState::OnExit()
 {
-	
+	if(!MainMenuPanel)
+	delete MainMenuPanel;
 }

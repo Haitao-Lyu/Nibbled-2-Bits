@@ -26,7 +26,7 @@ void Tube::Rotate(float rot)
 	{
 		rot += 360;
 	}
-	while (rot > 360)
+	while (rot >= 360)
 	{
 		rot -= 360;
 	}
@@ -86,7 +86,7 @@ void Tube::Render()
 	{
 		m_rot += 360;
 	}
-	while (m_rot > 360)
+	while (m_rot >= 360)
 	{
 		m_rot -= 360;
 	}
@@ -178,7 +178,7 @@ void Tube::CollideMouse(Mouse* mice)
 		{
 			mouse_cur_dir = 1;
 		}
-		else if (distance < 5)//when enter tube center, change direction
+		else if (distance < 10)//when enter tube center, change direction
 		{
 			if (mouse_cur_dir == 0)
 			{
@@ -225,7 +225,7 @@ void Tube::CollideMouse(Mouse* mice)
 		{
 			mouse_cur_dir = 2;
 		}
-		else if (distance < 5)
+		else if (distance < 10)
 		{
 			if (mouse_cur_dir == 0)
 			{
@@ -235,9 +235,9 @@ void Tube::CollideMouse(Mouse* mice)
 			{
 				mice->SetRotation(m_rot);
 			}
-			else if (mouse_cur_dir == 2)//
+			else if (mouse_cur_dir == 2)
 			{
-				//mice->SetRotation(m_rot + 90);
+				mice->SetRotation(m_rot + 90);
 			}
 		}
 		//when mouse totally get in, avoid to pop out

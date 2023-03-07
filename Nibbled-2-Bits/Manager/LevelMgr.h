@@ -3,9 +3,17 @@
 class LevelMgr
 {
 private:
-	std::vector<Level> level_list;
-private:
+	std::vector<Level*> level_list;
+
+	int MaxLevelNumber = 0;
+
+	int currentLevelIndex = 0;
+
+	Level* currentLevel = nullptr;
+
 	static LevelMgr* _instance;
+
+private:
 
 	LevelMgr();
 
@@ -19,9 +27,13 @@ public:
 
 	void AddNewLevel(const char* name);
 
-	void Destroy();
+	void Clear();
+
+	void ClearCurrentLevel();
 
 	Level* GetLevel(int i);
+
+	void Update();
 
 	~LevelMgr();
 };

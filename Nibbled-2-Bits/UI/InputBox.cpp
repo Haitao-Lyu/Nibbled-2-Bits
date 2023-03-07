@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-InputBox::InputBox(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width,const char* title):RectFill(pos,spriteName,sprite_height,sprite_width)
+InputBox::InputBox(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width,const char* title):RectFill(pos, sprite_height, sprite_width,spriteName)
 {
 	//btn_submit = Button({ pos.x + sprite_width / 2 + 20,pos.y }, "roundbtn", 50, 50, [] {},"Confirm");
 	m_inputTitle = title;

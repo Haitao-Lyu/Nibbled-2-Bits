@@ -247,6 +247,7 @@ void Mouse::CheckCircleCollision()
 			//move obj backward based on the distance and direction between two obj
 			Play::Vector2D dir = normalize(m_pos - mouse->m_pos);
 			m_pos = mouse->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			Rotate(90);
 			DebugValue(mouse->GetID(), "collides:", 50);
 		}
 	}
@@ -264,6 +265,7 @@ void Mouse::CheckCircleCollision()
 			//move obj backward based on the distance and direction between two obj
 			Play::Vector2D dir = normalize(m_pos - boundary->m_pos);
 			m_pos = boundary->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			Rotate(90);
 			DebugValue(boundary->GetID(), "collides:", 50);
 		}
 	}
@@ -281,6 +283,7 @@ void Mouse::CheckCircleCollision()
 			//move obj backward based on the distance and direction between two obj
 			Play::Vector2D dir = normalize(m_pos - tile->m_pos );
 			m_pos = tile->m_pos + collider.GetRadius() * dir + m_circleCollider.GetRadius() * dir;
+			Rotate(90);
 			DebugValue(tile->GetID(), "collides:", 50);
 		}
 	}
@@ -352,7 +355,7 @@ void Mouse::Update()
 	if (!m_state)
 		return;
 	//movement
-	//DebugMouseControl();
+	DebugMouseControl();
 
 	//CheckBoxCollision();
 	CheckCircleCollision();
@@ -366,6 +369,21 @@ void Mouse::Update()
 	m_state->Update(this);
 }
 
+void Mouse::Rotate(float rot)
+{
+
+	m_rot += rot;
+	while (m_rot < 0)
+	{
+		m_rot += 360;
+	}
+	while (m_rot >= 360)
+	{
+		m_rot -= 360;
+	}
+	OnRotationChanged();
+}
+
 void Mouse::SetRotation(float rot)
 {
 	m_rot = rot;
@@ -373,7 +391,7 @@ void Mouse::SetRotation(float rot)
 	{
 		m_rot += 360;
 	}
-	while (m_rot > 360)
+	while (m_rot >= 360)
 	{
 		m_rot -= 360;
 	}
@@ -382,6 +400,9 @@ void Mouse::SetRotation(float rot)
 
 void Mouse::OnRotationChanged()
 {
+	//when rotation change, set it to snap to grid position
+	EventCenter::PostEvent("MouseRotationChanged");
+	
 	if (m_rot == 0.0f)
 	{
 		m_dir = E_MOUSE_DIR::UP;

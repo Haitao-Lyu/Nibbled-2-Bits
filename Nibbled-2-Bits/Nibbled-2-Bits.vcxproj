@@ -116,6 +116,7 @@
     <ClInclude Include="GameObject\Tube.h" />
     <ClInclude Include="Level\GameFlowState.h" />
     <ClInclude Include="Level\MainMenuState.h" />
+    <ClInclude Include="Level\StateInterface.h" />
     <ClInclude Include="Manager\GameObjectMgr.h" />
     <ClInclude Include="GameObject\Mouse.h" />
     <ClInclude Include="GameObject\MouseHole.h" />
@@ -126,7 +127,7 @@
     <ClInclude Include="Manager\ApplicationMgr.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Manager\LevelMgr.h" />
-    <ClInclude Include="Level\LevelState.h" />
+    <ClInclude Include="Level\MainGameState.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Manager\ResourceMgr.h" />
     <ClInclude Include="UI\Component\GridComponent.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Particle\ParticleEmitter.h" />
     <ClInclude Include="PlayCustom.h" />
     <ClInclude Include="UI\Slider.h" />
+    <ClInclude Include="UI\TextField.h" />
     <ClInclude Include="UI\UIElement.h" />
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
@@ -170,6 +172,7 @@
     <ClCompile Include="GameObject\Tube.cpp" />
     <ClCompile Include="Level\GameFlowState.cpp" />
     <ClCompile Include="Level\MainMenuState.cpp" />
+    <ClCompile Include="Level\StateInterface.cpp" />
     <ClCompile Include="Manager\GameObjectMgr.cpp" />
     <ClCompile Include="GameObject\Mouse.cpp" />
     <ClCompile Include="GameObject\MouseHole.cpp" />
@@ -180,7 +183,7 @@
     <ClCompile Include="Manager\ApplicationMgr.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Manager\LevelMgr.cpp" />
-    <ClCompile Include="Level\LevelState.cpp" />
+    <ClCompile Include="Level\MainGameState.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -205,6 +208,7 @@
     <ClCompile Include="UI\InputBox.cpp" />
     <ClCompile Include="UI\RectFill.cpp" />
     <ClCompile Include="UI\Slider.cpp" />
+    <ClCompile Include="UI\TextField.cpp" />
     <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
   </ItemGroup>

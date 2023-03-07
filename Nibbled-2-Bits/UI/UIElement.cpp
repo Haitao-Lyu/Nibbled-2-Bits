@@ -6,6 +6,10 @@
 int UIElement::id = 0;
 
 
+UIElement::UIElement()
+{
+}
+
 UIElement::UIElement(Play::Point2D _pos, float height, float width)
 {
 	m_id = id++;
@@ -27,6 +31,7 @@ UIElement::UIElement(float x, float y, float height, float width )
 
 void UIElement::Update()
 {
+	if(isVisable)
 	Render();
 }
 
@@ -46,6 +51,8 @@ void UIElement::Render()
 
 bool UIElement::OnClick()
 {
+	if (!isActive)
+		return false;
 	if (OnHover())
 	{
 		if (Play::KeyPressed(VK_LBUTTON))
@@ -59,6 +66,8 @@ bool UIElement::OnClick()
 
 bool UIElement::OnClickRight()
 {
+	if (!isActive)
+		return false;
 	if (OnHover())
 	{
 		if (Play::KeyPressed(VK_RBUTTON))
@@ -72,6 +81,8 @@ bool UIElement::OnClickRight()
 
 bool UIElement::OnHover()
 {
+	if (!isActive)
+		return false;
 	Play::Point2f clickPos = Play::GetMousePos();
 	if (clickPos.x > m_lefttop_pos.x && clickPos.x < m_rightbottom_pos.x)
 	{
@@ -86,6 +97,8 @@ bool UIElement::OnHover()
 
 bool UIElement::OnDrag()
 {
+	if (!isActive)
+		return false;
 	if (!isDragable)
 		return false;
 	if (OnHover())
@@ -103,6 +116,8 @@ bool UIElement::OnDrag()
 
 bool UIElement::OnHolding()
 {
+	if (!isActive)
+		return false;
 	if (!isDragable)
 		return false;
 	if (isHolding)

@@ -46,6 +46,14 @@ void GameObject::SetPosition(float x, float y)
 
 void GameObject::Rotate(float rot)
 {
+	while (rot < 0)
+	{
+		rot += 360;
+	}
+	while (rot >= 360)
+	{
+		rot -= 360;
+	}
 	m_rot += rot;
 }
 
