@@ -7,7 +7,7 @@ class ParticleEmitter
 {
 private:
 	std::vector<Particle> particle_list;
-	std::string spriteName{ "circle" };
+	std::string spriteName= { "circle" };
 	Play::Vector3D p_rot_range{ 0.0f,0.0f,0.0f };//rot degree
 	Play::Vector3D p_alpha_range{ 1.0f,0.6f,0.2f };
 	Play::Vector3D p_size_lifeTime{ 1.0f, 1.0f, 1.0f };
@@ -33,12 +33,11 @@ private:
 	bool islooping = false;
 	bool isPlaying = true;
 	E_CULLINGMASK e_cullingshape = E_CULLINGMASK::E_NULL;
-
+	std::vector<const char* > randomImgList{};
 public:
 	ParticleEmitter()
 	{
 		InitParticleEmitter();
-		
 	}
 	// -- Called first-- //
 	void InitParticleEmitter(
@@ -80,6 +79,8 @@ public:
 	// -- Called in Update Emitter List-- //
 	void UpdateEmitter();
 
+	void SetPosition(Play::Point2D _pos);
+
 	void DrawParticleCenter();
 
 	void DrawDebugLine(bool isDebugging);
@@ -89,6 +90,10 @@ public:
 	void SetLooping(bool bl);
 
 	void SetPlaying(bool bl);
+
+	void SetSpriteName(const char* name);
+
+	void SetRandomImage(std::vector<const char* > list);
 
 };
 

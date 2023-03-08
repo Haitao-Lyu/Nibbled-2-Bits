@@ -19,8 +19,10 @@ class MouseHole:public Obstacle
 {
 private:
 	int MouseToExit{ 0 };
-	E_MOUSEHOLE_TYPE m_type = E_MOUSEHOLE_TYPE::ENTRY;
 	E_BOUNDARY_COLOR m_color_type = E_BOUNDARY_COLOR::WHITE;
+
+public:
+	E_MOUSEHOLE_TYPE m_type = E_MOUSEHOLE_TYPE::ENTRY;
 public:
 	MouseHole(Play::Point2D pos, E_MOUSEHOLE_DIR dir = E_MOUSEHOLE_DIR::TOP);
 	~MouseHole();

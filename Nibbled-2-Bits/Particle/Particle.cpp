@@ -58,7 +58,7 @@ void Particle::UpdateParticle()
 		renderSize = scale;
 	}
 
-	Play::SetDrawingBlendMode(Play::BLEND_ADD);
+	Play::SetDrawingBlendMode(Play::BLEND_NORMAL);
 
 	Play::DrawSpriteRotated(spriteName.c_str(), pos, 0, rotIncrement, renderSize, renderAplha, renderColor);
 }

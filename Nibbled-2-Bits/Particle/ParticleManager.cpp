@@ -22,11 +22,12 @@ std::vector<ParticleEmitter>& ParticleMgr::GetEmitterList()
 	return GetInstance().m_particle_emitter_list;
 }
 
-void ParticleMgr::CreateNewEmitter(Point2f _pos, Vector2f _scale, float _rot, int _quantities, Vector2f _p_speedRange, Vector2f _p_lifeTimeRange, float _p_randomDirRange, Vector2f _p_sizeRange, float _spwanDelay, float _p_gravity_acceleration, Vector2f _p_gravity_direction, Play::Colour _start_color, Play::Colour _midway_color, Play::Colour _end_color, Play::Vector3D _p_alpha_range, std::string _spriteName, Play::Vector3D _p_rot_range, Play::Vector3D _p_size_lifeTime, E_CULLINGMASK _culling)
+ParticleEmitter* ParticleMgr::CreateNewEmitter(Point2f _pos, Vector2f _scale, float _rot, int _quantities, Vector2f _p_speedRange, Vector2f _p_lifeTimeRange, float _p_randomDirRange, Vector2f _p_sizeRange, float _spwanDelay, float _p_gravity_acceleration, Vector2f _p_gravity_direction, Play::Colour _start_color, Play::Colour _midway_color, Play::Colour _end_color, Play::Vector3D _p_alpha_range, std::string _spriteName, Play::Vector3D _p_rot_range, Play::Vector3D _p_size_lifeTime, E_CULLINGMASK _culling)
 {
 	ParticleEmitter emitter;
 	emitter.InitParticleEmitter(_pos, _scale, _rot, _quantities, _p_speedRange, _p_lifeTimeRange, _p_randomDirRange, _p_sizeRange, _spwanDelay, _p_gravity_acceleration, _p_gravity_direction, _start_color, _midway_color, _end_color, _p_alpha_range, _spriteName, _p_rot_range, _p_size_lifeTime, _culling);
 	AddNewEmitter(emitter);
+	return &m_particle_emitter_list.back();
 }
 
 

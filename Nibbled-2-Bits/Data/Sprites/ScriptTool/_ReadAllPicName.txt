@@ -1,0 +1,4 @@
+foot_bottom_down
+foot_bottom_left
+foot_bottom_right
+foot_bottom_up

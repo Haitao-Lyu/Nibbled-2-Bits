@@ -27,6 +27,8 @@ public:
 
 	void AddNewLevel(const char* name);
 
+	Level* GetCurrentLevel();
+
 	void Clear();
 
 	void ClearCurrentLevel();

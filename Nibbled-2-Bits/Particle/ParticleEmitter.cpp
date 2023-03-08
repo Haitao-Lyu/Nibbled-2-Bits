@@ -36,7 +36,13 @@ void ParticleEmitter::InitParticles()
 	{
 		Particle particle;
 		//init name
+		if(randomImgList.empty())
 		particle.spriteName = spriteName;
+		else
+		{
+			particle.spriteName.clear();
+			particle.spriteName = randomImgList[Play::RandomRollRange(0, randomImgList.size() - 1)];
+		}
 
 		if (e_cullingshape == E_CULLINGMASK::E_LINE)
 		{
@@ -93,6 +99,7 @@ void ParticleEmitter::InitParticles()
 		particle.p_gravity_direction = p_gravity_direction;
 		particle.emitterRotation = rot;
 
+		timeCounter = spwanDelay;
 		//add into list
 		particle_list.push_back(particle);// will execute copy constructor
 	}
@@ -200,6 +207,11 @@ void ParticleEmitter::UpdateEmitter()
 
 }
 
+void ParticleEmitter::SetPosition(Play::Point2D _pos)
+{
+	pos = _pos;
+}
+
 void ParticleEmitter::DrawParticleCenter()
 {
 	Play::DrawSpriteRotated("circle", pos, 0, 0, 0.5f, 0.5f, Play::Colour(0, 255, 0));
@@ -228,4 +240,14 @@ void ParticleEmitter::SetLooping(bool bl)
 void ParticleEmitter::SetPlaying(bool bl)
 {
 	isPlaying = bl;
+}
+
+void ParticleEmitter::SetSpriteName(const char* name)
+{
+	spriteName = name;
+}
+
+void ParticleEmitter::SetRandomImage(std::vector<const char*> list)
+{
+	randomImgList = list;
 }

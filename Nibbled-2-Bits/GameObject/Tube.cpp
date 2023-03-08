@@ -237,7 +237,7 @@ void Tube::CollideMouse(Mouse* mice)
 			}
 			else if (mouse_cur_dir == 2)
 			{
-				mice->SetRotation(m_rot + 90);
+				//mice->SetRotation(m_rot + 90);
 			}
 		}
 		//when mouse totally get in, avoid to pop out

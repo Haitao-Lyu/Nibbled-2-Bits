@@ -22,7 +22,7 @@ public:
 
 	static std::vector<ParticleEmitter>& GetEmitterList();
 
-	void CreateNewEmitter(
+	ParticleEmitter* CreateNewEmitter(
 		Play::Point2f pos = Play::Point2f(0.0f, 0.0f),
 		//init emitter scale
 		Play::Vector2f scale = Play::Vector2f{ 20.0f, 10.0f },

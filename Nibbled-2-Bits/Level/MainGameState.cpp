@@ -4,7 +4,7 @@
 #include "../Manager/LevelMgr.h"
 #include "../Manager/GameObjectMgr.h"
 #include "../UI/EventCenter.h"
-
+#include "../Particle/ParticleManager.h"
 MainGameState::MainGameState()
 {
 
@@ -21,8 +21,8 @@ void MainGameState::OnEnter()
 	LevelMgr* instance = LevelMgr::GetInstance();
 
 	//init All Level
-	//will add two level everythin time enter
-	instance->AddNewLevel("Level1");
+	//will add two level every thing time enter
+	//instance->AddNewLevel("Level1");
 	instance->AddNewLevel("Level2");
 
 	//something wrong in game object map
@@ -36,6 +36,7 @@ void MainGameState::OnEnter()
 
 GameFlowState* MainGameState::OnUpdate()
 {
+	ParticleMgr::GetInstance().UpdateEmitterList();
 	//define render order
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSETRAP);

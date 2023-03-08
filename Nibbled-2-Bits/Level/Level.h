@@ -47,6 +47,10 @@ public:
 
 	bool isLevelEnd();
 
+	void AddLevelEvents();
+
+	Panel* GetGamePanel();
+
 	void SetTileType(std::vector<std::vector<int>>& adjacentTiles);
 
 	void CheckAjacentTiles();

@@ -84,6 +84,11 @@ void LevelMgr::AddNewLevel(const char* name)
 	MaxLevelNumber = level_list.size();
 }
 
+Level* LevelMgr::GetCurrentLevel()
+{
+	return currentLevel;
+}
+
 LevelMgr::~LevelMgr()
 {
 

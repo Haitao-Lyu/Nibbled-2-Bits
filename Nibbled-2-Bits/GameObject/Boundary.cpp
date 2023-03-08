@@ -28,7 +28,7 @@ Boundary::Boundary(Play::Point2D pos):Obstacle(pos,E_OBJTYPE::E_BOUNDARY)
 {
 	spriteName = "boundary_top";
 	m_boxCollider.Init(Play::GetSpriteWidth(spriteName) * m_scale, Play::GetSpriteHeight(spriteName) * m_scale, pos, this);
-	m_circleCollider.Init(pos , (Play::GetSpriteWidth(spriteName)/2 )  * m_scale);
+	m_circleCollider.Init(pos , (Play::GetSpriteWidth(spriteName)/3)  * m_scale);
 }
 
 Boundary::~Boundary()
@@ -115,7 +115,7 @@ void Boundary::Render()
 	}
 	else
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt , 0);
-	//m_circleCollider.DrawBoundingBox(Play::cBlue);
+	m_circleCollider.DrawBoundingBox(Play::cBlue);
 	//m_boxCollider.DrawBoundingBox();
 	//TODO: REFACTOR SQAURE COLLDIER
 }

@@ -3,7 +3,7 @@
 #include "../GameTool/DebugTool.h"
 #include "Component/CollisionSystem.h"
 #include "../Manager/GameObjectMgr.h"
-
+#include "../Manager/LevelMgr.h"
 #include "Tile.h"
 #include "Boundary.h"
 #include "MouseTrap.h"
@@ -229,9 +229,8 @@ void Mouse::CheckBoxCollision()
 void Mouse::CheckCircleCollision()
 {
 	m_circleCollider.Init(m_pos, m_spriteWidth / 2 * m_scale);
-	//m_circleCollider.DrawBoundingBox();
+	m_circleCollider.DrawBoundingBox();
 	
-
 	//Mouse
 	std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
 	for (GameObject* obj : list_MOUSE)
@@ -318,7 +317,7 @@ void Mouse::CheckCircleCollision()
 	}
 
 	//Get mousehole obj list and calculate collision // And block mouse moving
-	std::vector<GameObject*>& list_hole = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::	E_MOUSEHOLE);
+	std::vector<GameObject*>& list_hole = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSEHOLE);
 	for (GameObject* obj : list_hole)
 	{
 		if (!obj)//check pointer valid
@@ -326,9 +325,14 @@ void Mouse::CheckCircleCollision()
 		MouseHole* hole = static_cast<MouseHole*>(obj);
 		if (m_circleCollider.collidesWith(hole->GetCollider()))
 		{
+			if (hole->m_type == E_MOUSEHOLE_TYPE::ENTRY)
+			{
+				Rotate(180);
+			}
 			hole->OnMouseIn(*this);
 			DebugValue(hole->GetID(), "collides:", 50);
 		}
+
 	}
 
 	//Get mousehole obj list and calculate collision // And block mouse moving
@@ -355,7 +359,7 @@ void Mouse::Update()
 	if (!m_state)
 		return;
 	//movement
-	DebugMouseControl();
+	//DebugMouseControl();
 
 	//CheckBoxCollision();
 	CheckCircleCollision();
@@ -402,21 +406,48 @@ void Mouse::OnRotationChanged()
 {
 	//when rotation change, set it to snap to grid position
 	EventCenter::PostEvent("MouseRotationChanged");
-	
-	if (m_rot == 0.0f)
+
+	//Snap to Grid
+	Level* lev = LevelMgr::GetInstance()->GetCurrentLevel();
+	float minDis = 10000;
+	GridItem* closestGrid = nullptr;
+	//could do math to accelerate
+	for (std::vector<GridItem>& grids : lev->GetGamePanel()->gridComponent.gridList)
 	{
-		m_dir = E_MOUSE_DIR::UP;
+		for (GridItem& grid : grids)
+		{
+			float dis = (m_pos - grid.GetPos()).Length();
+			if (dis < minDis)
+			{
+				minDis = dis;
+				closestGrid = &grid;
+			}
+		}
 	}
-	if (m_rot == 90.0f)
+	if (closestGrid)
 	{
-		m_dir = E_MOUSE_DIR::LEFT;
-	}
-	else if (m_rot == 180.0f)
-	{
-		m_dir = E_MOUSE_DIR::DOWN;
-	}
-	else if (m_rot == 270.0f)
-	{
-		m_dir = E_MOUSE_DIR::RIGHT;
+		closestGrid->DrawGrid(Play::cBlue);
+
+		if (m_rot == 0.0f)
+		{
+			m_dir = E_MOUSE_DIR::UP;
+			m_pos.x = closestGrid->GetPos().x;
+		}
+		if (m_rot == 90.0f)
+		{
+			m_dir = E_MOUSE_DIR::LEFT;
+			m_pos.y = closestGrid->GetPos().y;
+		}
+		else if (m_rot == 180.0f)
+		{
+			m_dir = E_MOUSE_DIR::DOWN;
+			m_pos.x = closestGrid->GetPos().x;
+		}
+		else if (m_rot == 270.0f)
+		{
+			m_dir = E_MOUSE_DIR::RIGHT;
+			m_pos.y = closestGrid->GetPos().y;
+		}
+		closestGrid = nullptr;
 	}
 }

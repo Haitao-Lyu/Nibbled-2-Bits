@@ -83,12 +83,8 @@ void Level::CheckAjacentTiles()
 		}
 	}
 }
-
-void Level::OnEnter()
+void Level::AddLevelEvents()
 {
-	//Enter Level
-	LoadLevelPanel();
-	LoadLeveltoScene();
 	//set cheese event
 	EventListener czListener("CheezeConsumedListener");
 	czListener.addEvent([this]()
@@ -97,6 +93,21 @@ void Level::OnEnter()
 		});
 	EventCenter::RegisterListener("CheezeConsumed", czListener);
 
+}
+
+Panel* Level::GetGamePanel()
+{
+	return m_gamePanel;
+}
+
+void Level::OnEnter()
+{
+
+	//Enter Level
+	LoadLevelPanel();
+	LoadLeveltoScene();
+	AddLevelEvents();
+
 
 	//set restart button Event
 	EventListener restartListener("MouseRestartGameListener");
@@ -104,39 +115,11 @@ void Level::OnEnter()
 		{
 			this->Clear();
 			this->LoadLeveltoScene();
+			this->AddLevelEvents();
 		});
 	EventCenter::RegisterListener("GameRestart", restartListener);
 
-	//Everytime rotate snap to the grid
-	EventListener MouseRotationChangedListener("MouseRotationChangedListener");
-	MouseRotationChangedListener.addEvent([this]()
-		{
-			std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
-			float minDis = 10000;
-			GridItem* closestGrid = nullptr;
-			for (GameObject* obj : list_MOUSE)
-			{
-				if (!obj)//check pointer valid
-					break;
-				Mouse* mouse = static_cast<Mouse*>(obj);
-				//could do math to accelerate
-				for (std::vector<GridItem>& grids : this->m_gamePanel->gridComponent.gridList)
-				{
-					for (GridItem& grid : grids)
-					{
-						float dis = (mouse->m_pos - grid.GetPos()).Length();
-						if (dis < minDis)
-						{
-							minDis = dis;
-							closestGrid = &grid;
-						}
-					}
-				}
-				if(closestGrid)
-				obj->SetPosition(closestGrid->GetPos());
-			}
-		});
-	EventCenter::RegisterListener("MouseRotationChanged", MouseRotationChangedListener);
+
 
 }
 
@@ -210,6 +193,12 @@ void Level::Update()
 		m_endLevelPanel->SetActive(true);
 		m_endLevelPanel->SetVisibility(true);
 	}
+
+	if(GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE).empty())
+	{
+		m_endLevelPanel->SetActive(true);
+		m_endLevelPanel->SetVisibility(true);
+	}
 }
 
 void Level::OnExit()
@@ -233,10 +222,11 @@ void Level::Clear()
 	EventCenter::UnregisterListenersByEvent("GameStart");
 	//clear cheese event
 	EventCenter::UnregisterListenersByEvent("CheezeConsumed");
-	//clear rotation event
-	EventCenter::UnregisterListenersByEvent("MouseRotationChanged");
 	//clear all game objects and reload
 	GameObjectMgr::ClearAllGameobjects();
+	//restart reward number
+	cheeseNumber = 0;
+	exitMouseNumber = 0;
 	//restart quantities
 	//TODO : .. Restart quantities
 }
@@ -261,6 +251,7 @@ bool Level::isLevelEnd()
 {
 	return isEnd;
 }
+
 
 void Level::FromItemPanelAddToLevel(GridItem& grid, int x, int y)
 {
@@ -704,7 +695,7 @@ void Level::LoadLeveltoScene()
 						mice = new Mouse(gridComponent.GetGridPos(i + 1, j ), E_MOUSE_COLOR::WHITE);
 					if (mice)
 					{
-						mice->SetRotation(static_cast<float>(item->rot * 90));
+						mice->Rotate(static_cast<float>(item->rot * 90));
 					}
 					//Update id map
 					m_mapinfo[i + 1][j] = mice->GetID();
