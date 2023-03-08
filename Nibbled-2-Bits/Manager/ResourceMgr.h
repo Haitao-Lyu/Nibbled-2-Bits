@@ -59,4 +59,6 @@ namespace ResoureMgr
 	GameAreaInfo& LoadLevel(std::string levelName);
 
 	const char* GetFontName(E_FONTS font);
+
+	std::vector<int> LoadLevelPanelInfo(int levelIndex);
 };

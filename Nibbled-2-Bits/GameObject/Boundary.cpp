@@ -115,7 +115,7 @@ void Boundary::Render()
 	}
 	else
 	Play::DrawSpriteTransformed(Play::GetSpriteId(spriteName), scaleMt , 0);
-	m_circleCollider.DrawBoundingBox(Play::cBlue);
+	//m_circleCollider.DrawBoundingBox(Play::cBlue);
 	//m_boxCollider.DrawBoundingBox();
 	//TODO: REFACTOR SQAURE COLLDIER
 }

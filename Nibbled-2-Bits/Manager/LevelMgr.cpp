@@ -81,6 +81,7 @@ void LevelMgr::AddNewLevel(const char* name)
 {
 	Level* level = new Level(name);
 	level_list.push_back(level);
+	level->m_id = level_list.size() - 1;
 	MaxLevelNumber = level_list.size();
 }
 

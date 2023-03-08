@@ -83,6 +83,7 @@ void Level::CheckAjacentTiles()
 		}
 	}
 }
+
 void Level::AddLevelEvents()
 {
 	//set cheese event
@@ -102,91 +103,35 @@ Panel* Level::GetGamePanel()
 
 void Level::OnEnter()
 {
-
 	//Enter Level
 	LoadLevelPanel();
 	LoadLeveltoScene();
 	AddLevelEvents();
 
-
 	//set restart button Event
 	EventListener restartListener("MouseRestartGameListener");
 	restartListener.addEvent([this]()
 		{
+			//Clear Game Scene, Level Events and Level Panel 
 			this->Clear();
+			//Reload All of them
 			this->LoadLeveltoScene();
+			this->LoadLevelPanel();
 			this->AddLevelEvents();
 		});
 	EventCenter::RegisterListener("GameRestart", restartListener);
-
-
-
 }
 
 void Level::Update()
 {
-
+	if (m_itemPanel)
+		CheckItemPanelEvent();
 
 	if (m_gamePanel)
-	{
-		m_gamePanel->isVisable = false;
-		m_gamePanel->Update();
-	}
-
-	if (m_itemPanel)
-	{
-		m_itemPanel->Update();
-
-		//Set Dragable based on quantites, inventory function should sperate from grid component
-		for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
-		{
-			for (GridItem& grid : grids)
-			{
-				UIElement* P = grid.GetGridUIElement();
-				if (grid.m_info.quantities <= 0)
-				{
-					if (P)
-					{
-						grid.GetGridUIElement()->isDragable = false;
-					}
-				}
-				else
-				{
-					if (P)
-					{
-						grid.GetGridUIElement()->isDragable = true;
-					}
-				}
-
-			}
-		}
-
-		//start Btn
-		if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
-		{
-			m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
-		}
-		else
-		{
-			m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
-		}
-		//Restart Btn
-		if (m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->OnClick())
-		{
-			m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
-		}
-		else
-		{
-			m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
-		}
-
-	}
+		CheckGamePanelEvent();
 
 	if (m_endLevelPanel)
-		m_endLevelPanel->Update();
-
-	CheckPanelEvent();
-	LevelControl();
+		CheckEndLevelPanelEvent();
 
 	if (Play::KeyPressed(0x4A))
 	{
@@ -218,16 +163,19 @@ void Level::Clear()
 			i = -1;
 		}
 	}
-	//clear Game object event
+	//Clear Game object event // On Mouse
 	EventCenter::UnregisterListenersByEvent("GameStart");
-	//clear cheese event
+	//Clear cheese event
 	EventCenter::UnregisterListenersByEvent("CheezeConsumed");
-	//clear all game objects and reload
+	//Clear all game objects and reload
 	GameObjectMgr::ClearAllGameobjects();
 	//restart reward number
 	cheeseNumber = 0;
 	exitMouseNumber = 0;
-	//restart quantities
+	//clear Panel
+	m_endLevelPanel->Clear();
+	m_itemPanel->Clear();
+	//m_gamePanel->Clear();
 	//TODO : .. Restart quantities
 }
 
@@ -252,6 +200,211 @@ bool Level::isLevelEnd()
 	return isEnd;
 }
 
+void Level::CheckGamePanelEvent()
+{
+	m_gamePanel->isVisable = false;
+	m_gamePanel->Update();
+
+	//if holding item from level
+	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
+	{
+		for (GridItem& grid_hold : grids)
+		{
+			//if has ui element, grab and create new one follow the mouse
+			if (grid_hold.GetGridUIElement())
+			{
+				if (grid_hold.GetGridUIElement()->OnHolding())
+				{
+					//create a temp btn image follow mouse based on grid
+					UIElement btn(*grid_hold.GetGridUIElement());
+					btn.m_rot = grid_hold.GetGridUIElement()->m_rot;
+					btn.SetSpriteName(grid_hold.GetGridUIElement()->m_spriteName);
+					btn.SetPosition(Play::GetMousePos());
+					btn.Render();
+					//get held grid item info
+					m_gamePanel->gridComponent.heldGridItem = &grid_hold;
+				}
+				else
+				{
+					//OnRelease Key create object
+					if (m_gamePanel->gridComponent.heldGridItem)
+					{
+						if (!Play::KeyDown(VK_LBUTTON))
+						{
+							if (!m_gamePanel->OnHover())
+							{
+								if (m_itemPanel->OnHover())
+								{
+									m_itemPanel->gridComponent.AddItem(m_gamePanel->gridComponent.heldGridItem->GetGridUIElement());
+								}
+								//if drag out of game panel, delete game object
+								GameObjectMgr::RemoveGameObjectByid(m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y]);
+								//remove from map info 
+								m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y] = -1;
+								//remove from game panel item
+								m_gamePanel->gridComponent.RemoveGridItemByID(m_gamePanel->gridComponent.heldGridItem->GetID());
+
+								m_gamePanel->gridComponent.heldGridItem = nullptr;
+							}
+						}
+						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
+						{
+							for (GridItem& grid_new : grids_2)
+							{
+								if (grid_new.OnHover())
+								{
+									if (!Play::KeyDown(VK_LBUTTON))
+									{
+										//add to level map info, add to level panel,pass in graded grid
+										FromLevelMoveToLevel(*m_gamePanel->gridComponent.heldGridItem, grid_new.m_info.m_x, grid_new.m_info.m_y);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//Rotate Game Object On GAME PANEL
+	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			if (grid.GetGridUIElement())
+			{
+				if (grid.GetGridUIElement()->OnClickRight())
+				{
+					//if grid item is clicked, both button and game object rotate
+					grid.GetGridUIElement()->m_rot += 90;
+					GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y]);
+					if (obj)
+						obj->Rotate(90);
+				}
+			}
+		}
+	}
+}
+
+void Level::CheckItemPanelEvent()
+{
+	m_itemPanel->Update();
+
+	//Set Dragable based on quantites, inventory function should sperate from grid component
+	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			UIElement* P = grid.GetGridUIElement();
+			if (grid.m_info.quantities <= 0)
+			{
+				if (P)
+				{
+					grid.GetGridUIElement()->isDragable = false;
+				}
+			}
+			else
+			{
+				if (P)
+				{
+					grid.GetGridUIElement()->isDragable = true;
+				}
+			}
+
+		}
+	}
+
+	//start Btn
+	if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
+	{
+		m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
+	}
+	else
+	{
+		m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
+	}
+	//Restart Btn
+	if (m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->OnClick())
+	{
+		m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
+	}
+	else
+	{
+		m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
+	}
+	//if holding item from item panel
+	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
+	{
+		for (GridItem& grid : grids)
+		{
+			//if has ui element - enable drag
+			if (grid.GetGridUIElement())
+			{
+				if (grid.GetGridUIElement()->OnHolding())
+				{
+					//create a temp btn image follow mouse based on grid
+					UIElement btn;
+					btn.SetSpriteName(grid.GetGridUIElement()->m_spriteName);
+					btn.SetPosition(Play::GetMousePos());
+					btn.Render();
+					//get held grid item info
+					m_itemPanel->gridComponent.heldGridItem = &grid;
+				}
+				else
+				{
+					if (m_itemPanel->gridComponent.heldGridItem)
+					{
+						//EventCenter::PostEvent("MouseRelease");
+						//check if hover in game panel grid
+						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
+						{
+							for (GridItem& grid_new : grids_2)
+							{
+								if (grid_new.OnHover())
+								{
+									if (!Play::KeyDown(VK_LBUTTON))
+									{
+										//add to level map info, add to level panel
+										FromItemPanelAddToLevel(grid_new, grid_new.m_info.m_x, grid_new.m_info.m_y);
+									}
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
+void Level::CheckEndLevelPanelEvent()
+{
+	m_endLevelPanel->Update();
+	//This function Could be packed up into Button Class
+	//Endlevel Panel Exit Btn
+	if (m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->OnClick())
+	{
+		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
+		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
+	}
+	else
+	{
+		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
+	}
+	//Endlevel Panel Continue Btn
+	if (m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->OnClick())
+	{
+		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
+		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
+	}
+	else
+	{
+		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
+	}
+}
 
 void Level::FromItemPanelAddToLevel(GridItem& grid, int x, int y)
 {
@@ -320,166 +473,6 @@ void Level::FromLevelMoveToLevel(GridItem &grid, int x, int y)
 	m_gamePanel->gridComponent.heldGridItem = nullptr;
 }
 
-void Level::LevelControl()
-{
-	//right click in game panel rotate obj
-	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
-	{
-		for (GridItem& grid : grids)
-		{
-			if (grid.GetGridUIElement())
-			{
-				if (grid.GetGridUIElement()->OnClickRight())
-				{
-					//if grid item is clicked, both button and game object rotate
-					grid.GetGridUIElement()->m_rot += 90;
-					GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[grid.m_info.m_x][grid.m_info.m_y]);
-					if(obj)
-					obj->Rotate(90);
-				}
-			}
-		}
-	}
-}
-
-void Level::CheckPanelEvent()
-{
-	//This function Could be packed up into Button Class
-	//Endlevel Panel Exit Btn
-	if (m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->OnClick())
-	{
-		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
-		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
-	}
-	else
-	{
-		m_endLevelPanel->gridComponent.gridList[2][1].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
-	}
-
-	if (m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->OnClick())
-	{
-		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
-		m_endLevelPanel->SetVisibility(false);//Happened too fast cant see the animation
-	}
-	else
-	{
-		m_endLevelPanel->gridComponent.gridList[0][1].GetGridUIElement()->SetSpriteName("green_round_button_unpushed");
-	}
-
-	//if holding item from item panel
-	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
-	{
-		for (GridItem& grid : grids)
-		{
-			//if has ui element - enable drag
-			if (grid.GetGridUIElement())
-			{
-				if (grid.GetGridUIElement()->OnHolding())
-				{
-					//create a temp btn image follow mouse based on grid
-					UIElement btn;
-					btn.SetSpriteName(grid.GetGridUIElement()->m_spriteName);
-					btn.SetPosition(Play::GetMousePos());
-					btn.Render();
-					//get held grid item info
-					m_itemPanel->gridComponent.heldGridItem = &grid;
-				}
-				else
-				{
-					if (m_itemPanel->gridComponent.heldGridItem)
-					{
-						//EventCenter::PostEvent("MouseRelease");
-						//check if hover in game panel grid
-						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
-						{
-							for (GridItem& grid_new : grids_2)
-							{
-								if (grid_new.OnHover())
-								{
-									if (!Play::KeyDown(VK_LBUTTON))
-									{
-										//add to level map info, add to level panel
-										FromItemPanelAddToLevel(grid_new, grid_new.m_info.m_x, grid_new.m_info.m_y);
-									}
-								}
-							
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	//if holding item from level
-	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
-	{
-		for (GridItem& grid_hold : grids)
-		{
-			//if has ui element, grab and create new one follow the mouse
-			if (grid_hold.GetGridUIElement())
-			{
-				if (grid_hold.GetGridUIElement()->OnHolding())
-				{
-					//create a temp btn image follow mouse based on grid
-					UIElement btn(*grid_hold.GetGridUIElement());
-					btn.m_rot = grid_hold.GetGridUIElement()->m_rot;
-					btn.SetSpriteName(grid_hold.GetGridUIElement()->m_spriteName);
-					btn.SetPosition(Play::GetMousePos());
-					btn.Render();
-					//get held grid item info
-					m_gamePanel->gridComponent.heldGridItem = &grid_hold;
-				}
-				else
-				{
-					//OnRelease Key create object
-					if (m_gamePanel->gridComponent.heldGridItem)
-					{
-						if (!Play::KeyDown(VK_LBUTTON))
-						{
-							if (!m_gamePanel->OnHover())
-							{
-								if (m_itemPanel->OnHover())
-								{
-									m_itemPanel->gridComponent.AddItem(m_gamePanel->gridComponent.heldGridItem->GetGridUIElement());
-								}
-								//if drag out of game panel, delete game object
-								GameObjectMgr::RemoveGameObjectByid(m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y]);
-								//remove from map info 
-								m_mapinfo[m_gamePanel->gridComponent.heldGridItem->m_info.m_x][m_gamePanel->gridComponent.heldGridItem->m_info.m_y] = -1;
-								//remove from game panel item
-								m_gamePanel->gridComponent.RemoveGridItemByID(m_gamePanel->gridComponent.heldGridItem->GetID());
-
-								m_gamePanel->gridComponent.heldGridItem = nullptr;
-							}
-						}
-						for (std::vector<GridItem>& grids_2 : m_gamePanel->gridComponent.gridList)
-						{
-							for (GridItem& grid_new : grids_2)
-							{
-								if (grid_new.OnHover())
-								{
-									if (!Play::KeyDown(VK_LBUTTON))
-									{
-										//add to level map info, add to level panel,pass in graded grid
-										FromLevelMoveToLevel(*m_gamePanel->gridComponent.heldGridItem, grid_new.m_info.m_x, grid_new.m_info.m_y);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-//inventory info
-static const int level1[2][2]{ 2,0,0,0 };
-static const int level2[2][2]{ 2,0,0,0 };
-static const int level3[2][2]{ 2,0,0,0 };
-
-//need to be change to contain differ info
 void Level::LoadLevelPanel()
 {
 	//All elements in a panel should scale by the scale of panel
@@ -489,15 +482,27 @@ void Level::LoadLevelPanel()
 	m_itemPanel = panel;
 	 
 	//Game item lEVEL 1 UI Initialize
-	//level 1 : 2 , 0, 0 
+	//level 1 : 1 , 0, 0 
+	std::vector<int> Inventorylist = ResoureMgr::LoadLevelPanelInfo(m_id);
+
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
-	m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = 99;
-	m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = 99;
-	m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = 99;
 
+	if(Inventorylist[0] > 0)
+	m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = Inventorylist[0];
+	if (Inventorylist[1] > 0)
+	m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = Inventorylist[1];
+	if (Inventorylist[2] > 0)
+	m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = Inventorylist[2];
 
+	//Debug tube
+	//Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
+	//Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
+	//Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
+	//m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = 99;
+	//m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = 99;
+	//m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = 99;
 
 	//Start and Restart Button
 	Button* btn_start = new Button({ 100,100 }, 100, 100, "grey_scale_round_button_unpushed",
@@ -517,13 +522,13 @@ void Level::LoadLevelPanel()
 	m_itemPanel->gridComponent.AddToGrids(btn_start, 0, 2);
 	m_itemPanel->gridComponent.AddToGrids(btn_Restart, 2, 2);
 
-	//Another Event, when game start set btn disabled
+	// TODO: Another Event, when game start set item panel btn disabled
+
 
 
 	//EndLevel Panel Create
 	Panel* exit_panel = new Panel({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, 422, 433, "blue_panel");
 	m_endLevelPanel = exit_panel;
-
 	TextField* tab = new TextField({ exit_panel->m_pos.x, exit_panel->m_pos.y - exit_panel->m_height / 2 + 50 }, 50, 100, "Good ! ! JOB ! ! ");
 
 	exit_panel->AddToPanel(tab);
@@ -540,7 +545,6 @@ void Level::LoadLevelPanel()
 		{
 			this->isEnd = true;
 		}, "Next");
-
 	Button* btn_cz = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102,"cz_swiss_big_grey");
 	Button* btn_cz2 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
 	Button* btn_cz3 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
@@ -549,7 +553,6 @@ void Level::LoadLevelPanel()
 	exit_panel->gridComponent.Push_back_Grids(btn_cz3);
 	exit_panel->gridComponent.AddToGrids(btn_next, 0, 1);
 	exit_panel->gridComponent.AddToGrids(btn_exit, 2, 1);
-
 	m_endLevelPanel->SetVisibility(false);
 	m_endLevelPanel->SetActive(false);
 }

@@ -15,11 +15,7 @@ Panel::Panel(Play::Point2D pos, float height, float width, const char* spriteNam
  
 Panel::~Panel()
 {
-	for (UIElement* ui : childList)
-	{
-		delete ui;
-	}
-	childList.clear();
+	
 }
 
 void Panel::SetScale(float x, float y)
@@ -91,6 +87,16 @@ void Panel::SetVisibility(bool value)
 		}
 	}
 	this->isVisable = value;
+}
+
+void Panel::Clear()
+{
+	for (UIElement* ui : childList)
+	{
+		delete ui;
+	}
+	childList.clear();
+	gridComponent.Clear();
 }
 
 void Panel::SetActive(bool value)

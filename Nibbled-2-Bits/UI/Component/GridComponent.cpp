@@ -157,6 +157,19 @@ void GridComponent::AddItem(UIElement* element)
 
 }
 
+void GridComponent::Clear()
+{
+	for (auto& list : gridList)
+	{
+		list.clear();
+	}
+	gridList.clear();
+	if (heldGridItem)
+	{
+		heldGridItem = nullptr;
+	}
+}
+
 Play::Point2D GridComponent::GetPos()
 {
 	return m_pos;
@@ -164,7 +177,5 @@ Play::Point2D GridComponent::GetPos()
 
 GridComponent::~GridComponent()
 {
-	gridList.clear();
-	delete heldGridItem;
-	heldGridItem = nullptr;
+	Clear();
 }

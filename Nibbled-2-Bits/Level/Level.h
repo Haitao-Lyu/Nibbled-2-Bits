@@ -17,6 +17,7 @@ enum class E_BACKGROUND
 class Level
 {
 private:
+
 	const char* levelName;
 	//Game object id for loading
 	std::vector<std::vector<int>> m_mapinfo;
@@ -28,6 +29,7 @@ private:
 	bool isEnd = false;
 
 public:
+	int m_id = -1;
 	int exitMouseNumber = 0;
 	int cheeseNumber = 0;
 
@@ -59,9 +61,11 @@ public:
 
 	void FromLevelMoveToLevel(GridItem& grid, int x, int y);
 
-	void LevelControl();
+	void CheckGamePanelEvent();
 
-	void CheckPanelEvent();
+	void CheckItemPanelEvent();
+
+	void CheckEndLevelPanelEvent();
 
 	void LoadLevelPanel();
 

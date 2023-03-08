@@ -36,6 +36,8 @@ public:
 
 	void AddItem(UIElement* element);
 
+	void Clear();
+
 	Play::Point2D GetPos();
 
 	~GridComponent();

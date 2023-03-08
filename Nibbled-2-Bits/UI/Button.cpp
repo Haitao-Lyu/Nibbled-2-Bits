@@ -37,8 +37,8 @@ void Button::Render()
 	Play::Matrix2D rotMt = Play::MatrixRotation(Play::DegToRad(m_rot));
 
 	const Play::Matrix2D scaleMt = Play::Matrix2D(
-		{ m_scale,0.0f,0.0f },
-		{ 0.0f,m_scale,0.0f },
+		{ m_scale * m_hoverScale,0.0f,0.0f },
+		{ 0.0f,m_scale * m_hoverScale,0.0f },
 		{ m_pos.x,DISPLAY_HEIGHT - m_pos.y,0.0f });
 	Play::DrawSpriteTransformed(Play::GetSpriteId(m_spriteName), scaleMt * rotMt, 0);
 	//btn text show
@@ -58,7 +58,17 @@ bool Button::OnHover()
 {
 	if (!isActive)
 		return false;
-	return UIElement::OnHover();
+
+	if (UIElement::OnHover())
+	{
+		m_hoverScale = 1.15f;
+		return true;
+	}
+	else
+	{
+		m_hoverScale = 1.0f;
+		return false;
+	}
 }
 bool Button::OnClick()
 {

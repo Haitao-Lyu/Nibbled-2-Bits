@@ -26,7 +26,7 @@ void MouseWalkState::Update(Mouse* m_mice)
 		//init emitter pos
 		m_mice->m_pos,
 		//init emitter scale
-		Vector2f{ 15.0f, 15.0f },
+		Vector2f{ 12.0f, 12.0f },
 		//init emitter rotation based on intial direction { 0 , -1 }
 		m_mice->m_rot,
 		//init particle num
@@ -34,7 +34,7 @@ void MouseWalkState::Update(Mouse* m_mice)
 		//init random speed extent
 		Vector2f(0.0f, 0.0f),
 		//init lifetime min and max
-		Vector2f(0.2f, 0.5f),
+		Vector2f(0.2f, 0.4f),
 		//init random particle direction of motion range
 		0.0f,
 		//init size range

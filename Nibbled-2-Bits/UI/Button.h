@@ -10,6 +10,9 @@ class Button : public UIElement
 	typedef std::function<void()> FunctionType;
 private:
 	FunctionType m_OnClickHandler;
+
+	float m_hoverScale{1.0f};
+
 public:
 	const char* m_btnText{ "BUTTON" };
 

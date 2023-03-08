@@ -19,13 +19,14 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	Play::CentreAllSpriteOrigins();
+
+
 }
 
 bool MainGameUpdate( float elapsedTime )
 {
 	Timer::UpdateDeltaTime(elapsedTime);
-	//draw background
-	ResoureMgr::DrawBackground(E_BKCOLOR::GREEN);
+
 
 	ApplicationMgr::Update();
 

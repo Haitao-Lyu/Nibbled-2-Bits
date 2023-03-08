@@ -13,8 +13,9 @@ private:
 	// So Panel should have a children list of all elements
 	float x_scale = 1.0f;
 	float y_scale = 1.0f;
-	std::vector<UIElement*> childList;
+
 public:
+	std::vector<UIElement*> childList;
 	GridComponent gridComponent;//component should always be public
 	Play::Point2D m_lt_pos;
 	Play::Point2D m_rt_pos;
@@ -32,4 +33,5 @@ public:
 	void SetVisibility(bool value);
 	void SetActive(bool value);
 	void AddToPanel(UIElement* UIelement);
+	void Clear();
 };

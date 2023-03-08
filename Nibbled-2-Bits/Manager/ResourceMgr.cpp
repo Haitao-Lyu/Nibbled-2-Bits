@@ -16,6 +16,14 @@ const char* C_BK_RED = "bk_red";
 const char* C_BK_YELLOW = "bk_yellow";
 const char* C_BK_WOOD = "bk_wood";
 
+//inventory info
+// Postition 0 - Tube two way || 2 - tube 3 way|| 1 - tube 1 way  
+static std::vector<int> lev1{ 1,0,0,0 };
+static std::vector<int> lev2{ 2,0,0,0 };
+static std::vector<int> lev3{ 2,0,0,0 };
+
+static const std::vector<std::vector<int>> levelInventoryList{ lev1,lev2,lev3 };
+
 
 const int GRID_WIDTH = 16;
 const int GRID_HEIGHT = 14;
@@ -220,6 +228,11 @@ const char* ResoureMgr::GetFontName(E_FONTS font)
 	default:
 		break;
 	}
+}
+
+std::vector<int> ResoureMgr::LoadLevelPanelInfo(int levelIndex)
+{
+		return levelInventoryList[levelIndex];
 }
 
 void GameAreaInfo::Destory()

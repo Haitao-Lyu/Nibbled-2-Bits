@@ -74,21 +74,56 @@ void MainMenuState::OnEnter()
 	);
 	emitter->SetLooping(true);
 	emitter->SetRandomImage(chesse_list);
+
+	MainMenuPanel = new Panel({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, DISPLAY_WIDTH, "");
+
+	Button* btn_start = new Button({ MainMenuPanel->m_pos.x - 300,MainMenuPanel->m_pos.y }, 56, 183, "green_long_button_example_unpushed",
+		[]()
+		{
+
+		}, "START");
+	Button* btn_ChoseLevel = new Button({ MainMenuPanel->m_pos.x,MainMenuPanel->m_pos.y }, 56, 183, "blue_long_button_example_unpushed",
+		[]()
+		{
+
+		}, "LEVEL");
+	Button * btn_Exit = new Button({ MainMenuPanel->m_pos.x + 300,MainMenuPanel->m_pos.y }, 56, 183, "grey_scale_long_button_example_unpushed",
+		[]()
+		{
+
+		}, "Exit");
+	MainMenuPanel->AddToPanel(btn_start);
+	MainMenuPanel->AddToPanel(btn_ChoseLevel);
+	MainMenuPanel->AddToPanel(btn_Exit);
 }
 
 
 GameFlowState* MainMenuState::OnUpdate()
 {
+	//draw background
+	ResoureMgr::DrawBackground(E_BKCOLOR::GREEN);
 	//Update Will Only Draw the UI OnPanel
-	Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::ABNORMAL_40), "@Power - by - Haita0:)", { DISPLAY_HEIGHT / 3,DISPLAY_WIDTH / 2 }, Play::CENTRE);
-	Play::DrawFontText("RubikIso-Regular126px_10x10", "Nibbled - 2 - Bits", { DISPLAY_WIDTH / 2 ,DISPLAY_HEIGHT / 4 }, Play::CENTRE);
+	Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::ABNORMAL_40), "@Power - by - Haita0:)", { DISPLAY_HEIGHT / 3 , DISPLAY_WIDTH / 8  }, Play::CENTRE);
+	Play::DrawFontText("RubikIso-Regular126px_10x10", "Nibbled - 2 - Bits", { DISPLAY_WIDTH / 2 ,3 * DISPLAY_HEIGHT / 4 }, Play::CENTRE);
+
+	if (MainMenuPanel)
+		MainMenuPanel->Update();
 
 	ParticleMgr::GetInstance().UpdateEmitterList();
 
-	if (Play::KeyPressed(VK_SPACE))
+	if (MainMenuPanel->childList[0]->OnClick())
 	{
 		return new MainGameState();
 	}
+	if (MainMenuPanel->childList[1]->OnClick())
+	{
+
+	}
+	if (MainMenuPanel->childList[2]->OnClick())
+	{
+
+	}
+
 	return nullptr;
 }
 

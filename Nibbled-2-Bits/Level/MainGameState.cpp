@@ -3,8 +3,12 @@
 #include "MainMenuState.h"
 #include "../Manager/LevelMgr.h"
 #include "../Manager/GameObjectMgr.h"
+#include "../Manager/ResourceMgr.h"
 #include "../UI/EventCenter.h"
 #include "../Particle/ParticleManager.h"
+
+static int levelBackGroundColor = -1;
+
 MainGameState::MainGameState()
 {
 
@@ -18,11 +22,12 @@ MainGameState::~MainGameState()
 
 void MainGameState::OnEnter()
 {
+	levelBackGroundColor = Play::RandomRollRange(0, 5);
 	LevelMgr* instance = LevelMgr::GetInstance();
 
 	//init All Level
 	//will add two level every thing time enter
-	//instance->AddNewLevel("Level1");
+	instance->AddNewLevel("Level1");
 	instance->AddNewLevel("Level2");
 
 	//something wrong in game object map
@@ -36,6 +41,9 @@ void MainGameState::OnEnter()
 
 GameFlowState* MainGameState::OnUpdate()
 {
+	//draw background
+	ResoureMgr::DrawBackground(E_BKCOLOR::GREEN);
+	//update Level Particle
 	ParticleMgr::GetInstance().UpdateEmitterList();
 	//define render order
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TILE);
@@ -45,7 +53,6 @@ GameFlowState* MainGameState::OnUpdate()
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_BOUNDARY);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_MOUSEHOLE);
 	GameObjectMgr::UpdateGameObjectsByType(E_OBJTYPE::E_TUBE);
-
 	//Update Level Logic
 	LevelMgr::GetInstance()->Update();
 

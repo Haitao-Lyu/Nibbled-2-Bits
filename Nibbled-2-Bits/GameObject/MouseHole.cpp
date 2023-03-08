@@ -14,7 +14,7 @@ const char* white_mouseHoleName_t = "mouse_hole_with_back_top";
 MouseHole::MouseHole(Play::Point2D pos, E_MOUSEHOLE_DIR dir):Obstacle(pos,E_OBJTYPE::E_MOUSEHOLE)
 {
 	SetDirection(dir);
-	m_circleCollider.Init(pos, Play::GetSpriteHeight(spriteName) / 2 * m_scale);
+	m_circleCollider.Init(pos, (Play::GetSpriteHeight(spriteName) - 3.0f) / 2 * m_scale);
 }
 
 MouseHole::~MouseHole()
