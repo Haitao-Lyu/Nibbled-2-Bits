@@ -19,11 +19,9 @@ LevelMgr* LevelMgr::GetInstance()
 
 void LevelMgr::Clear()
 {
-	for (Level* lev : level_list)
-	{
-		lev->Clear();
-	}
- 	level_list.clear();
+	//Each Time Only Load One Level
+	if(currentLevel)
+	currentLevel->Clear();
 	//clear all level, reset current level index
 	currentLevel = nullptr;
 	currentLevelIndex = 0;
@@ -92,6 +90,10 @@ Level* LevelMgr::GetCurrentLevel()
 
 LevelMgr::~LevelMgr()
 {
-
+	for (auto& lev : level_list)
+	{
+		if (lev)
+			delete lev;
+	}
 }
 

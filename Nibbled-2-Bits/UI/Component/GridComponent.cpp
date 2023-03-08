@@ -159,11 +159,13 @@ void GridComponent::AddItem(UIElement* element)
 
 void GridComponent::Clear()
 {
-	for (auto& list : gridList)
-	{
-		list.clear();
-	}
+	//Do I need to Clear Double Array ?
+	//for (auto& list : gridList)
+	//{
+	//	list.clear();
+	//}
 	gridList.clear();
+
 	if (heldGridItem)
 	{
 		heldGridItem = nullptr;

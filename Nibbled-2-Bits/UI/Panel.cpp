@@ -93,9 +93,11 @@ void Panel::Clear()
 {
 	for (UIElement* ui : childList)
 	{
+		if(ui)
 		delete ui;
 	}
 	childList.clear();
+	//Clear elements On Grids
 	gridComponent.Clear();
 }
 

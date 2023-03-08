@@ -43,64 +43,6 @@ Level::~Level()
 	Destroy();
 }
 
-void Level::SetTileType(std::vector<std::vector<int>>& adjacentTiles)
-{
-	if (adjacentTiles[0][1])
-	{
-
-	}
-
-}
-
-void Level::CheckAjacentTiles()
-{
-	std::vector<std::vector<int>> adjacentTiles{ {0,0,0} ,{0,0,0}, {0,0,0} };
-	for (int x = 0; x < m_mapinfo.size(); x++)
-	{
-		for (int y = 0; y < m_mapinfo[0].size(); y++)
-		{
-			GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x][y]);
-			if (obj->m_type == E_OBJTYPE::E_TILE)
-			{
-				for (int i = -1; i <= 1; i++) {
-					for (int j = -1; j <= 1; j++) {
-						// skip current position and out-of-bounds positions
-						if (i == 0 && j == 0) {
-							continue;
-						}
-						if (x + i < 0 || x + i >= m_mapinfo.size() || y + j < 0 || y + j >= m_mapinfo[0].size()) {
-							continue;
-						}
-
-						// check if adjacent tile exists
-						GameObject* aj_obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x + i][y + j]);
-						if (aj_obj->m_type == E_OBJTYPE::E_TILE) {
-							adjacentTiles[i + 1][j + 1] = 1;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-void Level::AddLevelEvents()
-{
-	//set cheese event
-	EventListener czListener("CheezeConsumedListener");
-	czListener.addEvent([this]()
-		{
-			this->m_endLevelPanel->gridComponent.gridList[this->cheeseNumber++][0].GetGridUIElement()->SetSpriteName("cz_swiss_big");
-		});
-	EventCenter::RegisterListener("CheezeConsumed", czListener);
-
-}
-
-Panel* Level::GetGamePanel()
-{
-	return m_gamePanel;
-}
-
 void Level::OnEnter()
 {
 	//Enter Level
@@ -173,9 +115,12 @@ void Level::Clear()
 	cheeseNumber = 0;
 	exitMouseNumber = 0;
 	//clear Panel
+	if(m_endLevelPanel)
 	m_endLevelPanel->Clear();
+	if (m_itemPanel)
 	m_itemPanel->Clear();
-	//m_gamePanel->Clear();
+	if (m_gamePanel)
+	m_gamePanel->Clear();
 	//TODO : .. Restart quantities
 }
 
@@ -315,7 +260,7 @@ void Level::CheckItemPanelEvent()
 		}
 	}
 
-	//start Btn
+	//Start Btn
 	if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
 	{
 		m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
@@ -333,7 +278,8 @@ void Level::CheckItemPanelEvent()
 	{
 		m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
 	}
-	//if holding item from item panel
+
+	//if holding item from item panel to game panel
 	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
 	{
 		for (GridItem& grid : grids)
@@ -744,4 +690,62 @@ void Level::LoadLeveltoScene()
 	}
 
 	gameAreaInfo.Destory();
+}
+
+void Level::SetTileType(std::vector<std::vector<int>>& adjacentTiles)
+{
+	if (adjacentTiles[0][1])
+	{
+
+	}
+
+}
+
+void Level::CheckAjacentTiles()
+{
+	std::vector<std::vector<int>> adjacentTiles{ {0,0,0} ,{0,0,0}, {0,0,0} };
+	for (int x = 0; x < m_mapinfo.size(); x++)
+	{
+		for (int y = 0; y < m_mapinfo[0].size(); y++)
+		{
+			GameObject* obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x][y]);
+			if (obj->m_type == E_OBJTYPE::E_TILE)
+			{
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						// skip current position and out-of-bounds positions
+						if (i == 0 && j == 0) {
+							continue;
+						}
+						if (x + i < 0 || x + i >= m_mapinfo.size() || y + j < 0 || y + j >= m_mapinfo[0].size()) {
+							continue;
+						}
+
+						// check if adjacent tile exists
+						GameObject* aj_obj = GameObjectMgr::GetGameObjectByid(m_mapinfo[x + i][y + j]);
+						if (aj_obj->m_type == E_OBJTYPE::E_TILE) {
+							adjacentTiles[i + 1][j + 1] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Level::AddLevelEvents()
+{
+	//set cheese event
+	EventListener czListener("CheezeConsumedListener");
+	czListener.addEvent([this]()
+		{
+			this->m_endLevelPanel->gridComponent.gridList[this->cheeseNumber++][0].GetGridUIElement()->SetSpriteName("cz_swiss_big");
+		});
+	EventCenter::RegisterListener("CheezeConsumed", czListener);
+
+}
+
+Panel* Level::GetGamePanel()
+{
+	return m_gamePanel;
 }

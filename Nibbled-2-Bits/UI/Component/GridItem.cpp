@@ -106,6 +106,7 @@ Play::Point2D GridItem::GetPos()
 
 GridItem::~GridItem()
 {
+	if(m_element)
 	delete m_element;
 	m_element = nullptr;
 }
