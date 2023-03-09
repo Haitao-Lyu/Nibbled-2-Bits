@@ -9,8 +9,8 @@ class Button : public UIElement
 {
 	typedef std::function<void()> FunctionType;
 private:
-	FunctionType m_OnClickHandler;
-
+	FunctionType m_OnClickHandler{ [](){} };
+	FunctionType m_OnHoverHandler{ [](){} };
 	float m_hoverScale{1.0f};
 
 public:
@@ -33,6 +33,8 @@ public:
 	bool OnClick() override;
 
 	void AddOnClickHandler(FunctionType fun);
+
+	void AddOnHoverHandler(FunctionType fun);
 };
 
 

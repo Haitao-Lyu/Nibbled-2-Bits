@@ -68,11 +68,11 @@ private:
 	MouseWhackedState m_whackedState;
 	E_MOUSE_DIR m_dir = E_MOUSE_DIR::UP;
 	E_MOUSE_STATE e_mouseState = E_MOUSE_STATE::idleState;
-	bool isWhacked = false;
-	bool isDead = false;
 public:
 	BoxCollider m_boxCollider;
 	CircleCollider m_circleCollider;
+	bool isWhacked = false;
+	bool isDead = false;
 private:
 	void OnStateChange();
 public:

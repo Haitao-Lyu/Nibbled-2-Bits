@@ -4,6 +4,7 @@
 #include <string>
 #include "../UI/Component/GridComponent.h"
 #include "../UI/Panel.h"
+#include "../GameTool/Timer.h"
 enum class E_BACKGROUND
 {
 	E_BLUE,
@@ -26,12 +27,14 @@ private:
 	Panel* m_gamePanel{ nullptr };
 	Panel* m_itemPanel{ nullptr };
 	Panel* m_endLevelPanel{ nullptr };
+	bool isStart = false;
 	bool isEnd = false;
-
+	Timer m_timer { 0 };
 public:
 	int m_id = -1;
 	int exitMouseNumber = 0;
 	int cheeseNumber = 0;
+	float levelTimeLimit = 0;
 
 public:
 	Level(const char* name);

@@ -27,7 +27,6 @@ bool MainGameUpdate( float elapsedTime )
 {
 	Timer::UpdateDeltaTime(elapsedTime);
 
-
 	ApplicationMgr::Update();
 
 	Play::PresentDrawingBuffer();

@@ -13,5 +13,5 @@ RectFill::RectFill(Play::Point2f pos, short height, short width, const char* spr
 void RectFill::Render()
 {
 	UIElement::Render();
-	DrawBoundingBox();
+	//DrawBoundingBox();
 }

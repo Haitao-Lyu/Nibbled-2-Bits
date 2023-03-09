@@ -62,6 +62,7 @@ bool Button::OnHover()
 	if (UIElement::OnHover())
 	{
 		m_hoverScale = 1.15f;
+		m_OnHoverHandler();
 		return true;
 	}
 	else
@@ -86,6 +87,11 @@ bool Button::OnClick()
 void Button::AddOnClickHandler(FunctionType fun)
 {
 	m_OnClickHandler = fun;
+}
+
+void Button::AddOnHoverHandler(FunctionType fun)
+{
+	m_OnHoverHandler = fun;
 }
 
 

@@ -92,9 +92,9 @@ void MainMenuState::OnEnter()
 		{
 
 		}, "Exit");
-	MainMenuPanel->AddToPanel(btn_start);
-	MainMenuPanel->AddToPanel(btn_ChoseLevel);
-	MainMenuPanel->AddToPanel(btn_Exit);
+	MainMenuPanel->AddToPanel("btn_start", btn_start);
+	MainMenuPanel->AddToPanel("btn_choseLevel", btn_ChoseLevel);
+	MainMenuPanel->AddToPanel("btn_exit", btn_Exit);
 }
 
 
@@ -111,15 +111,15 @@ GameFlowState* MainMenuState::OnUpdate()
 
 	ParticleMgr::GetInstance().UpdateEmitterList();
 
-	if (MainMenuPanel->childList[0]->OnClick())
+	if (MainMenuPanel->childUIMap["btn_start"]->OnClick())
 	{
 		return new MainGameState();
 	}
-	if (MainMenuPanel->childList[1]->OnClick())
+	if (MainMenuPanel->childUIMap["btn_choseLevel"]->OnClick())
 	{
 
 	}
-	if (MainMenuPanel->childList[2]->OnClick())
+	if (MainMenuPanel->childUIMap["btn_exit"]->OnClick())
 	{
 
 	}

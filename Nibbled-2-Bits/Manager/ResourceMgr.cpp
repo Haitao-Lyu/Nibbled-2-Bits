@@ -18,9 +18,9 @@ const char* C_BK_WOOD = "bk_wood";
 
 //inventory info
 // Postition 0 - Tube two way || 2 - tube 3 way|| 1 - tube 1 way  
-static std::vector<int> lev1{ 1,0,0,0 };
-static std::vector<int> lev2{ 2,0,0,0 };
-static std::vector<int> lev3{ 2,0,0,0 };
+static std::vector<int> lev1{ 1,0,0,15 };
+static std::vector<int> lev2{ 2,0,0,20 };
+static std::vector<int> lev3{ 2,0,0,15 };
 
 static const std::vector<std::vector<int>> levelInventoryList{ lev1,lev2,lev3 };
 

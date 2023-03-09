@@ -13,7 +13,7 @@
 #include "../GameObject/Tube.h"
 #include "../UI/EventCenter.h"
 #include "../UI/TextField.h"
-
+#include "../UI/RectFill.h"
 static const char* tube_cross_name = "iron_tube_cross";
 static const char* tube_one_name = "iron_tube_one_way";
 static const char* tube_three_name = "iron_tube_three_way";
@@ -33,9 +33,6 @@ Level::Level(const char* name)
 		row.resize(GRID_ROW + 2,-1);
 	}
 	levelName = name;
-	//Load game area level info
-	m_gamePanel = new Panel({ GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, GAME_AREA_WIDTH);
-	m_gamePanel->gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, { GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 });
 }
 
 Level::~Level()
@@ -149,7 +146,7 @@ void Level::CheckGamePanelEvent()
 {
 	m_gamePanel->isVisable = false;
 	m_gamePanel->Update();
-
+	if(!isStart)
 	//if holding item from level
 	for (std::vector<GridItem>& grids : m_gamePanel->gridComponent.gridList)
 	{
@@ -234,8 +231,42 @@ void Level::CheckGamePanelEvent()
 
 void Level::CheckItemPanelEvent()
 {
+	//Draw Inventory Panel
 	m_itemPanel->Update();
+	//when game start Timer Start
+	if (isStart)
+	{
+		//Update Timer 
+		float currentTime = levelTimeLimit - m_timer.m_timeCounter;
+		TextField* timer_text = static_cast<TextField*>(m_itemPanel->childUIMap["timer_text"]);
+		if (currentTime < 60)
+		{
+			std::string temp_str = std::to_string(static_cast<int>(currentTime));
+			timer_text->SetText("0:" + temp_str);
+		}
+		else if (currentTime > 60)
+		{
+			std::string temp_str = std::to_string((static_cast<int>(currentTime -= 60)));
+			timer_text->SetText("1:" + temp_str);
+		}
 
+		if (m_timer.isReachTimeInterval())
+		{
+			//Mouse Die
+			std::vector<GameObject*>& list_MOUSE = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_MOUSE);
+			for (GameObject* obj : list_MOUSE)
+			{
+				if (!obj)//check pointer valid
+					break;
+				if (obj->GetID() == m_id)
+					continue;//except it self
+				Mouse* mouse = static_cast<Mouse*>(obj);
+				mouse->isDead = true;
+			}
+			isStart = false;
+		}
+	}
+	if(!isStart)
 	//Set Dragable based on quantites, inventory function should sperate from grid component
 	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
 	{
@@ -264,6 +295,7 @@ void Level::CheckItemPanelEvent()
 	if (m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->OnClick())
 	{
 		m_itemPanel->gridComponent.gridList[0][2].GetGridUIElement()->SetSpriteName("green_round_button_pushed");
+		isStart = true;
 	}
 	else
 	{
@@ -273,12 +305,15 @@ void Level::CheckItemPanelEvent()
 	if (m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->OnClick())
 	{
 		m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_pushed");
+		isStart = false;
+		m_timer.Restart();
 	}
 	else
 	{
 		m_itemPanel->gridComponent.gridList[2][2].GetGridUIElement()->SetSpriteName("red_round_button_unpushed");
 	}
 
+	if(!isStart)
 	//if holding item from item panel to game panel
 	for (std::vector<GridItem>& grids : m_itemPanel->gridComponent.gridList)
 	{
@@ -421,26 +456,42 @@ void Level::FromLevelMoveToLevel(GridItem &grid, int x, int y)
 
 void Level::LoadLevelPanel()
 {
+
 	//All elements in a panel should scale by the scale of panel
 	Panel* panel = new Panel({ (DISPLAY_WIDTH - GAME_AREA_WIDTH) / 2 + 25,DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, (DISPLAY_WIDTH - GAME_AREA_WIDTH) + 50, "chalkboard_UI");
 	panel->SetSpriteScale(1.15f, 1.0f);
 	panel->gridComponent.InitGridInfo(3, 3, panel->m_height - 300, panel->m_width, {panel->m_pos.x, panel->m_pos.y});
 	m_itemPanel = panel;
-	 
-	//Game item lEVEL 1 UI Initialize
-	//level 1 : 1 , 0, 0 
+
+	//Game item lEVEL Inventory UI Initialize
 	std::vector<int> Inventorylist = ResoureMgr::LoadLevelPanelInfo(m_id);
 
 	Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
 	Button* btn3 = new Button({ 100,100 }, 100, 100, "iron_tube_three_way");
 	Button* btn4 = new Button({ 100,100 }, 100, 100, "iron_tube_one_way");
 
-	if(Inventorylist[0] > 0)
-	m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = Inventorylist[0];
+	if (Inventorylist[0] > 0)
+		m_itemPanel->gridComponent.Push_back_Grids(btn2)->m_info.quantities = Inventorylist[0];
 	if (Inventorylist[1] > 0)
-	m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = Inventorylist[1];
+		m_itemPanel->gridComponent.Push_back_Grids(btn3)->m_info.quantities = Inventorylist[1];
 	if (Inventorylist[2] > 0)
-	m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = Inventorylist[2];
+		m_itemPanel->gridComponent.Push_back_Grids(btn4)->m_info.quantities = Inventorylist[2];
+
+	levelTimeLimit = static_cast<float>(Inventorylist[3]);
+	m_timer.SetInterval(levelTimeLimit);
+	 
+	RectFill* timer = new RectFill({ m_itemPanel->m_pos.x - 80, m_itemPanel->m_pos.y - m_itemPanel->m_height/2 + 80 }, 50, 100, "timer");
+	std::string temp_time_text;
+	if(levelTimeLimit < 60)
+		temp_time_text = std::to_string(static_cast<int>(levelTimeLimit));
+	else
+	    temp_time_text = std::to_string(static_cast<int>(levelTimeLimit -= 60));
+	TextField* time_text = new TextField({ m_itemPanel->m_pos.x, m_itemPanel->m_pos.y - m_itemPanel->m_height / 2 + 80 }, 50, 100, "0:" + temp_time_text);
+
+	m_itemPanel->AddToPanel("timer", timer);
+	m_itemPanel->AddToPanel("timer_text", time_text);
+
+
 
 	//Debug tube
 	//Button* btn2 = new Button({ 100,100 }, 100, 100, "iron_tube_two_way");
@@ -475,10 +526,10 @@ void Level::LoadLevelPanel()
 	//EndLevel Panel Create
 	Panel* exit_panel = new Panel({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, 422, 433, "blue_panel");
 	m_endLevelPanel = exit_panel;
-	TextField* tab = new TextField({ exit_panel->m_pos.x, exit_panel->m_pos.y - exit_panel->m_height / 2 + 50 }, 50, 100, "Good ! ! JOB ! ! ");
-
-	exit_panel->AddToPanel(tab);
-
+	TextField* tab = new TextField({ exit_panel->m_pos.x, exit_panel->m_pos.y - exit_panel->m_height / 2 + 80 }, 50, 100, "Good ! ! JOB ! ! ");
+	RectFill* ribbon = new RectFill({ exit_panel->m_pos.x, exit_panel->m_pos.y - exit_panel->m_height / 2 + 100 }, 50, 100, "pink_ribbon_short");
+	exit_panel->AddToPanel("ribbon",ribbon);
+	exit_panel->AddToPanel("tab", tab);
 	exit_panel->gridComponent.InitGridInfo(2, 3, 0, 0, { exit_panel->m_pos.x - exit_panel->m_width / 3, exit_panel->m_pos.y - 50 }, 100, 100);
 
 	Button* btn_exit = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 100, 100, "red_round_button_unpushed", []()
@@ -491,6 +542,7 @@ void Level::LoadLevelPanel()
 		{
 			this->isEnd = true;
 		}, "Next");
+
 	Button* btn_cz = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102,"cz_swiss_big_grey");
 	Button* btn_cz2 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
 	Button* btn_cz3 = new Button({ exit_panel->m_rt_pos.x - 20, exit_panel->m_rt_pos.y + 20 }, 102, 102, "cz_swiss_big_grey");
@@ -505,6 +557,10 @@ void Level::LoadLevelPanel()
 
 void Level::LoadLeveltoScene()
 {
+	m_gamePanel = new Panel({ GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 }, DISPLAY_HEIGHT, GAME_AREA_WIDTH);
+	//game_panel is create when level instance create,
+	m_gamePanel->gridComponent.InitGridInfo(GRID_ROW + 2, GRID_COL + 2, GAME_AREA_HEIGHT + 1, GAME_AREA_WIDTH - 50, { GAME_AREA_WIDTH, DISPLAY_HEIGHT / 2 });
+
 	GameAreaInfo& gameAreaInfo = ResoureMgr::LoadLevel(levelName);
 	// col:16  row: 13
 	std::vector<std::vector<GameAreaObject*>>& level = gameAreaInfo.objects;

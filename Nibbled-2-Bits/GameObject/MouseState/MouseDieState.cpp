@@ -20,12 +20,17 @@ void MouseDieState::Update(Mouse* m_mice)
 
 void MouseDieState::Render(Mouse* m_mice)
 {
-	if (timer.isReachTimeInterval())
+	if (isLooping)
 	{
-		frame++;
-		if (frame > maxAnimFrame)
+		if (timer.isReachTimeInterval())
 		{
-			frame = 0;
+			frame++;
+			if (frame > maxAnimFrame)
+			{
+				isAnimEnd = true;
+				isLooping = false;
+				frame = maxAnimFrame - 1;
+			}
 		}
 	}
 	MouseState::Render(m_mice);
@@ -39,6 +44,6 @@ void MouseDieState::OnDead(Mouse* m_mice)
 	}
 	if (frame == maxAnimFrame)
 	{
-		GameObjectMgr::RemoveGameObject(*m_mice);
+		//GameObjectMgr::RemoveGameObject(*m_mice);
 	}
 }

@@ -25,6 +25,8 @@ void LevelMgr::Clear()
 	//clear all level, reset current level index
 	currentLevel = nullptr;
 	currentLevelIndex = 0;
+
+	level_list.clear();
 }
 
 void LevelMgr::ClearCurrentLevel()

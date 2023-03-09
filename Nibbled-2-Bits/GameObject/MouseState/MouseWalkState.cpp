@@ -66,7 +66,6 @@ void MouseWalkState::Update(Mouse* m_mice)
 			emitter->SetSpriteName(foot_bottom_up_name);
 			emitter->SetPosition(m_mice->m_pos);
 		}
-
 		break;
 	case E_MOUSE_DIR::LEFT:
 		m_mice->m_pos.x -= m_mice->m_speed;

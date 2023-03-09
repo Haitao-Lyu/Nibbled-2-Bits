@@ -44,7 +44,7 @@ void Panel::Update()
 	if (isVisable)
 	{
 		Render();
-		for (UIElement* ui : childList)
+		for (auto& [name, ui] : childUIMap)
 		{
 			ui->Update();
 		}
@@ -66,14 +66,14 @@ void Panel::Render()
 	DrawBoundingBox();
 }
 
-void Panel::AddToPanel(UIElement* UIelement)
+void Panel::AddToPanel(const char* name,UIElement* UIelement)
 {
-	childList.push_back(UIelement);
+	childUIMap[name] = UIelement;
 }
 
 void Panel::SetVisibility(bool value)
 {
-	for (UIElement* ui : childList)
+	for (auto &[name, ui]: childUIMap)
 	{
 		ui->isVisable = value;
 	}
@@ -91,19 +91,19 @@ void Panel::SetVisibility(bool value)
 
 void Panel::Clear()
 {
-	for (UIElement* ui : childList)
+	for (auto& [name, ui] : childUIMap)
 	{
 		if(ui)
 		delete ui;
 	}
-	childList.clear();
+	childUIMap.clear();
 	//Clear elements On Grids
 	gridComponent.Clear();
 }
 
 void Panel::SetActive(bool value)
 {
-	for (UIElement* ui : childList)
+	for (auto& [name, ui] : childUIMap)
 	{
 		ui->isActive = value;
 	}

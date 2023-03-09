@@ -15,7 +15,7 @@ private:
 	float y_scale = 1.0f;
 
 public:
-	std::vector<UIElement*> childList;
+	std::map<const char*,UIElement*> childUIMap;
 	GridComponent gridComponent;//component should always be public
 	Play::Point2D m_lt_pos;
 	Play::Point2D m_rt_pos;
@@ -32,6 +32,6 @@ public:
 
 	void SetVisibility(bool value);
 	void SetActive(bool value);
-	void AddToPanel(UIElement* UIelement);
+	void AddToPanel(const char* name, UIElement* UIelement);
 	void Clear();
 };

@@ -10,7 +10,6 @@ protected:
 	std::string spritePrefix = "Mouse_";
 	std::string spriteNameWithOutSuffix;
 	int frame = 0;
-	Timer timer{ 0.02f };
 public:
 	virtual void Update(Mouse* m_mice) = 0;
 	virtual void Render(Mouse* m_mice);
