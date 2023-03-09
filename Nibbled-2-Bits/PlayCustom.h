@@ -2551,8 +2551,7 @@ namespace Play::Window
 
 		// Copy the display buffer to the window: GDI only implements up scaling using simple pixel duplication, but that's what we want
 		// Note that GDI+ DrawImage would do the same thing, but it's much slower! 
-		StretchDIBits(hDC, 0, 0, m_pPlayBuffer->width * m_scale, m_pPlayBuffer->height * m_scale, 0, m_pPlayBuffer->height + 1, m_pPlayBuffer->width, -m_pPlayBuffer->height, m_pPlayBuffer->pPixels, &bitmap_info, DIB_RGB_COLORS, SRCCOPY); // We flip h because Bitmaps store pixel data upside down.
-
+		StretchDIBits(hDC, 0, 0, m_pPlayBuffer->width * m_scale, m_pPlayBuffer->height * m_scale, 0, m_pPlayBuffer->height + 1, m_pPlayBuffer->width, -m_pPlayBuffer->height, m_pPlayBuffer->pPixels, &bitmap_info, DIB_RGB_COLORS, SRCCOPY);
 		ReleaseDC(m_hWindow, hDC);
 
 		QueryPerformanceCounter(&after);
@@ -3602,36 +3601,36 @@ namespace Play::Graphics
 		Pixel* pDestPixels = dest;
 
 		// Iterate through all the pixels in the entire canvas
-		for( int bh = 0; bh < height; bh++ )
+		for (int bh = 0; bh < height; bh++)
 		{
-			for( int bw = 0; bw < width; bw++ )
+			for (int bw = 0; bw < width; bw++)
 			{
 				Pixel src = *pSourcePixels;
 
 				// Separate the channels and calculate src*srcAlpha
-				int srcAlpha = static_cast<int>( ( src.bits >> 24 ) * alphaMultiply );
+				int srcAlpha = static_cast<int>((src.bits >> 24) * alphaMultiply);
 
-				int destRed = ( srcAlpha * ( ( src.bits >> 16 ) & 0xFF ) ) >> 8;
-				int destGreen = ( srcAlpha * ( ( src.bits >> 8 ) & 0xFF ) ) >> 8;
-				int destBlue = ( srcAlpha * ( src.bits & 0xFF ) ) >> 8;
+				int destRed = (srcAlpha * ((src.bits >> 16) & 0xFF)) >> 8;
+				int destGreen = (srcAlpha * ((src.bits >> 8) & 0xFF)) >> 8;
+				int destBlue = (srcAlpha * (src.bits & 0xFF)) >> 8;
 
-				destRed = ( destRed * ( ( colourMultiply.bits >> 16 ) & 0xFF ) ) >> 8;
-				destGreen = ( destGreen * ( ( colourMultiply.bits >> 8 ) & 0xFF ) ) >> 8;
-				destBlue = ( destBlue * ( colourMultiply.bits & 0xFF ) ) >> 8;
+				destRed = (destRed * ((colourMultiply.bits >> 16) & 0xFF)) >> 8;
+				destGreen = (destGreen * ((colourMultiply.bits >> 8) & 0xFF)) >> 8;
+				destBlue = (destBlue * (colourMultiply.bits & 0xFF)) >> 8;
 
 				srcAlpha = 0xFF - srcAlpha; // invert the alpha ready to multiply with the destination pixels
-				*pDestPixels = ( srcAlpha << 24 ) | ( destRed << 16 ) | ( destGreen << 8 ) | destBlue;
+				*pDestPixels = (srcAlpha << 24) | (destRed << 16) | (destGreen << 8) | destBlue;
 
-				if( srcAlpha == 0xFF ) // Completely transparent pixel
+				if (srcAlpha == 0xFF) // Completely transparent pixel
 				{
 					int repeats = 0;
 
 					// We can only skip to the end of the row because the sprite frames are arranged on a continuous canvas
-					int maxSkip = maxSkipWidth - ( bw % maxSkipWidth );
+					int maxSkip = maxSkipWidth - (bw % maxSkipWidth);
 
-					for( int zw = 1; zw < maxSkip; zw++ )
+					for (int zw = 1; zw < maxSkip; zw++)
 					{
-						if( ( pSourcePixels + zw )->bits >> 24 == 0x00 ) // Another transparent pixel
+						if ((pSourcePixels + zw)->bits >> 24 == 0x00) // Another transparent pixel
 							repeats++;
 						else
 							break;
@@ -4430,7 +4429,7 @@ namespace Play
 		Play::Graphics::Draw( Play::Graphics::GetSpriteId( spriteName ), TRANSFORM_SPACE( TRANSFORM_Y( pos ) ), frameIndex );
 	}
 
-	void DrawSprite( int spriteID, Point2D pos, int frameIndex )
+	void DrawSprite(int spriteID, Point2D pos, int frameIndex)
 	{
 		Play::Graphics::Draw( spriteID, TRANSFORM_SPACE(TRANSFORM_Y( pos ) ), frameIndex );
 	}

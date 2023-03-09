@@ -56,7 +56,9 @@ private:
 	const char* c_grey = "_grey_";
 	const char* c_white = "_white_";
 	const char* m_Color;
-	float m_speed { 8.0f };
+
+	float m_origin_speed{ 8.0f };
+	float m_speed { 0.0f };
 
 	MouseState* m_state;
 	MouseRunState  m_runState;
@@ -88,6 +90,12 @@ public:
 	void Rotate(float rot) override;
 
 	void SetRotation(float dir);
+
+	void SetSpeed(float speed);
+
+	void AddSpeed(float speed);
+
+	float GetSpeed();
 
 	void OnRotationChanged();
 

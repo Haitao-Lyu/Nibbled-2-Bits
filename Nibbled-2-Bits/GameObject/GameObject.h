@@ -1,5 +1,10 @@
 #pragma once
 #include <vector>
+//Steps for new GameObject
+// 1.Add enum type
+// 2.Create Class inherit from GameObject class
+// 3.Add new GameObject from ResourceMgr or Level
+// 4.Update from GameObjectMgr
 enum class E_OBJTYPE
 {
 	E_NULL = -1,
@@ -10,6 +15,12 @@ enum class E_OBJTYPE
 	E_CHEESE,
 	E_MOUSEHOLE,
 	E_TUBE,
+	E_STICKYSPILL,
+	E_COFFEESPILL,
+	E_CAT,
+	E_HAMSTERBALL,
+	E_MOTORSPRING,
+	E_BELT,
 };
 //The real obj in the game scene, must have position, must drawable
 class GameObject 

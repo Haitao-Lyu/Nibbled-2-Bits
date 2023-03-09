@@ -60,7 +60,8 @@ void LevelMgr::Update()
 	{
 		// ? ? ? ? ? ? ? 
 		//Get The pointer of the vector , when delete one, all the element in list is deleted
-		//currentLevel = &level_list[currentLevelIndex++];
+		//currentLevel = &level_list[currentLevelIndex++]; 
+		// -> Pointer Won't change, But item in list will shift for any reason -> cause runtime bug
 		// ? ? ? ? ? ? ? ? 
 		//Enter First Level
 		currentLevel = level_list[currentLevelIndex++];

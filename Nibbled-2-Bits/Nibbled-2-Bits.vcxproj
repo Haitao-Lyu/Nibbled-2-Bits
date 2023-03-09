@@ -101,6 +101,7 @@
     <ClInclude Include="GameObject\Boundary.h" />
     <ClInclude Include="GameObject\Cheese.h" />
     <ClInclude Include="GameObject\ClickableObj.h" />
+    <ClInclude Include="GameObject\CoffeeSpill.h" />
     <ClInclude Include="GameObject\Component\BoxCollider.h" />
     <ClInclude Include="GameObject\Component\CircleCollider.h" />
     <ClInclude Include="GameObject\Component\Collider.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="GameObject\MouseState\MouseRunState.h" />
     <ClInclude Include="GameObject\MouseState\MouseWalkState.h" />
     <ClInclude Include="GameObject\MouseState\MouseWhackedState.h" />
+    <ClInclude Include="GameObject\StickySpill.h" />
     <ClInclude Include="GameObject\Tube.h" />
     <ClInclude Include="Level\GameFlowState.h" />
     <ClInclude Include="Level\MainMenuState.h" />
@@ -156,6 +158,7 @@
     <ClCompile Include="GameObject\Boundary.cpp" />
     <ClCompile Include="GameObject\Chesse.cpp" />
     <ClCompile Include="GameObject\ClickableObj.cpp" />
+    <ClCompile Include="GameObject\CoffeeSpill.cpp" />
     <ClCompile Include="GameObject\Component\BoxCollider.cpp" />
     <ClCompile Include="GameObject\Component\CircleCollider.cpp" />
     <ClCompile Include="GameObject\Component\Collider.cpp" />
@@ -169,6 +172,7 @@
     <ClCompile Include="GameObject\MouseState\MouseRunState.cpp" />
     <ClCompile Include="GameObject\MouseState\MouseWalkState.cpp" />
     <ClCompile Include="GameObject\MouseState\MouseWhackedState.cpp" />
+    <ClCompile Include="GameObject\StickySpill.cpp" />
     <ClCompile Include="GameObject\Tube.cpp" />
     <ClCompile Include="Level\GameFlowState.cpp" />
     <ClCompile Include="Level\MainMenuState.cpp" />

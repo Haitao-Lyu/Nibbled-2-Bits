@@ -11,6 +11,8 @@
 #include "../GameObject/Cheese.h"
 #include "../GameObject/MouseHole.h"
 #include "../GameObject/Tube.h"
+#include "../GameObject/StickySpill.h"
+#include "../GameObject/CoffeeSpill.h"
 #include "../UI/EventCenter.h"
 #include "../UI/TextField.h"
 #include "../UI/RectFill.h"
@@ -730,6 +732,22 @@ void Level::LoadLeveltoScene()
 				{
 					Tube* tb = new Tube(gridComponent.GetGridPos(i + 1, j));
 					tb->SetType((E_TUBE_TYPE)item->tubeType);
+					tb->Rotate(item->rot * 90);
+					//Update id map
+					m_mapinfo[i + 1][j] = tb->GetID();
+				}
+				break;
+				case E_OBJTYPE::E_STICKYSPILL:
+				{
+					StickySpill* tb = new StickySpill(gridComponent.GetGridPos(i + 1, j));
+					tb->Rotate(item->rot * 90);
+					//Update id map
+					m_mapinfo[i + 1][j] = tb->GetID();
+				}
+				break;
+				case E_OBJTYPE::E_COFFEESPILL:
+				{
+					CoffeeSpill* tb = new CoffeeSpill(gridComponent.GetGridPos(i + 1, j));
 					tb->Rotate(item->rot * 90);
 					//Update id map
 					m_mapinfo[i + 1][j] = tb->GetID();

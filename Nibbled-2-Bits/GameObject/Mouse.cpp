@@ -10,6 +10,8 @@
 #include "Cheese.h"
 #include "MouseHole.h"
 #include "Tube.h"
+#include "StickySpill.h"
+#include "CoffeeSpill.h"
 #include "../UI/EventCenter.h"
 //particle effect follow the mouse
 Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::E_MOUSE)
@@ -27,6 +29,7 @@ Mouse::Mouse(Play::Point2D pos, E_MOUSE_COLOR COLOR): GameObject(pos,E_OBJTYPE::
 		break;
 	}
 	m_state = &m_idleState;
+	m_speed = m_origin_speed;
 	//when game start btn pressed recevice the event // TODO: need to fix memory leak
 
 	EventListener startListener("MouseStartGameListener");// how to distinguish different listener
@@ -348,12 +351,47 @@ void Mouse::CheckCircleCollision()
 			DebugValue(tube->GetID(), "collides:", 50);
 		}
 	}
+
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_stickyspill = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_STICKYSPILL);
+	for (GameObject* obj : list_stickyspill)
+	{
+		if (!obj)//check pointer valid
+			break;
+		StickySpill* spill = static_cast<StickySpill*>(obj);
+		CircleCollider& collider = spill->GetCollider();
+		if (m_circleCollider.collidesWith(collider))
+		{
+			//move obj backward based on the distance and direction between two obj
+			m_speed = m_origin_speed - 5.0f;
+			DebugValue(spill->GetID(), "collides:", 50);
+		}
+	}
+
+	//Coffee is pick up item, effect could last a specific time 
+	//Get Tile obj list and calculate collision // And block mouse moving
+	std::vector<GameObject*>& list_coffeespill = GameObjectMgr::GetGameObjectsByType(E_OBJTYPE::E_COFFEESPILL);
+	for (GameObject* obj : list_coffeespill)
+	{
+		if (!obj)//check pointer valid
+			break;
+		CoffeeSpill* spill = static_cast<CoffeeSpill*>(obj);
+		CircleCollider& collider = spill->GetCollider();
+		if (m_circleCollider.collidesWith(collider))
+		{
+			//move obj backward based on the distance and direction between two obj
+			m_speed = m_origin_speed + 5.0f;
+			DebugValue(spill->GetID(), "collides:", 50);
+		}
+	}
 }
 
 
 void Mouse::Update()
 {
 	//record last frame pos
+	//refresh Mouse Status
+	m_speed = m_origin_speed;
 	prev_pos = m_pos;
 
 	if (!m_state)
@@ -400,6 +438,21 @@ void Mouse::SetRotation(float rot)
 		m_rot -= 360;
 	}
 	OnRotationChanged();
+}
+
+void Mouse::SetSpeed(float speed)
+{
+	m_speed = speed;
+}
+
+void Mouse::AddSpeed(float speed)
+{
+	m_speed += speed;
+}
+
+float Mouse::GetSpeed()
+{
+	return m_origin_speed;
 }
 
 void Mouse::OnRotationChanged()

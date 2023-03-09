@@ -20,10 +20,11 @@ const char* C_BK_WOOD = "bk_wood";
 // Postition 0 - Tube two way || 2 - tube 3 way|| 1 - tube 1 way  
 static std::vector<int> lev1{ 1,0,0,15 };
 static std::vector<int> lev2{ 2,0,0,20 };
-static std::vector<int> lev3{ 2,0,0,15 };
-
-static const std::vector<std::vector<int>> levelInventoryList{ lev1,lev2,lev3 };
-
+static std::vector<int> lev3{ 2,0,0,30 };
+static std::vector<int> lev4{ 1,0,0,20 };
+static std::vector<int> lev5{ 2,0,0,20 };
+static std::vector<int> lev6{ 2,0,0,15 };
+static const std::vector<std::vector<int>> levelInventoryList{ lev1,lev2,lev3,lev4,lev5,lev6 };
 
 const int GRID_WIDTH = 16;
 const int GRID_HEIGHT = 14;
@@ -185,6 +186,14 @@ GameAreaInfo& ResoureMgr::LoadLevel(std::string levelName)
 			tmpObject->m_type = E_OBJTYPE::E_TUBE;
 			tmpObject->tubeType = 2;
 		}
+		else if (std::strcmp(s_type.c_str(), "stickGround") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_STICKYSPILL;
+		}
+		else if (std::strcmp(s_type.c_str(), "coffee_spill") == 0)
+		{
+			tmpObject->m_type = E_OBJTYPE::E_COFFEESPILL;
+		}
 		tmpObject->posx = stoi(tokens[1]);
 		tmpObject->posy = (GRID_HEIGHT - 1) - stoi(tokens[2]);
 		tmpObject->rot = stoi(tokens[3]);
@@ -232,6 +241,7 @@ const char* ResoureMgr::GetFontName(E_FONTS font)
 
 std::vector<int> ResoureMgr::LoadLevelPanelInfo(int levelIndex)
 {
+	if (levelIndex < levelInventoryList.size())
 		return levelInventoryList[levelIndex];
 }
 

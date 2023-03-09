@@ -5,6 +5,8 @@ class MainMenuState :public GameFlowState
 {
 	//Load MainMenu Panel
 	Panel* MainMenuPanel = nullptr;
+
+	bool isShowInputBox = false;
 public:
 
 	MainMenuState();

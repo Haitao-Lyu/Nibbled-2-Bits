@@ -17,7 +17,7 @@ private:
 	bool TextIsFloat(std::string s);
 	void InputTextToValue();
 public:
-	InputBox(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width, const char* title = "");
+	InputBox(Play::Point2f pos, short sprite_height, short sprite_width, const char* spriteName, const char* title = "");
 	~InputBox();
 
 	void Render() override;

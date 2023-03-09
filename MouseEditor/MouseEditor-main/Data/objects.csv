@@ -25,7 +25,7 @@ Trap One Notset,HAZARD,trap_01_notset,trap_light
 Trap One Set,HAZARD,trap_01_notset,trap_light
 Trap Two Notset,HAZARD,trap_02_notset,trap_dark
 Trap Two Set,HAZARD,trap_02_notset,trap_dark
-Hamsterball,PROTECTIVE,hamsterball,hamsterball 
+Hamsterball,ENVIRONMENT,hamsterball,hamsterball 
 Heart,PROTECTIVE,heart,heart 
 Brie,REWARD,brie,cheese
 Edam,REWARD,edam,cheese
@@ -39,3 +39,5 @@ Raspberry,REWARD,raspberry,raspberry
 Strawberry,REWARD,strawberry,strawberry 
 Cornkernel,REWARD,cornkernel,cornkernel 
 Sunflowerseed,REWARD,sunflowerseed,sunflowerseed 
+oil_spill,ENVIRONMENT,oil_spill,stickGround
+coffee_spill,ENVIRONMENT,coffee_spill,coffee_spill

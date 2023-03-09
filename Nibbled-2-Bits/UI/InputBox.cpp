@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "InputBox.h"
 #include "../GameTool/DebugTool.h"
+#include "../Manager/ResourceMgr.h"
 #include <sstream>
 #include <string>
 
-InputBox::InputBox(Play::Point2f pos, const char* spriteName, short sprite_height, short sprite_width,const char* title):RectFill(pos, sprite_height, sprite_width,spriteName)
+InputBox::InputBox(Play::Point2f pos, short sprite_height, short sprite_width ,const char* spriteName, const char* title):RectFill(pos, sprite_height, sprite_width,spriteName)
 {
 	//btn_submit = Button({ pos.x + sprite_width / 2 + 20,pos.y }, "roundbtn", 50, 50, [] {},"Confirm");
 	m_inputTitle = title;
@@ -17,12 +18,15 @@ InputBox::~InputBox()
 void InputBox::Render()
 {
 	UIElement::Render();
-	DebugText(m_inputTitle, { m_pos.x - m_width / 2 - 50, m_pos.y });
+	Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::BOLD_64), m_inputTitle, { m_pos.x - m_width / 2 + 45, m_pos.y });
+	//DrawBoundingBox();
 	//btn_submit.DrawSprite(scale);
 }
 
 bool InputBox::OnClick()
 {
+	if (!isActive)
+		return  false;
 	GetInput();
 	if (UIElement::OnClick())
 	{
@@ -60,6 +64,7 @@ void InputBox::InputTextToValue()
 
 void InputBox::GetInput()
 {
+	if (isActive)
 	if (isTyping)
 	{
 		if(Play::KeyPressed('0'))
@@ -89,7 +94,7 @@ void InputBox::GetInput()
 			if(!inputText.empty())
 				inputText.pop_back();
 		}
-		DebugText(inputText,m_pos);
+		Play::DrawFontText(ResoureMgr::GetFontName(E_FONTS::BOLD_64), inputText, m_pos);
 		//if (Play::KeyPressed(VK_RETURN))
 		InputTextToValue();
 
@@ -106,11 +111,14 @@ void InputBox::GetInput()
 
 float InputBox::GetOutput()
 {
+	if (isActive)
 	return outputValue;
 }
 
 void InputBox::ClearInputText()
 {
+	if (!isActive)
+		return;
 	inputText = "";
 	outputValue = 0;
 }

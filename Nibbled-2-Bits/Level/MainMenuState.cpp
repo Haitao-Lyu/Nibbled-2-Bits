@@ -2,6 +2,7 @@
 #include "MainMenuState.h"
 #include "MainGameState.h"
 #include "../UI/Button.h"
+#include "../UI/InputBox.h"
 #include "../MainGame.h"
 #include "../GameTool/Timer.h"
 #include "../Manager/ResourceMgr.h"
@@ -83,18 +84,23 @@ void MainMenuState::OnEnter()
 
 		}, "START");
 	Button* btn_ChoseLevel = new Button({ MainMenuPanel->m_pos.x,MainMenuPanel->m_pos.y }, 56, 183, "blue_long_button_example_unpushed",
-		[]()
+		[this]()
 		{
-
+			isShowInputBox = !isShowInputBox;
 		}, "LEVEL");
-	Button * btn_Exit = new Button({ MainMenuPanel->m_pos.x + 300,MainMenuPanel->m_pos.y }, 56, 183, "grey_scale_long_button_example_unpushed",
+	Button* btn_Exit = new Button({ MainMenuPanel->m_pos.x + 300,MainMenuPanel->m_pos.y }, 56, 183, "grey_scale_long_button_example_unpushed",
 		[]()
 		{
 
 		}, "Exit");
+	InputBox* levInputBox = new InputBox({ MainMenuPanel->m_pos.x,MainMenuPanel->m_pos.y + 200 }, 153,391, "blue_number_panel_example","LEVNUM");
+	levInputBox->isVisable = false;
+	levInputBox->isActive = false;
 	MainMenuPanel->AddToPanel("btn_start", btn_start);
 	MainMenuPanel->AddToPanel("btn_choseLevel", btn_ChoseLevel);
 	MainMenuPanel->AddToPanel("btn_exit", btn_Exit);
+	MainMenuPanel->AddToPanel("InputBox", levInputBox);
+
 }
 
 
@@ -111,10 +117,12 @@ GameFlowState* MainMenuState::OnUpdate()
 
 	ParticleMgr::GetInstance().UpdateEmitterList();
 
+	//Start Button
 	if (MainMenuPanel->childUIMap["btn_start"]->OnClick())
 	{
 		return new MainGameState();
 	}
+	//Chose Level Btn
 	if (MainMenuPanel->childUIMap["btn_choseLevel"]->OnClick())
 	{
 
@@ -122,6 +130,18 @@ GameFlowState* MainMenuState::OnUpdate()
 	if (MainMenuPanel->childUIMap["btn_exit"]->OnClick())
 	{
 
+	}
+	//Input Level Btn
+	if (isShowInputBox)
+	{
+		MainMenuPanel->childUIMap["InputBox"]->isActive = true;
+		MainMenuPanel->childUIMap["InputBox"]->isVisable = true;
+		MainMenuPanel->childUIMap["InputBox"]->OnClick();
+	}
+	else
+	{
+		MainMenuPanel->childUIMap["InputBox"]->isVisable = false;
+		MainMenuPanel->childUIMap["InputBox"]->isActive = false;
 	}
 
 	return nullptr;
